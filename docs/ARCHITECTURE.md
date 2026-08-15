@@ -35,6 +35,12 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 - Ao terminar, escolhe resultado, visibilidade no portal e, opcionalmente, envio por e-mail ao cliente.
 - O tempo é calculado automaticamente.
 
+### Modo de campo (Field Mode)
+
+- Colaboradores em telemóvel/tablet entram por defeito num shell Agent reduzido (cinzentos/pretos), focado em folhas de obra.
+- Troca apenas Field ↔ Mobile standard (sem Desktop no Field).
+- Painel de Controlo: zona operacional (iniciar folhas / criar ticket+folha) e zona informativa (tickets e folhas abertas).
+
 ### Convites e palavra-passe
 
 - Convites e reposições usam ligações de utilização única e expiração.
@@ -47,6 +53,7 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | Lojas | `Kernel/System/BWBStore.pm`, `Kernel/Modules/AdminBWBStore.pm` |
 | Convites | `Kernel/System/BWBInvite.pm`, `Kernel/Modules/PublicBWBInvite.pm` |
 | Folhas de trabalho | `Kernel/System/BWBWorkSession.pm`, `Kernel/System/BWBWorkSheet.pm`, `Kernel/Modules/AgentBWBWorkSession.pm` |
+| Modo de campo | `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `js/Core.Agent.BWBFieldMode.js` |
 | Tipos de operação/resultados | `BWBOperationType.pm`, `BWBResultType.pm` e respetivos módulos Admin |
 | Conversão postmaster | `BWBConvertCustomer.pm`, `AgentBWBConvertCustomer.pm` |
 | Regras ZS IMAP | `BWBZSIMAP.pm`, `MailAccount/IMAPSZS.pm`, `PostMaster/Filter/ZSAKnownCustomer.pm` |

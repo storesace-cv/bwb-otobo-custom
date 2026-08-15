@@ -1,0 +1,265 @@
+:root {
+  --bwb-field-bg: #0a0a0a;
+  --bwb-field-surface: #1a1a1a;
+  --bwb-field-surface-2: #2a2a2a;
+  --bwb-field-border: #3f3f3f;
+  --bwb-field-text: #f5f5f5;
+  --bwb-field-text-muted: #a3a3a3;
+  --bwb-field-accent: #e5e5e5;
+  --bwb-field-overlay: rgba(0, 0, 0, 0.72);
+}
+
+body.BWBFieldMode {
+  background: var(--bwb-field-bg) !important;
+  background-image: none !important;
+  color: var(--bwb-field-text);
+}
+
+body.BWBFieldMode #AppWrapper,
+body.BWBFieldMode #Header,
+body.BWBFieldMode #Navigation,
+body.BWBFieldMode #NavigationContainer,
+body.BWBFieldMode .MainBox,
+body.BWBFieldMode #Footer.BWBFooter {
+  background: var(--bwb-field-bg) !important;
+  background-image: none !important;
+  color: var(--bwb-field-text) !important;
+  text-shadow: none !important;
+}
+
+body.BWBFieldMode #Header a,
+body.BWBFieldMode #Navigation a,
+body.BWBFieldMode #Footer.BWBFooter a {
+  color: var(--bwb-field-text) !important;
+}
+
+body.BWBFieldMode #ViewModeSwitch {
+  display: none !important;
+}
+
+body.BWBFieldMode #Navigation > ul > li {
+  display: none !important;
+}
+
+body.BWBFieldMode #Navigation > ul > li.BWBFieldNavItem {
+  display: list-item !important;
+}
+
+body.BWBFieldMode #BWBFieldModeSwitch {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin: 8px auto;
+  padding: 10px 16px;
+  border: 1px solid var(--bwb-field-border);
+  border-radius: 10px;
+  background: var(--bwb-field-surface-2);
+  color: var(--bwb-field-text);
+  font-size: 16px;
+  text-decoration: none;
+}
+
+body.BWBFieldMode .BWBFieldHome {
+  max-width: 720px;
+  margin: 16px auto 40px;
+  padding: 0 14px 24px;
+}
+
+.BWBFieldSectionHead h1,
+.BWBFieldZone h2,
+.BWBFieldZone h3 {
+  color: var(--bwb-field-text);
+  margin: 0 0 8px;
+}
+
+.BWBFieldSectionHead h1 { font-size: 24px; }
+.BWBFieldZone h2 { font-size: 18px; margin-top: 28px; border-bottom: 1px solid var(--bwb-field-border); padding-bottom: 8px; }
+.BWBFieldZone h3 { font-size: 16px; margin-top: 20px; color: var(--bwb-field-text-muted); font-weight: 600; }
+
+.BWBFieldMuted { color: var(--bwb-field-text-muted); font-size: 16px; line-height: 1.45; }
+.BWBFieldBack {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: var(--bwb-field-accent) !important;
+  text-decoration: none;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.BWBFieldOps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.BWBFieldOpCard {
+  display: block;
+  padding: 18px 16px;
+  min-height: 72px;
+  border: 1px solid var(--bwb-field-border);
+  border-radius: 12px;
+  background: var(--bwb-field-surface);
+  color: var(--bwb-field-text) !important;
+  text-decoration: none;
+}
+
+.BWBFieldOpCard strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.BWBFieldOpCard span {
+  display: block;
+  color: var(--bwb-field-text-muted);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.BWBFieldList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.BWBFieldListItem {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  min-height: 56px;
+  border: 1px solid var(--bwb-field-border);
+  border-radius: 12px;
+  background: var(--bwb-field-surface);
+  color: var(--bwb-field-text) !important;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.BWBFieldEmpty {
+  color: var(--bwb-field-text-muted);
+  font-size: 16px;
+  padding: 12px 0;
+}
+
+.BWBFieldError {
+  background: #3a1515;
+  color: #ffc9c9;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.BWBFieldForm label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+
+.BWBFieldForm select,
+.BWBFieldForm input[type="text"],
+.BWBFieldForm textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 48px;
+  font-size: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--bwb-field-border);
+  background: var(--bwb-field-surface-2);
+  color: var(--bwb-field-text);
+}
+
+.BWBFieldForm textarea { min-height: 160px; line-height: 1.45; }
+
+.BWBFieldActions { margin-top: 22px; }
+.BWBFieldPrimary {
+  width: 100%;
+  min-height: 48px;
+  font-size: 16px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 10px;
+  background: var(--bwb-field-accent);
+  color: #111;
+  cursor: pointer;
+}
+
+.BWBRunning { color: #d4d4d4; }
+.BWBPaused { color: #f0c674; }
+
+/* Work sheet remapped under Field Mode */
+body.BWBFieldMode .BWBWorkSheet .SheetHeader,
+body.BWBFieldMode .BWBWorkSheet .WorkCard,
+body.BWBFieldMode .BWBWorkSheet .ProtectedText,
+body.BWBFieldMode .BWBWorkSheet .VisibilityChoice,
+body.BWBFieldMode .BWBEditor,
+body.BWBFieldMode .BWBEditorToolbar {
+  background: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+  box-shadow: none !important;
+}
+
+body.BWBFieldMode .BWBWorkSheet,
+body.BWBFieldMode .BWBWorkSheet label,
+body.BWBFieldMode .BWBWorkSheet .HeaderTitle,
+body.BWBFieldMode .BWBWorkSheet .TicketRef,
+body.BWBFieldMode .BWBWorkSheet .SaveStatus {
+  color: var(--bwb-field-text) !important;
+}
+
+body.BWBFieldMode .BWBWorkSheet .HeaderTitle,
+body.BWBFieldMode .BWBWorkSheet .TicketRef,
+body.BWBFieldMode .BWBWorkSheet .SaveStatus {
+  color: var(--bwb-field-text-muted) !important;
+}
+
+body.BWBFieldMode .BWBWorkSheet select,
+body.BWBFieldMode .BWBWorkSheet input[type="text"],
+body.BWBFieldMode .BWBWorkSheet input[type="datetime-local"],
+body.BWBFieldMode .BWBEditorBody,
+body.BWBFieldMode .BWBEditorToolbar button,
+body.BWBFieldMode .BWBTactileSelect,
+body.BWBFieldMode .BWBTactileOption,
+body.BWBFieldMode .BWBTactilePanel {
+  background: var(--bwb-field-surface-2) !important;
+  color: var(--bwb-field-text) !important;
+  border-color: var(--bwb-field-border) !important;
+}
+
+body.BWBFieldMode .BWBTactileOverlay { background: var(--bwb-field-overlay) !important; }
+body.BWBFieldMode .BWBTactileOption.Selected,
+body.BWBFieldMode .BWBWorkSheet .VisibilityChoice label:has(input:checked) {
+  border-color: var(--bwb-field-accent) !important;
+  background: #303030 !important;
+}
+
+body.BWBFieldMode .BWBWorkSheet .VisibilityChoice label {
+  background: var(--bwb-field-surface-2) !important;
+  border-color: var(--bwb-field-border) !important;
+  color: var(--bwb-field-text) !important;
+}
+
+/* Keep semantic worksheet actions */
+body.BWBFieldMode .BWBWorkSheet .Actions .CancelAction { background: #c62828 !important; border-color: #c62828 !important; color: #fff !important; }
+body.BWBFieldMode .BWBWorkSheet .Actions .PauseAction { background: #e67e22 !important; border-color: #e67e22 !important; color: #fff !important; }
+body.BWBFieldMode .BWBWorkSheet .Actions .FinishAction { background: #18864b !important; border-color: #18864b !important; color: #fff !important; }
+
+body.BWBFieldMode .BWBNativeSelectHidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+}
+
+@media (max-width: 700px) {
+  body.BWBFieldMode .BWBFieldHome { padding: 0 10px 28px; margin-top: 10px; }
+  .BWBFieldSectionHead h1 { font-size: 22px; }
+}

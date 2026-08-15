@@ -1,0 +1,133 @@
+<div class="BWBFieldHome">
+[% IF Data.View == 'tickets' %]
+  <header class="BWBFieldSectionHead">
+    <a class="BWBFieldBack" href="[% Env("Baselink") %]Action=AgentBWBFieldHome">← Painel</a>
+    <h1>Folhas de trabalho</h1>
+    <p class="BWBFieldMuted">Tickets abertos em seu nome. Ao escolher, abre a folha de trabalho.</p>
+  </header>
+  [% IF Data.Tickets.size %]
+  <ul class="BWBFieldList">
+    [% FOREACH T IN Data.Tickets %]
+    <li>
+      <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% T.TicketID | html %]">
+        <strong>Ticket#[% T.TicketNumber | html %]</strong>
+        <span class="BWBFieldMuted">[% T.Customer | html %]</span>
+        <span>[% T.Title | html %]</span>
+        <span class="BWBFieldMuted">[% T.State | html %]</span>
+      </a>
+    </li>
+    [% END %]
+  </ul>
+  [% ELSE %]
+  <p class="BWBFieldEmpty">Não tem tickets abertos em seu nome.</p>
+  [% END %]
+
+[% ELSIF Data.View == 'create' %]
+  <header class="BWBFieldSectionHead">
+    <a class="BWBFieldBack" href="[% Env("Baselink") %]Action=AgentBWBFieldHome">← Painel</a>
+    <h1>Novo ticket</h1>
+    <p class="BWBFieldMuted">Crie o ticket e abra de seguida a folha de trabalho.</p>
+  </header>
+  [% IF Data.Error %]<div class="BWBFieldError" role="alert">[% Data.Error | html %]</div>[% END %]
+  <form class="BWBFieldForm" method="post" action="[% Env("CGIHandle") %]" id="BWBFieldTicketForm">
+    <input type="hidden" name="Action" value="AgentBWBFieldHome">
+    <input type="hidden" name="Subaction" value="StoreTicket">
+    <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]">
+    <label for="CustomerUser">Utilizador de cliente</label>
+    <select name="CustomerUser" id="CustomerUser" required>
+      <option value="">— Selecionar —</option>
+      [% FOREACH U IN Data.CustomerUsers %]
+      <option value="[% U.Login | html %]">[% U.Label | html %]</option>
+      [% END %]
+    </select>
+    <label for="Title">Título</label>
+    <input type="text" name="Title" id="Title" required maxlength="200" autocomplete="off">
+    <label for="Body">Problema</label>
+    <textarea name="Body" id="Body" rows="8" required></textarea>
+    <div class="BWBFieldActions">
+      <button type="submit" class="BWBFieldPrimary">Gravar e abrir folha</button>
+    </div>
+  </form>
+
+[% ELSE %]
+  <header class="BWBFieldSectionHead">
+    <h1>Painel de Controlo</h1>
+    <p class="BWBFieldMuted">Modo de campo</p>
+  </header>
+
+  <section class="BWBFieldZone" aria-labelledby="BWBFieldOpsTitle">
+    <h2 id="BWBFieldOpsTitle">Zona operacional</h2>
+    <p class="BWBFieldMuted">Pode iniciar:</p>
+    <div class="BWBFieldOps">
+      <a class="BWBFieldOpCard" href="[% Env("Baselink") %]Action=AgentBWBFieldHome;Subaction=StartWork">
+        <strong>Folhas de trabalho</strong>
+        <span>Escolher um ticket aberto em seu nome e abrir a folha.</span>
+      </a>
+      <a class="BWBFieldOpCard" href="[% Env("Baselink") %]Action=AgentBWBFieldHome;Subaction=NewTicket">
+        <strong>Tickets</strong>
+        <span>Criar ticket do cliente e abrir a folha de imediato.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="BWBFieldZone" aria-labelledby="BWBFieldInfoTitle">
+    <h2 id="BWBFieldInfoTitle">Dashboard informativo</h2>
+
+    <h3>Tickets abertos</h3>
+    [% IF Data.OpenTickets.size %]
+    <ul class="BWBFieldList">
+      [% FOREACH T IN Data.OpenTickets %]
+      <li>
+        <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% T.TicketID | html %]">
+          <strong>Ticket#[% T.TicketNumber | html %]</strong>
+          <span class="BWBFieldMuted">[% T.Customer | html %]</span>
+          <span>[% T.Title | html %]</span>
+        </a>
+      </li>
+      [% END %]
+    </ul>
+    [% ELSE %]
+    <p class="BWBFieldEmpty">Sem tickets abertos em seu nome.</p>
+    [% END %]
+
+    <h3>Folhas de trabalho abertas</h3>
+    [% IF Data.OpenWork.size %]
+    <ul class="BWBFieldList">
+      [% FOREACH W IN Data.OpenWork %]
+      <li>
+        <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% W.TicketID | html %]">
+          <strong>Ticket#[% W.TicketNumber | html %]</strong>
+          <span class="[% W.StatusClass | html %]">[% W.Status | html %]</span>
+          <span>[% W.Title | html %]</span>
+          <span class="BWBFieldMuted">[% W.WorkType | html %]</span>
+        </a>
+      </li>
+      [% END %]
+    </ul>
+    [% ELSE %]
+    <p class="BWBFieldEmpty">Sem folhas em execução ou em pausa.</p>
+    [% END %]
+  </section>
+[% END %]
+</div>
+<script>
+(function(){
+  var Touch=window.matchMedia('(hover: none) and (pointer: coarse)').matches||window.matchMedia('(max-width: 1024px)').matches;
+  if(!Touch)return;
+  document.querySelectorAll('.BWBFieldForm select').forEach(function(S){
+    if(S.dataset.bwbTouchReady)return;S.dataset.bwbTouchReady='1';
+    var L=document.querySelector('label[for="'+S.id+'"]'),Title=L?L.textContent.trim():'Selecionar';
+    var Trigger=document.createElement('button');Trigger.type='button';Trigger.className='BWBTactileSelect';
+    function refresh(){var O=S.options[S.selectedIndex];Trigger.textContent=O&&O.value?O.textContent:'— Selecionar —';Trigger.classList.toggle('Placeholder',!O||!O.value);}
+    refresh();S.classList.add('BWBNativeSelectHidden');S.insertAdjacentElement('afterend',Trigger);
+    Trigger.addEventListener('click',function(){
+      var Overlay=document.createElement('div');Overlay.className='BWBTactileOverlay';Overlay.setAttribute('role','dialog');Overlay.setAttribute('aria-modal','true');Overlay.setAttribute('aria-label',Title);
+      var Panel=document.createElement('div');Panel.className='BWBTactilePanel';
+      var Head=document.createElement('div');Head.className='BWBTactilePanelHeader';var H=document.createElement('strong');H.textContent=Title;var Close=document.createElement('button');Close.type='button';Close.className='BWBTactileClose';Close.setAttribute('aria-label','Fechar');Close.textContent='×';Head.append(H,Close);
+      var Options=document.createElement('div');Options.className='BWBTactileOptions';
+      Array.from(S.options).forEach(function(O){if(!O.value)return;var B=document.createElement('button');B.type='button';B.className='BWBTactileOption'+(O.selected?' Selected':'');B.textContent=O.textContent;B.onclick=function(){S.value=O.value;S.dispatchEvent(new Event('change',{bubbles:true}));refresh();Overlay.remove();Trigger.focus();};Options.appendChild(B);});
+      Panel.append(Head,Options);Overlay.appendChild(Panel);document.body.appendChild(Overlay);Close.onclick=function(){Overlay.remove();Trigger.focus();};Overlay.onclick=function(E){if(E.target===Overlay){Overlay.remove();Trigger.focus();}};
+    });
+  });
+})();
+</script>

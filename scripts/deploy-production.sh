@@ -16,6 +16,12 @@ rsync -av "$ROOT/otobo/Custom/" "$TARGET:/opt/otobo/Custom/"
 rsync -av "$ROOT/otobo/Kernel/Config/Files/" "$TARGET:/opt/otobo/Kernel/Config/Files/"
 rsync -av "$ROOT/otobo/var/httpd/htdocs/" "$TARGET:/opt/otobo/var/httpd/htdocs/"
 
-ssh "$TARGET" "set -e; su - otobo -s /bin/bash -c '/opt/otobo/bin/otobo.Console.pl Maint::Config::Rebuild'; su - otobo -s /bin/bash -c '/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete'; /opt/otobo/bin/otobo.Daemon.pl status"
+# rsync as root must not leave Config/Custom unreadable by the otobo user
+ssh "$TARGET" "set -e
+chown -R otobo:www-data /opt/otobo/Custom /opt/otobo/Kernel/Config/Files /opt/otobo/var/httpd/htdocs
+su -c '/opt/otobo/bin/otobo.Console.pl Maint::Config::Rebuild' -s /bin/bash otobo
+su -c '/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete' -s /bin/bash otobo
+su -c '/opt/otobo/bin/otobo.Daemon.pl status' -s /bin/bash otobo
+"
 
 echo "Publicado. Cópia de segurança: $BACKUP"

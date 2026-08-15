@@ -60,7 +60,19 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 
 - Trabalho aberto: `Output/HTML/Dashboard/BWBOpenWork.pm`, configs em `otobo/Kernel/Config/Files/ZZZBWBDashboard*.pm`.
 - Recursos estáticos BWB/ZS: `otobo/var/httpd/htdocs/`.
-- Interface em português de Portugal, UTF-8, responsiva (alvos de toque ≥ 44 px).
+- Interface em português de Portugal, UTF-8, responsiva (alvos de toque ≥ 44 px; folha/Field ≥ 48 px).
+
+## Modo de campo (Field Mode)
+
+- Terceiro modo de UI Agent para técnicos no terreno (colaboradores), sobre o responsive OTOBO — **não** é portal cliente.
+- Activação por defeito: colaborador (`ResponsibleUserIDGet != UserID`) + dispositivo de campo (`pointer: coarse` ou viewport ≤1024px).
+- Persistência: `localStorage.BWBFieldMode` + preferência `UserBWBFieldMode`.
+- No Field **não há** switch Desktop; só **Field ↔ Mobile standard**.
+- Menu reduzido (visível): Painel de Controlo, Calendário, Procurar, Ajuda.
+- Painel (`AgentBWBFieldHome`): zona operacional (Folhas → tickets do técnico → folha; Tickets → criar simples + abrir folha) e dashboard informativo (tickets abertos + folhas abertas/pausadas).
+- Visual: tokens cinzentos/pretos (`BWBFieldMode.css`); acções Cancelar/Pausa/Terminar da folha mantêm cores semânticas.
+- Código: `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `AgentBWBFieldHome.tt`, `js/Core.Agent.BWBFieldMode.js`, XML `BWBFieldMode.xml`.
+- Fila por defeito na criação rápida: `zsangola-in` se o responsável hierárquico for Amadeu (UserID 4); caso contrário `bwb-in`.
 
 ## Ao desenvolver funcionalidade nova ou alterar existente
 
