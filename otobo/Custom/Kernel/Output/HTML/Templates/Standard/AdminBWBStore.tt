@@ -1,0 +1,70 @@
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    [% BreadcrumbPath = [{ Name => 'Gestão de lojas', Link => Env("Action") }] %]
+    [% IF Data.View == 'Edit' %]
+        [% BreadcrumbPath.push({ Name => Data.Mode == 'Add' ? 'Criar loja' : 'Editar loja' }) %]
+    [% END %]
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+    <div class="Clear"></div>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Ações</h2></div>
+            <div class="Content"><ul class="ActionList">
+                [% IF Data.View == 'Overview' %]
+                    <li><a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Add;Nav=[% Data.Nav | uri %]" class="CallForAction Fullsize Center"><span><i class="fa fa-plus-square"></i>Criar loja</span></a></li>
+                [% ELSE %]
+                    <li><a href="[% Env("Baselink") %]Action=[% Env("Action") %];Nav=[% Data.Nav | uri %]" class="CallForAction Fullsize Center"><span><i class="fa fa-caret-left"></i>Voltar à lista</span></a></li>
+                [% END %]
+            </ul></div>
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+        [% IF Data.View == 'Overview' %]
+            <div class="Header"><h2>Lojas</h2></div>
+            <div class="Content">
+                <form action="[% Env("CGIHandle") %]" method="post" class="SpacingBottom">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Nav" value="[% Data.Nav | html %]"/>
+                    <input type="text" name="Search" value="[% Data.Search | html %]" placeholder="Pesquisar cliente, número, nome ou morada" class="W50pc"/>
+                    <label><input type="checkbox" name="IncludeInvalid" value="1" [% IF Data.IncludeInvalid %]checked="checked"[% END %]/> Incluir lojas inválidas</label>
+                    <button type="submit" class="CallForAction"><span>Pesquisar</span></button>
+                </form>
+                <table class="DataTable">
+                    <thead><tr><th>Cliente</th><th>Número</th><th>Nome da loja</th><th>Morada</th><th>Estado</th><th>Alterada</th></tr></thead>
+                    <tbody>
+[% RenderBlockStart("StoreRow") %]
+                        <tr class="MasterAction[% IF Data.ValidID != 1 %] Invalid[% END %]">
+                            <td><a class="AsBlock MasterActionLink" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Change;StoreID=[% Data.StoreID | uri %];Nav=[% Data.Nav | uri %]">[% Data.CustomerCompanyName | html %]</a></td>
+                            <td>[% Data.StoreNumber | html %]</td><td>[% Data.StoreName | html %]</td><td>[% Data.StoreStreet | html %]</td>
+                            <td>[% IF Data.ValidID == 1 %]Válida[% ELSE %]Inválida[% END %]</td><td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
+                        </tr>
+[% RenderBlockEnd("StoreRow") %]
+[% RenderBlockStart("NoStores") %]
+                        <tr><td colspan="6">Não foram encontradas lojas.</td></tr>
+[% RenderBlockEnd("NoStores") %]
+                    </tbody>
+                </table>
+            </div>
+        [% ELSE %]
+            <div class="Header"><h2>[% IF Data.Mode == 'Add' %]Criar loja[% ELSE %]Editar loja[% END %]</h2></div>
+            <div class="Content">
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate PreventMultipleSubmits">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/><input type="hidden" name="Subaction" value="[% Data.Mode %]Action"/>
+                    <input type="hidden" name="StoreID" value="[% Data.StoreID | html %]"/><input type="hidden" name="Nav" value="[% Data.Nav | html %]"/>
+                    <fieldset class="TableLike">
+                        <label class="Mandatory" for="CustomerID"><span class="Marker">*</span> Cliente:</label><div class="Field">[% Data.CustomerOption %]</div><div class="Clear"></div>
+                        <label class="Mandatory" for="StoreNumber"><span class="Marker">*</span> Número da loja:</label><div class="Field"><input id="StoreNumber" name="StoreNumber" value="[% Data.StoreNumber | html %]" class="W50pc Validate_Required [% Data.StoreNumberInvalid %]" maxlength="30"/></div><div class="Clear"></div>
+                        <label class="Mandatory" for="StoreName"><span class="Marker">*</span> Nome da loja:</label><div class="Field"><input id="StoreName" name="StoreName" value="[% Data.StoreName | html %]" class="W50pc Validate_Required [% Data.StoreNameInvalid %]" maxlength="191"/></div><div class="Clear"></div>
+                        <label for="StoreStreet">Morada:</label><div class="Field"><textarea id="StoreStreet" name="StoreStreet" class="W50pc" rows="4">[% Data.StoreStreet | html %]</textarea></div><div class="Clear"></div>
+                        <label class="Mandatory" for="ValidID"><span class="Marker">*</span> Estado:</label><div class="Field">[% Data.ValidOption %]</div><div class="Clear"></div>
+                        <div class="Field SpacingTop"><button class="CallForAction Primary" type="submit"><span>Guardar</span></button> ou <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Nav=[% Data.Nav | uri %]">Cancelar</a></div><div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+        [% END %]
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>

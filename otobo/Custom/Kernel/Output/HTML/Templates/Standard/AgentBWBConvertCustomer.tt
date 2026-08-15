@@ -1,0 +1,45 @@
+<div class="BWBConvertCustomer">
+    <h1>Converter remetente em cliente</h1>
+    [% IF Data.Error %]<div class="MessageBox Error"><p>[% Data.Error | html %]</p></div>[% END %]
+    <div class="BWBConversionPreview">
+        <strong>Remetente detetado:</strong> [% Data.UserEmail | html %]<br>
+        <strong>Tickets encontrados em zs-postmaster:</strong> [% Data.TicketCount | html %]
+        [% IF Data.TicketCount %]<br><span>Todos estes tickets serão associados, movidos para <strong>zsangola-in</strong> e marcados como não vistos.</span>[% END %]
+    </div>
+    <form action="[% Env("CGIHandle") %]" method="post" class="Validate PreventMultipleSubmits">
+        <input type="hidden" name="Action" value="AgentBWBConvertCustomer">
+        <input type="hidden" name="Subaction" value="Convert">
+        <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]">
+        <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") %]">
+        <input type="hidden" name="Confirmed" value="1">
+        <fieldset><legend>1. Cliente</legend>
+            <label class="Mandatory" for="CustomerName"><span class="Marker">*</span> Nome</label><input id="CustomerName" name="CustomerName" class="W50pc Validate_Required" value="[% Data.CustomerName | html %]">
+            <label class="Mandatory" for="CustomerID"><span class="Marker">*</span> Número de cliente</label><input id="CustomerID" name="CustomerID" class="W50pc Validate_Required" value="[% Data.CustomerID | html %]">
+            <label>País</label><input class="W50pc" value="Angola" disabled>
+            <label>Cidade</label><input class="W50pc" value="Luanda" disabled>
+            <label for="CustomerStreet">Morada (opcional)</label><input id="CustomerStreet" name="CustomerStreet" class="W50pc" value="[% Data.CustomerStreet | html %]">
+            <label for="CustomerPhone">Telefone (opcional)</label><input id="CustomerPhone" name="CustomerPhone" class="W50pc" value="[% Data.CustomerPhone | html %]">
+        </fieldset>
+        <fieldset><legend>2. Loja</legend>
+            <label>Número e nome</label><input class="W50pc" value="S — Sede" disabled>
+            <label for="StoreStreet">Morada (opcional)</label><input id="StoreStreet" name="StoreStreet" class="W50pc" value="[% Data.StoreStreet | html %]" placeholder="Se ficar vazia, será usada a morada do cliente">
+        </fieldset>
+        <fieldset><legend>3. Utilizador do cliente</legend>
+            <label class="Mandatory" for="Firstname"><span class="Marker">*</span> Nome</label><input id="Firstname" name="Firstname" class="W50pc Validate_Required" value="[% Data.Firstname | html %]">
+            <label class="Mandatory" for="Lastname"><span class="Marker">*</span> Apelido</label><input id="Lastname" name="Lastname" class="W50pc Validate_Required" value="[% Data.Lastname | html %]">
+            <label class="Mandatory" for="UserLogin"><span class="Marker">*</span> Nome de utilizador</label><input id="UserLogin" name="UserLogin" class="W50pc Validate_Required" value="[% Data.UserLogin | html %]">
+            <label class="Mandatory" for="UserEmail"><span class="Marker">*</span> E-mail</label><input id="UserEmail" name="UserEmail" class="W50pc Validate_Required Validate_Email" value="[% Data.UserEmail | html %]" readonly>
+            <label>Cliente</label><input class="W50pc BWBLinkedCustomer" value="[% Data.CustomerName | html %]" disabled placeholder="Será usado o cliente acima">
+            <label>Loja</label><input class="W50pc" value="S — Sede" disabled>
+            <label>Validade</label><input class="W50pc" value="Válido" disabled>
+        </fieldset>
+        <div class="BWBWarning">Esta operação não envia convite por e-mail. Confirme cuidadosamente os dados antes de continuar.</div>
+        <div class="Field SpacingTop"><button class="Primary CallForAction" type="submit"><span>Converter e mover [% Data.TicketCount | html %] ticket(s)</span></button></div>
+    </form>
+</div>
+<style>
+.BWBConvertCustomer{max-width:820px;margin:0 auto;padding:18px;font-size:15px}.BWBConvertCustomer h1{font-size:24px;margin:0 0 14px}.BWBConvertCustomer fieldset{background:#f2f3f5;border:0;border-radius:12px;margin:14px 0;padding:16px 20px}.BWBConvertCustomer legend{font-size:18px;font-weight:700;padding:0 8px}.BWBConvertCustomer label{display:inline-block;width:28%;text-align:right;margin:7px 2% 7px 0;vertical-align:middle}.BWBConvertCustomer input{box-sizing:border-box;min-height:34px}.BWBConversionPreview,.BWBWarning{padding:14px 16px;border-radius:10px;background:#eef6ff;line-height:1.5}.BWBWarning{background:#fff7df}.BWBConvertCustomer .Field{text-align:center}@media(max-width:640px){.BWBConvertCustomer{padding:10px}.BWBConvertCustomer label{display:block;width:auto;text-align:left;margin:10px 0 4px}.BWBConvertCustomer input.W50pc{width:100%!important}.BWBConvertCustomer fieldset{padding:12px}}
+</style>
+<script>
+(function(){var f=document.getElementById('Firstname'),l=document.getElementById('Lastname'),u=document.getElementById('UserLogin'),c=document.getElementById('CustomerName'),linked=document.querySelector('.BWBLinkedCustomer');if(c&&linked)c.addEventListener('input',function(){linked.value=c.value;});var changed=false;if(u)u.addEventListener('input',function(){changed=true;});function fold(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'.').replace(/^\.|\.$/g,'');}function suggest(){if(!changed&&u)u.value=[fold(f.value),fold(l.value)].filter(Boolean).join('.');}if(f)f.addEventListener('input',suggest);if(l)l.addEventListener('input',suggest);})();
+</script>

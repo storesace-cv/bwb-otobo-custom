@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Definir palavra-passe</title>
+    <style>
+        :root { color-scheme: light; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; background:#f5f5f7; color:#1d1d1f; margin:0; padding:24px; }
+        .box { max-width:560px; margin:5vh auto; background:#fff; padding:32px; border:1px solid #d2d2d7; border-radius:14px; box-shadow:0 4px 18px rgba(0,0,0,.06); }
+        h1 { margin:0 0 20px; font-size:32px; line-height:1.15; }
+        .intro { margin:0 0 12px; }
+        .requirements { list-style:none; padding:0; margin:12px 0 24px; display:grid; gap:8px; }
+        .requirement { color:#6e6e73; font-weight:500; transition:color .15s ease; }
+        .requirement::before { content:"○"; display:inline-block; width:24px; color:#86868b; font-weight:700; }
+        .requirement.valid { color:#167c3a; font-weight:700; }
+        .requirement.valid::before { content:"✓"; color:#167c3a; }
+        label { display:block; margin-top:14px; font-weight:600; }
+        input { width:100%; padding:13px 14px; margin-top:7px; border:1px solid #86868b; border-radius:7px; font:inherit; }
+        input:focus { outline:3px solid rgba(0,113,227,.22); border-color:#0071e3; }
+        .match { min-height:22px; margin-top:6px; font-size:14px; color:#a00; }
+        .match.valid { color:#167c3a; font-weight:700; }
+        button { background:#3a3a3c; color:#fff; border:0; padding:14px 22px; border-radius:8px; font:inherit; font-weight:700; cursor:pointer; }
+        button:disabled { background:#d2d2d7; color:#86868b; cursor:not-allowed; }
+        .err { color:#a1261d; background:#fff1f0; border-radius:7px; padding:12px; }
+        .ok { color:#167c3a; font-weight:700; }
+        @media (max-width:600px) { body{padding:12px}.box{margin:12px auto;padding:24px 20px}h1{font-size:28px}button{width:100%} }
+    </style>
+</head>
+<body>
+<main class="box">
+    <h1>Aceder à Plataforma</h1>
+[% IF Data.Success %]
+    <p class="ok">A palavra-passe foi definida. Já pode entrar na plataforma.</p>
+    <p><a href="/otobo/index.pl">Aceder como agente</a> · <a href="/otobo/customer.pl">Aceder como cliente</a></p>
+[% ELSIF Data.Invalid %]
+    <p class="err">Esta ligação é inválida ou expirou.</p>
+[% ELSE %]
+[% IF Data.Error %]
+    <p class="err">[% Data.Error | html %]</p>
+[% END %]
+    <p class="intro">Escolha uma palavra-passe que respeite os seguintes parâmetros:</p>
+    <ul class="requirements" aria-live="polite">
+        <li class="requirement" data-rule="upper">Uma letra maiúscula</li>
+        <li class="requirement" data-rule="lower">Uma letra minúscula</li>
+        <li class="requirement" data-rule="number">Um número</li>
+        <li class="requirement" data-rule="symbol">Um símbolo</li>
+        <li class="requirement" data-rule="length">Pelo menos 8 caracteres</li>
+    </ul>
+    <form id="PasswordForm" method="post" action="/otobo/public.pl">
+        <input type="hidden" name="Action" value="PublicBWBInvite">
+        <input type="hidden" name="Subaction" value="Set">
+        <input type="hidden" name="Token" value="[% Data.Token | html %]">
+        <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]">
+        <label>Nova palavra-passe
+            <input id="NewPassword" type="password" name="Password" required minlength="8" autocomplete="new-password">
+        </label>
+        <label>Confirmar palavra-passe
+            <input id="ConfirmPassword" type="password" name="Confirm" required minlength="8" autocomplete="new-password">
+        </label>
+        <div id="PasswordMatch" class="match" aria-live="polite"></div>
+        <button id="SubmitPassword" type="submit" disabled>Guardar e continuar</button>
+    </form>
+[% END %]
+</main>
+[% IF !Data.Success && !Data.Invalid %]
+<script>
+(function () {
+    'use strict';
+    var password = document.getElementById('NewPassword');
+    var confirmPassword = document.getElementById('ConfirmPassword');
+    var submit = document.getElementById('SubmitPassword');
+    var match = document.getElementById('PasswordMatch');
+    var tests = {
+        upper:  function (value) { return /[A-Z]/.test(value); },
+        lower:  function (value) { return /[a-z]/.test(value); },
+        number: function (value) { return /[0-9]/.test(value); },
+        symbol: function (value) { return /[^A-Za-z0-9]/.test(value); },
+        length: function (value) { return value.length >= 8; }
+    };
+    function update() {
+        var value = password.value;
+        var allValid = true;
+        Object.keys(tests).forEach(function (rule) {
+            var valid = tests[rule](value);
+            var item = document.querySelector('[data-rule="' + rule + '"]');
+            item.classList.toggle('valid', valid);
+            allValid = allValid && valid;
+        });
+        var same = confirmPassword.value.length > 0 && value === confirmPassword.value;
+        match.classList.toggle('valid', same);
+        match.textContent = confirmPassword.value.length ? (same ? '✓ As palavras-passe coincidem' : 'As palavras-passe não coincidem') : '';
+        submit.disabled = !(allValid && same);
+    }
+    password.addEventListener('input', update);
+    confirmPassword.addEventListener('input', update);
+    update();
+}());
+</script>
+[% END %]
+</body>
+</html>

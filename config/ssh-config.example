@@ -1,0 +1,7 @@
+# Copiar este bloco para ~/.ssh/config no computador autorizado.
+# A chave privada fica apenas no computador local.
+Host bwb-otobo-prod
+    HostName 178.159.34.132
+    User root
+    IdentityFile ~/.ssh/digitalocean
+    IdentitiesOnly yes

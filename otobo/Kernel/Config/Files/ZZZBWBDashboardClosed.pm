@@ -1,0 +1,22 @@
+package Kernel::Config::Files::ZZZBWBDashboardClosed;
+use strict;
+use warnings;
+use utf8;
+sub Load {
+    my ($File,$Self)=@_;
+    $Self->{'DashboardBackend'}->{'0120-TicketNew'}->{Limit}='25';
+    $Self->{'DashboardBackend'}->{'0130-TicketOpen'}->{Limit}='25';
+    delete $Self->{'DashboardBackend'}->{'0150-TicketClosedRecent'};
+    $Self->{'DashboardBackend'}->{'0271-TicketClosedRecent'} = {
+        Attributes=>'StateType=closed;TicketCloseTimeNewerMinutes=11520;SortBy=Changed;OrderBy=Down;',
+        Block=>'ContentLarge', CacheTTLLocal=>'0.5', Default=>'1',
+        DefaultColumns=>{ CustomerCompanyName=>'2', CustomerName=>'1', State=>'1', TicketNumber=>'2', Title=>'2', Changed=>'2' },
+        Description=>'Os últimos 15 tickets fechados nos últimos oito dias.',
+        ExcludeAdministrativeCloseHistory=>'1', MaximumTickets=>'15',
+        Filter=>'All', Group=>'', Limit=>'15', Mandatory=>'0',
+        Module=>'Kernel::Output::HTML::Dashboard::TicketGeneric',
+        Permission=>'rw', Time=>'Changed', Title=>'Tickets Fechados',
+    };
+    return 1;
+}
+1;

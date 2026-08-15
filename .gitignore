@@ -1,0 +1,19 @@
+# Secrets and workstation-specific material must never enter this repository.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_*
+known_hosts
+
+# Operational exports and backups can contain personal data.
+backups/
+exports/
+*.sql.gz
+*.tar.gz
+
+# Editor and operating-system files.
+.DS_Store
+.idea/
+.vscode/

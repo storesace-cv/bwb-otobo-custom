@@ -1,0 +1,37 @@
+<div class="MainBox ARIARoleMain">
+    <h1>Tipos de Operação</h1>
+    [% IF Data.Message %]<div class="SuccessBox">[% Data.Message | html %]</div>[% END %]
+    <div class="WidgetSimple">
+        <div class="Header"><h2>Tipos comuns</h2></div>
+        <div class="Content">
+            <p>Estes tipos são comuns a todas as equipas. Pode ocultá-los apenas para a sua equipa.</p>
+            <table class="DataTable"><thead><tr><th>Tipo de operação</th><th>Disponível para a minha equipa</th></tr></thead><tbody>
+            [% FOREACH Item IN Data.Items %][% IF Item.IsGlobal %]
+                <tr><td>[% Item.Name | html %]</td><td>
+                    <form method="post" action="[% Env("CGIHandle") %]">
+                        <input type="hidden" name="Action" value="AdminBWBOperationType"><input type="hidden" name="Subaction" value="ToggleGlobal">
+                        <input type="hidden" name="ID" value="[% Item.ID | html %]"><input type="hidden" name="Hidden" value="[% IF Item.Hidden %]0[% ELSE %]1[% END %]">
+                        <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]">
+                        <button type="submit" class="CallForAction"><span>[% IF Item.Hidden %]Mostrar[% ELSE %]Ocultar[% END %]</span></button>
+                    </form>
+                </td></tr>
+            [% END %][% END %]
+            </tbody></table>
+        </div>
+    </div>
+    <div class="WidgetSimple">
+        <div class="Header"><h2>Tipos próprios da minha equipa</h2></div>
+        <div class="Content">
+            <form method="post" action="[% Env("CGIHandle") %]" class="Validate PreventMultipleSubmits">
+                <input type="hidden" name="Action" value="AdminBWBOperationType"><input type="hidden" name="Subaction" value="Add">
+                <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]">
+                <fieldset class="TableLike"><label class="Mandatory" for="Name"><span class="Marker">*</span> Novo tipo:</label><div class="Field"><input id="Name" name="Name" class="W50pc Validate_Required" required><button type="submit" class="CallForAction Primary"><span>Adicionar</span></button></div><div class="Clear"></div></fieldset>
+            </form>
+            <table class="DataTable"><thead><tr><th>Nome</th><th>Estado</th><th>Ação</th></tr></thead><tbody>
+            [% FOREACH Item IN Data.Items %][% IF !Item.IsGlobal %]
+                <tr><form method="post" action="[% Env("CGIHandle") %]"><input type="hidden" name="Action" value="AdminBWBOperationType"><input type="hidden" name="Subaction" value="UpdateOwn"><input type="hidden" name="ID" value="[% Item.ID | html %]"><input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]"><td><input name="Name" value="[% Item.Name | html %]" class="W100pc"></td><td><select name="ValidID"><option value="1"[% IF Item.ValidID == 1 %] selected[% END %]>Válido</option><option value="2"[% IF Item.ValidID != 1 %] selected[% END %]>Inválido</option></select></td><td><button type="submit" class="CallForAction"><span>Guardar</span></button></td></form></tr>
+            [% END %][% END %]
+            </tbody></table>
+        </div>
+    </div>
+</div>

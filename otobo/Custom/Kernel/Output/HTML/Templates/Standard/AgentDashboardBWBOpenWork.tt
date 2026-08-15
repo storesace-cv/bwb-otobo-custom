@@ -1,0 +1,40 @@
+<style>
+    .BWBOpenWorkTable .BWBWorkStatus { display:inline-block; min-width:82px; padding:3px 9px; border-radius:12px; text-align:center; font-weight:700; }
+    .BWBOpenWorkTable .BWBRunning { background:#e9f8ee; color:#176b36; }
+    .BWBOpenWorkTable .BWBPaused { background:#fff1dd; color:#8a4b00; }
+    .BWBOpenWorkTable td a.AsBlock { min-height:28px; }
+    @media (max-width: 767px) {
+        .BWBOpenWorkTable th:nth-child(4), .BWBOpenWorkTable td:nth-child(4),
+        .BWBOpenWorkTable th:nth-child(6), .BWBOpenWorkTable td:nth-child(6) { display:none; }
+        .BWBOpenWorkTable .BWBWorkStatus { min-width:68px; }
+    }
+</style>
+<table class="DataTable BWBOpenWorkTable">
+    <thead>
+        <tr>
+            <th>[% Translate("Cliente") | html %]</th>
+            <th>[% Translate("Ticket#") | html %]</th>
+            <th>[% Translate("Título") | html %]</th>
+            <th>[% Translate("Técnico") | html %]</th>
+            <th>[% Translate("Estado") | html %]</th>
+            <th>[% Translate("Início") | html %]</th>
+            <th>[% Translate("Duração") | html %]</th>
+        </tr>
+    </thead>
+    <tbody>
+[% RenderBlockStart("BWBOpenWorkRow") %]
+        <tr class="Row">
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Customer | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.TicketNumber | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]" title="[% Data.WorkType | html %]">[% Data.Title | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Technician | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]"><span class="BWBWorkStatus [% Data.StatusClass | html %]">[% Data.Status | html %]</span></a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Start | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Duration | html %]</a></td>
+        </tr>
+[% RenderBlockEnd("BWBOpenWorkRow") %]
+[% RenderBlockStart("BWBOpenWorkNone") %]
+        <tr><td colspan="7">[% Translate("Não existem folhas de trabalho abertas ou em pausa.") | html %]</td></tr>
+[% RenderBlockEnd("BWBOpenWorkNone") %]
+    </tbody>
+</table>
