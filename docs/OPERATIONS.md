@@ -20,7 +20,7 @@ ssh bwb-otobo-prod 'hostname && /opt/otobo/bin/otobo.Daemon.pl status'
 4. Executar `scripts/deploy-production.sh --apply`.
 5. Confirmar o daemon, o Apache e o fluxo funcional afetado.
 
-O script nunca apaga ficheiros remotos e exige `--apply` de propósito. Para mudanças de base de dados, a migração deve ser revista e executada separadamente.
+O script nunca apaga ficheiros remotos e exige `--apply` de propósito. Após o `rsync`, corrige ownership para `otobo:www-data` e reconstroi a configuração como utilizador `otobo`. Para mudanças de base de dados, a migração deve ser revista e executada separadamente.
 
 ## Registos úteis
 
