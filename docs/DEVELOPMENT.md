@@ -1,6 +1,8 @@
 # Desenvolvimento e validação
 
-Leitura prévia obrigatória: [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md), [REFERENCES.md](REFERENCES.md) e [FEATURES.md](FEATURES.md).
+Leitura prévia obrigatória (automática em cada tarefa): [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md), [REFERENCES.md](REFERENCES.md) e [FEATURES.md](FEATURES.md).
+
+Documentação no fim de cada tarefa: **sempre** actualizar os `docs/` afectados antes de considerar o trabalho concluído.
 
 ## Princípios
 
@@ -9,6 +11,7 @@ Leitura prévia obrigatória: [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md), [REFERENCE
 3. Não altere permissões, notificações, filas ou regras de correio fora do objetivo pedido.
 4. Nunca introduza dados reais de clientes, tokens, palavras-passe ou chaves no Git.
 5. Baseie cada alteração no mecanismo OTOBO documentado oficialmente (11.0) **e** no comportamento BWB já existente neste repositório.
+6. Priorize excelência técnica, performance, segurança e manutenibilidade; rejeite atalhos que violem SOLID, DRY, KISS ou Clean Code.
 
 ## Antes de alterar
 
@@ -18,6 +21,7 @@ Leitura prévia obrigatória: [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md), [REFERENCE
 - Verifique o impacto em BWB e ZS Angola. Uma correção numa área não pode expor clientes ou filas da outra.
 - Para alterações de base de dados, crie uma migração reversível em `db/migrations/`.
 - Se o comportamento funcional mudar, actualize [FEATURES.md](FEATURES.md) (e Arquitetura/Inventário se aplicável) no mesmo conjunto de alterações.
+- Mesmo sem mudança grande de produto, registe no fim do trabalho o que for necessário para a próxima continuidade (decisões estruturais, restrições, contratos de e-mail/permissões).
 
 ## Validação mínima
 
