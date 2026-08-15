@@ -64,7 +64,8 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 
 ## Ao desenvolver funcionalidade nova ou alterar existente
 
-1. Actualizar este ficheiro com o comportamento acordado.
-2. Se criar tabelas, actualizar `db/current-schema.sql` e `db/migrations/`.
-3. Se mudar isolamento BWB/ZS, documentar o teste de não-exposição cruzada.
-4. Manter nomes `BWB*` e não renomear identificadores persistidos sem migração.
+1. Consultar sempre [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md) e [REFERENCES.md](REFERENCES.md) antes de implementar (sem pedido explícito).
+2. Actualizar **sempre** este ficheiro com o comportamento acordado no fim do trabalho.
+3. Se criar tabelas, actualizar `db/current-schema.sql` e `db/migrations/`.
+4. Se mudar isolamento BWB/ZS, documentar o teste de não-exposição cruzada.
+5. Manter nomes `BWB*` e não renomear identificadores persistidos sem migração.

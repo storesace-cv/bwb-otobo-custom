@@ -38,13 +38,17 @@ Depois disso, identificar no código os módulos Perl, templates TT, JavaScript 
 
 ## Checklist por tarefa
 
-1. Abrir as secções relevantes dos manuais oficiais (dev/admin/user) para o mecanismo OTOBO em causa.
+1. Abrir as secções relevantes dos manuais oficiais (dev/admin/user) para o mecanismo OTOBO em causa — **sempre, sem pedido explícito**.
 2. Ler em [FEATURES.md](FEATURES.md) e no código Custom o comportamento BWB já existente.
 3. Confirmar impacto em BWB **e** ZS Angola (clientes, filas, permissões, e-mail).
-4. Apresentar plano breve (ficheiros a tocar).
-5. Implementar só na camada personalizada, salvo razão técnica documentada.
-6. Correr `scripts/check.sh`, testar (agente BWB, agente/colaborador ZS, utilizador cliente) e documentar alterações relevantes neste `docs/` quando o comportamento mudar.
-7. Commit claro e envio para o GitHub; publicação em produção só com revisão explícita e cópia de segurança.
+4. Apresentar plano breve (ficheiros a tocar); rejeitar atalhos que gerem débito técnico.
+5. Implementar só na camada personalizada, salvo razão técnica documentada (SOLID, DRY, KISS, Clean Code).
+6. Correr `scripts/check.sh` e testar (agente BWB, agente/colaborador ZS, utilizador cliente).
+7. **Documentar sempre** no fim: actualizar [FEATURES.md](FEATURES.md) e os restantes `docs/` afectados; só omitir se a mudança for puramente cosmética sem impacto funcional/operacional.
+8. Commit claro e envio para o GitHub; publicação em produção só com revisão explícita e cópia de segurança.
+
+Postura permanente: Engenheiro Principal — ver `AGENTS.md` e regras Cursor `principal-engineer` / `bwb-otobo-continuity`.
+
 
 ## Manutenção desta base
 
