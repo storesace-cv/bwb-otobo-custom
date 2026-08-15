@@ -12,15 +12,12 @@ Core.Agent = Core.Agent || {};
  */
 Core.Agent.BWBFieldMode = (function (TargetNS) {
     var STORAGE_KEY = 'BWBFieldMode';
-    var ALLOWED_NAV = [
-        'Action=AgentBWBFieldHome',
-        'Action=AgentAppointmentCalendarOverview',
-        'Action=AgentAppointmentAgendaOverview',
-        'Action=AgentAppointmentList',
-        'Action=AgentTicketSearch',
-        'Action=AgentSearch',
-        'Action=AgentFAQExplorer',
-        'Action=AgentFAQSearch'
+
+    var FIELD_NAV = [
+        { Action: 'AgentBWBFieldHome', Label: 'Painel de Controlo', Id: 'nav-BWBField-Painel' },
+        { Action: 'AgentAppointmentCalendarOverview', Label: 'Calendário', Id: 'nav-BWBField-Calendario' },
+        { Action: 'AgentTicketSearch', Label: 'Procurar', Id: 'nav-BWBField-Procurar' },
+        { Action: 'AgentFAQExplorer', Label: 'Ajuda', Id: 'nav-BWBField-Ajuda' }
     ];
 
     function IsFieldDevice() {
@@ -65,19 +62,37 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
     }
 
     function MarkNav() {
-        var Items = document.querySelectorAll('#Navigation a[href]');
-        Items.forEach(function (Link) {
-            var Href = Link.getAttribute('href') || '';
-            var Allowed = ALLOWED_NAV.some(function (Needle) {
-                return Href.indexOf(Needle) !== -1;
-            });
-            if (Allowed) {
-                var Li = Link.closest('li');
-                if (Li) {
-                    Li.classList.add('BWBFieldNavItem');
-                }
-            }
+        var Nav = document.getElementById('Navigation');
+        if (!Nav) {
+            return;
+        }
+
+        // Hide the full OTOBO agent menu (Dashboard/Customers/Tickets/…).
+        Array.from(Nav.children).forEach(function (Item) {
+            Item.classList.add('BWBFieldNavHidden');
+            Item.classList.remove('BWBFieldNavItem');
         });
+
+        if (Nav.dataset.bwbFieldNavBuilt === '1') {
+            Array.from(Nav.querySelectorAll('li.BWBFieldNavItem')).forEach(function (Item) {
+                Item.classList.remove('BWBFieldNavHidden');
+            });
+            return;
+        }
+
+        var Base = Core.Config.Get('Baselink') || 'index.pl?';
+        FIELD_NAV.forEach(function (Entry) {
+            var Li = document.createElement('li');
+            Li.id = Entry.Id;
+            Li.className = 'BWBFieldNavItem';
+            var Link = document.createElement('a');
+            Link.href = Base + 'Action=' + Entry.Action;
+            Link.textContent = Entry.Label;
+            Link.title = Entry.Label;
+            Li.appendChild(Link);
+            Nav.appendChild(Li);
+        });
+        Nav.dataset.bwbFieldNavBuilt = '1';
     }
 
     function EnsureSwitch() {
