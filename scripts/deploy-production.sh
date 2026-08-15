@@ -14,6 +14,8 @@ BACKUP="/root/otobo-backups/custom-git-${STAMP}"
 ssh "$TARGET" "mkdir -p '$BACKUP' && cp -a /opt/otobo/Custom '$BACKUP/Custom'"
 rsync -av "$ROOT/otobo/Custom/" "$TARGET:/opt/otobo/Custom/"
 rsync -av "$ROOT/otobo/Kernel/Config/Files/" "$TARGET:/opt/otobo/Kernel/Config/Files/"
+# SysConfig XML is loaded from Kernel/Config/Files/XML (not Custom/)
+rsync -av "$ROOT/otobo/Custom/Kernel/Config/Files/XML/" "$TARGET:/opt/otobo/Kernel/Config/Files/XML/"
 rsync -av "$ROOT/otobo/var/httpd/htdocs/" "$TARGET:/opt/otobo/var/httpd/htdocs/"
 
 # rsync as root must not leave Config/Custom unreadable by the otobo user

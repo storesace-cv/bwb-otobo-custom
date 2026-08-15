@@ -17,7 +17,7 @@ ssh bwb-otobo-prod 'hostname && /opt/otobo/bin/otobo.Daemon.pl status'
 1. Confirmar que a branch e o `git status` são os pretendidos.
 2. Executar `scripts/check.sh`.
 3. Criar uma cópia de segurança no servidor antes de substituir ficheiros.
-4. Executar `scripts/deploy-production.sh --apply`.
+4. Executar `scripts/deploy-production.sh --apply` (inclui `Custom/`, `ZZZBWB*`, XML de SysConfig em `Kernel/Config/Files/XML/`, e `htdocs`).
 5. Confirmar o daemon, o Apache e o fluxo funcional afetado.
 
 O script nunca apaga ficheiros remotos e exige `--apply` de propósito. Após o `rsync`, corrige ownership para `otobo:www-data` e reconstroi a configuração como utilizador `otobo`. Para mudanças de base de dados, a migração deve ser revista e executada separadamente.

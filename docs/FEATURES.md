@@ -71,7 +71,7 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Menu reduzido (visível): Painel de Controlo, Calendário, Procurar, Ajuda.
 - Painel (`AgentBWBFieldHome`): zona operacional (Folhas → tickets do técnico → folha; Tickets → criar simples + abrir folha) e dashboard informativo (tickets abertos + folhas abertas/pausadas).
 - Visual: tokens cinzentos/pretos (`BWBFieldMode.css`); acções Cancelar/Pausa/Terminar da folha mantêm cores semânticas.
-- Código: `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `AgentBWBFieldHome.tt`, `js/Core.Agent.BWBFieldMode.js`, XML `BWBFieldMode.xml`.
+- Código: `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `AgentBWBFieldHome.tt`, `js/Core.Agent.BWBFieldMode.js`, XML `BWBFieldMode.xml` (SysConfig carrega de `Kernel/Config/Files/XML/`; o deploy copia para lá a partir de `Custom/.../XML/`).
 - Fila por defeito na criação rápida: `zsangola-in` se o responsável hierárquico for Amadeu (UserID 4); caso contrário `bwb-in`.
 
 ## Ao desenvolver funcionalidade nova ou alterar existente
