@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+  <Setting Name="Frontend::Module###AgentBWBFieldHome" Required="0" Valid="1">
+    <Description Translatable="1">Painel de controlo do modo de campo para técnicos no terreno.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+    <Value>
+      <Hash>
+        <Item Key="Description">Painel de Controlo (modo de campo)</Item>
+        <Item Key="Title">Painel de Controlo</Item>
+        <Item Key="NavBarName"></Item>
+        <Item Key="Group"><Array/></Item>
+        <Item Key="GroupRo"><Array/></Item>
+      </Hash>
+    </Value>
+  </Setting>
+  <Setting Name="Frontend::Navigation###AgentBWBFieldHome###002-Field" Required="0" Valid="1">
+    <Description Translatable="1">Entrada de menu do Painel de Controlo (Field Mode).</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+    <Value>
+      <Array>
+        <Item ValueType="FrontendNavigation">
+          <Hash>
+            <Item Key="Group"><Array/></Item>
+            <Item Key="GroupRo"><Array/></Item>
+            <Item Key="Description">Painel de Controlo</Item>
+            <Item Key="Name">Painel de Controlo</Item>
+            <Item Key="Link">Action=AgentBWBFieldHome</Item>
+            <Item Key="LinkOption"></Item>
+            <Item Key="NavBar"></Item>
+            <Item Key="Type"></Item>
+            <Item Key="Block"></Item>
+            <Item Key="AccessKey"></Item>
+            <Item Key="Prio">100</Item>
+          </Hash>
+        </Item>
+      </Array>
+    </Value>
+  </Setting>
+  <Setting Name="Loader::Agent::CommonJS###961-BWBFieldMode" Required="0" Valid="1">
+    <Description Translatable="1">JavaScript do modo de campo BWB.</Description>
+    <Navigation>Frontend::Base::Loader</Navigation>
+    <Value>
+      <Array>
+        <Item>Core.Agent.BWBFieldMode.js</Item>
+      </Array>
+    </Value>
+  </Setting>
+  <Setting Name="Loader::Agent::CommonCSS###961-BWBFieldMode" Required="0" Valid="1">
+    <Description Translatable="1">CSS do modo de campo BWB.</Description>
+    <Navigation>Frontend::Base::Loader</Navigation>
+    <Value>
+      <Array>
+        <Item>BWBFieldMode.css</Item>
+      </Array>
+    </Value>
+  </Setting>
+</otobo_config>
