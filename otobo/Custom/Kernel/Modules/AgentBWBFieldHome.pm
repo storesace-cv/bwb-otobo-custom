@@ -59,6 +59,7 @@ sub Run {
     }
     elsif ( $Subaction eq 'NewTicket' ) {
         $Data{View}          = 'create';
+        $Data{Customers}     = $Self->_CustomersForAgent();
         $Data{CustomerUsers} = $Self->_CustomerUsersForAgent();
         $Data{Error}         = $Request->GetParam( Param => 'Error' ) || '';
     }
@@ -153,6 +154,43 @@ sub _OpenWorkSessions {
     return \@Rows;
 }
 
+sub _CustomersForAgent {
+    my ($Self) = @_;
+    my $Access  = $Kernel::OM->Get('Kernel::System::BWBAccess');
+    my $Company = $Kernel::OM->Get('Kernel::System::CustomerCompany');
+
+    my %Seen;
+    my @Customers;
+    my $CustomerIDs = $Access->CustomerIDsGet( UserID => $Self->{UserID} ) || [];
+    for my $CustomerID ( @{$CustomerIDs} ) {
+        next if !$CustomerID || $Seen{$CustomerID}++;
+        next if !$Access->CustomerAccessCheck( UserID => $Self->{UserID}, CustomerID => $CustomerID );
+        my %Data = $Company->CustomerCompanyGet( CustomerID => $CustomerID );
+        my $Name = $Data{CustomerCompanyName} || $CustomerID;
+        push @Customers, {
+            CustomerID => $CustomerID,
+            Name       => $Name,
+            Label      => "$CustomerID | $Name",
+        };
+    }
+
+    # Companies reachable only via store assignment (from known users).
+    for my $User ( @{ $Self->_CustomerUsersForAgent() } ) {
+        my $CustomerID = $User->{CustomerID} || next;
+        next if $Seen{$CustomerID}++;
+        my %Data = $Company->CustomerCompanyGet( CustomerID => $CustomerID );
+        my $Name = $Data{CustomerCompanyName} || $CustomerID;
+        push @Customers, {
+            CustomerID => $CustomerID,
+            Name       => $Name,
+            Label      => "$CustomerID | $Name",
+        };
+    }
+
+    @Customers = sort { lc( $a->{Label} ) cmp lc( $b->{Label} ) } @Customers;
+    return \@Customers;
+}
+
 sub _CustomerUsersForAgent {
     my ($Self) = @_;
     my $Access = $Kernel::OM->Get('Kernel::System::BWBAccess');
@@ -181,7 +219,7 @@ sub _CustomerUsersForAgent {
                     Name       => $Name,
                     Email      => $Email || '',
                     CustomerID => $CustomerID,
-                    Label      => "$CustomerID | $Name <$Login>",
+                    Label      => "$Name <$Login>",
                 };
             }
         }
@@ -214,7 +252,7 @@ sub _CustomerUsersForAgent {
                 Name       => $Name,
                 Email      => $Email || '',
                 CustomerID => $CustomerID,
-                Label      => "$CustomerID | $Name <$Login>",
+                Label      => "$Name <$Login>",
             };
         }
     }
@@ -230,6 +268,7 @@ sub _StoreTicket {
     my $Access    = $Param{Access};
     my $Ticket    = $Param{Ticket};
 
+    my $CustomerID   = $Request->GetParam( Param => 'CustomerID' )   || '';
     my $CustomerUser = $Request->GetParam( Param => 'CustomerUser' ) || '';
     my $Title        = $Request->GetParam( Param => 'Title' )        || '';
     my $Body         = $Request->GetParam( Param => 'Body' )         || '';
@@ -243,10 +282,20 @@ sub _StoreTicket {
         );
     };
 
+    return $Fail->('Indique o cliente.')               if !$CustomerID;
     return $Fail->('Indique o utilizador de cliente.') if !$CustomerUser;
     return $Fail->('Indique o título.')                if !$Title;
     return $Fail->('Descreva o problema.')             if !$Body;
     return $Fail->('Sem permissão para este cliente.')
+        if !$Access->CustomerAccessCheck(
+            UserID     => $Self->{UserID},
+            CustomerID => $CustomerID,
+        )
+        && !$Access->CustomerUserAccessCheck(
+            UserID            => $Self->{UserID},
+            CustomerUserLogin => $CustomerUser,
+        );
+    return $Fail->('Sem permissão para este utilizador de cliente.')
         if !$Access->CustomerUserAccessCheck(
             UserID            => $Self->{UserID},
             CustomerUserLogin => $CustomerUser,
@@ -256,6 +305,9 @@ sub _StoreTicket {
         User => $CustomerUser,
     );
     return $Fail->('Utilizador de cliente inválido.') if !%Customer;
+    my $UserCustomerID = $Customer{UserCustomerID} || $Customer{CustomerID} || '';
+    return $Fail->('O utilizador não pertence ao cliente escolhido.')
+        if $UserCustomerID ne $CustomerID;
 
     my $QueueName = $FieldMode->DefaultQueueName( UserID => $Self->{UserID} );
     my $QueueID   = $Kernel::OM->Get('Kernel::System::Queue')->QueueLookup( Queue => $QueueName );
@@ -267,7 +319,7 @@ sub _StoreTicket {
         Lock         => 'lock',
         Priority     => '3 normal',
         State        => 'open',
-        CustomerID   => $Customer{UserCustomerID} || $Customer{CustomerID} || '',
+        CustomerID   => $CustomerID,
         CustomerUser => $CustomerUser,
         OwnerID      => $Self->{UserID},
         UserID       => $Self->{UserID},

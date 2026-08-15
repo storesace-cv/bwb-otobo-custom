@@ -156,21 +156,174 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
             .catch(function () { Callback({}); });
     }
 
+    function EnhanceTactileSelect(Select) {
+        if (!Select || Select.dataset.bwbTouchReady === '1') {
+            return;
+        }
+        Select.dataset.bwbTouchReady = '1';
+
+        var Label = document.querySelector('label[for="' + Select.id + '"]');
+        var Title = Label ? Label.textContent.trim() : 'Selecionar';
+        var Trigger = document.createElement('button');
+        Trigger.type = 'button';
+        Trigger.className = 'BWBTactileSelect';
+        Trigger.setAttribute('aria-haspopup', 'listbox');
+
+        function VisibleOptions() {
+            return Array.from(Select.options).filter(function (Option) {
+                return Option.value && !Option.disabled && !Option.hidden;
+            });
+        }
+
+        function Refresh() {
+            var Option = Select.options[Select.selectedIndex];
+            var HasValue = Option && Option.value && !Option.disabled && !Option.hidden;
+            Trigger.textContent = HasValue ? Option.textContent : (Select.disabled ? '— Selecionar cliente primeiro —' : '— Selecionar —');
+            Trigger.classList.toggle('Placeholder', !HasValue);
+            Trigger.disabled = !!Select.disabled;
+        }
+
+        Refresh();
+        Select.classList.add('BWBNativeSelectHidden');
+        Select.insertAdjacentElement('afterend', Trigger);
+        Select.addEventListener('change', Refresh);
+
+        Trigger.addEventListener('click', function () {
+            if (Select.disabled) {
+                return;
+            }
+            var Options = VisibleOptions();
+            if (!Options.length) {
+                return;
+            }
+            var Overlay = document.createElement('div');
+            Overlay.className = 'BWBTactileOverlay';
+            Overlay.setAttribute('role', 'dialog');
+            Overlay.setAttribute('aria-modal', 'true');
+            Overlay.setAttribute('aria-label', Title);
+
+            var Panel = document.createElement('div');
+            Panel.className = 'BWBTactilePanel';
+
+            var Head = document.createElement('div');
+            Head.className = 'BWBTactilePanelHeader';
+            var Heading = document.createElement('strong');
+            Heading.textContent = Title;
+            var Close = document.createElement('button');
+            Close.type = 'button';
+            Close.className = 'BWBTactileClose';
+            Close.setAttribute('aria-label', 'Fechar');
+            Close.textContent = '×';
+            Head.append(Heading, Close);
+
+            var List = document.createElement('div');
+            List.className = 'BWBTactileOptions';
+            Options.forEach(function (Option) {
+                var Button = document.createElement('button');
+                Button.type = 'button';
+                Button.className = 'BWBTactileOption' + (Option.selected ? ' Selected' : '');
+                Button.textContent = Option.textContent;
+                Button.addEventListener('click', function () {
+                    Select.value = Option.value;
+                    Select.dispatchEvent(new Event('change', { bubbles: true }));
+                    Refresh();
+                    Overlay.remove();
+                    Trigger.focus();
+                });
+                List.appendChild(Button);
+            });
+
+            Panel.append(Head, List);
+            Overlay.appendChild(Panel);
+            document.body.appendChild(Overlay);
+            Close.addEventListener('click', function () {
+                Overlay.remove();
+                Trigger.focus();
+            });
+            Overlay.addEventListener('click', function (Event) {
+                if (Event.target === Overlay) {
+                    Overlay.remove();
+                    Trigger.focus();
+                }
+            });
+            setTimeout(function () {
+                var Focus = List.querySelector('.Selected') || List.querySelector('button');
+                if (Focus) {
+                    Focus.focus();
+                }
+            }, 0);
+        });
+
+        Select._BWBRefreshTactile = Refresh;
+    }
+
+    function WireCustomerCascade() {
+        var Customer = document.getElementById('CustomerID');
+        var User = document.getElementById('CustomerUser');
+        if (!Customer || !User) {
+            return;
+        }
+
+        function FilterUsers() {
+            var CustomerID = Customer.value || '';
+            var Placeholder = User.querySelector('option[value=""]');
+            Array.from(User.options).forEach(function (Option) {
+                if (!Option.value) {
+                    return;
+                }
+                var Match = CustomerID && Option.getAttribute('data-customer-id') === CustomerID;
+                Option.hidden = !Match;
+                Option.disabled = !Match;
+                if (!Match && Option.selected) {
+                    Option.selected = false;
+                }
+            });
+            User.disabled = !CustomerID;
+            User.value = '';
+            if (Placeholder) {
+                Placeholder.textContent = CustomerID ? '— Selecionar —' : '— Selecionar cliente primeiro —';
+                Placeholder.selected = true;
+            }
+            if (typeof User._BWBRefreshTactile === 'function') {
+                User._BWBRefreshTactile();
+            }
+        }
+
+        Customer.addEventListener('change', FilterUsers);
+        FilterUsers();
+    }
+
+    function EnhanceFieldForms() {
+        var Form = document.getElementById('BWBFieldTicketForm');
+        if (!Form) {
+            return;
+        }
+        // Always use finger-sized bottom sheet on this form (field creation path).
+        Form.querySelectorAll('select').forEach(EnhanceTactileSelect);
+        WireCustomerCascade();
+    }
+
     TargetNS.Init = function () {
         if (document.body.classList.contains('LoginScreen')) {
             return;
         }
 
+        var Finish = function () {
+            EnhanceFieldForms();
+        };
+
         var Local = GetLocalMode();
         if (Local === 1) {
             ApplyShell(1);
             MaybeRedirectHome();
+            Finish();
             return;
         }
         if (Local === 0) {
             ApplyShell(0);
             EnsureSwitch();
             UpdateSwitchLabel();
+            Finish();
             return;
         }
 
@@ -178,6 +331,7 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         if (!IsFieldDevice()) {
             EnsureSwitch();
             UpdateSwitchLabel();
+            Finish();
             return;
         }
 
@@ -186,6 +340,7 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
                 SetLocalMode(1);
                 ApplyShell(1);
                 MaybeRedirectHome();
+                Finish();
                 return;
             }
             if (Data.Preference === '0' || Data.Preference === 0) {
@@ -193,6 +348,7 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
                 ApplyShell(0);
                 EnsureSwitch();
                 UpdateSwitchLabel();
+                Finish();
                 return;
             }
             if (Data.Collaborator) {
@@ -200,10 +356,12 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
                 PersistServer('field');
                 ApplyShell(1);
                 MaybeRedirectHome();
+                Finish();
                 return;
             }
             EnsureSwitch();
             UpdateSwitchLabel();
+            Finish();
         });
     };
 
