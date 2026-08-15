@@ -1,5 +1,7 @@
 # Arquitetura funcional
 
+Continuidade e manuais oficiais: [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md) · [REFERENCES.md](REFERENCES.md) · [FEATURES.md](FEATURES.md)
+
 ## Produção
 
 - Servidor: `178.159.34.132`
