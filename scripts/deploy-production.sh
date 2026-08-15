@@ -18,10 +18,15 @@ rsync -av "$ROOT/otobo/Kernel/Config/Files/" "$TARGET:/opt/otobo/Kernel/Config/F
 rsync -av "$ROOT/otobo/Custom/Kernel/Config/Files/XML/" "$TARGET:/opt/otobo/Kernel/Config/Files/XML/"
 rsync -av "$ROOT/otobo/var/httpd/htdocs/" "$TARGET:/opt/otobo/var/httpd/htdocs/"
 
-# rsync as root must not leave Config/Custom unreadable by the otobo user
+# rsync as root must not leave files unreadable by www-data; rebuild rewrites ZZZAAuto
 ssh "$TARGET" "set -e
 chown -R otobo:www-data /opt/otobo/Custom /opt/otobo/Kernel/Config/Files /opt/otobo/var/httpd/htdocs
+find /opt/otobo/Kernel/Config/Files -type d -exec chmod 2750 {} \;
+find /opt/otobo/Kernel/Config/Files -type f -exec chmod 640 {} \;
 su -c '/opt/otobo/bin/otobo.Console.pl Maint::Config::Rebuild' -s /bin/bash otobo
+# Rebuild recreates ZZZAAuto as otobo:otobo — fix again for Apache
+chown otobo:www-data /opt/otobo/Kernel/Config/Files/ZZZAAuto.pm
+chmod 640 /opt/otobo/Kernel/Config/Files/ZZZAAuto.pm
 su -c '/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete' -s /bin/bash otobo
 su -c '/opt/otobo/bin/otobo.Daemon.pl status' -s /bin/bash otobo
 "

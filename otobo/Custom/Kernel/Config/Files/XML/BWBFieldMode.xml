@@ -6,7 +6,7 @@
         <Value>
             <Item ValueType="FrontendRegistration"><Hash>
                 <Item Key="GroupRo"><Array></Array></Item>
-                <Item Key="Group"><Array></Array></Item>
+                <Item Key="Group"><Array><Item>users</Item></Array></Item>
                 <Item Key="Description" Translatable="1">Painel de Controlo (modo de campo)</Item>
                 <Item Key="Title" Translatable="1">Painel de Controlo</Item>
                 <Item Key="NavBarName"></Item>
@@ -17,7 +17,7 @@
         <Description Translatable="1">Opção Painel de Controlo no menu Agent.</Description>
         <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
         <Value><Array><DefaultItem ValueType="FrontendNavigation"><Hash></Hash></DefaultItem><Item><Hash>
-            <Item Key="Group"><Array></Array></Item>
+            <Item Key="Group"><Array><Item>users</Item></Array></Item>
             <Item Key="GroupRo"><Array></Array></Item>
             <Item Key="Description" Translatable="1">Painel de Controlo do modo de campo</Item>
             <Item Key="Name" Translatable="1">Painel de Controlo</Item>
