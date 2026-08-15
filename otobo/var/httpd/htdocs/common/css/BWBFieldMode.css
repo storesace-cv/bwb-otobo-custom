@@ -221,6 +221,110 @@ body.BWBFieldMode .BWBFieldHome {
   cursor: pointer;
 }
 
+/* Finger-first select (bottom sheet) — same rules as folha mobile */
+.BWBTactileSelect {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 44px 10px 14px;
+  border: 1px solid var(--bwb-field-border);
+  border-radius: 10px;
+  background: var(--bwb-field-surface);
+  box-sizing: border-box;
+  color: var(--bwb-field-text);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  position: relative;
+}
+.BWBTactileSelect:after {
+  content: '⌄';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-55%);
+  font-size: 24px;
+}
+.BWBTactileSelect.Placeholder { color: var(--bwb-field-text-muted); font-weight: 500; }
+.BWBTactileSelect:disabled {
+  opacity: 0.55;
+  background: var(--bwb-field-surface-2);
+}
+.BWBTactileOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: var(--bwb-field-overlay);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+.BWBTactilePanel {
+  width: min(620px, 100%);
+  max-height: 82vh;
+  overflow: auto;
+  background: var(--bwb-field-surface);
+  border-radius: 18px 18px 12px 12px;
+  padding: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
+}
+.BWBTactilePanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.BWBTactilePanelHeader strong { font-size: 20px; color: var(--bwb-field-text); }
+.BWBTactileClose {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bwb-field-surface-2);
+  font-size: 25px;
+  color: var(--bwb-field-text);
+}
+.BWBTactileOptions { display: grid; grid-template-columns: 1fr; gap: 9px; }
+.BWBTactileOption {
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 16px;
+  border: 1px solid var(--bwb-field-border);
+  border-radius: 12px;
+  background: var(--bwb-field-surface);
+  color: var(--bwb-field-text);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+}
+.BWBTactileOption.Selected {
+  border: 2px solid var(--bwb-field-accent);
+  background: var(--bwb-field-surface-2);
+}
+.BWBTactileOption.Selected:after {
+  content: '✓';
+  float: right;
+  color: #087f3f;
+  font-size: 21px;
+}
+.BWBNativeSelectHidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
 .BWBRunning { color: #3d3d3d; }
 .BWBPaused { color: #8a5a00; }
 

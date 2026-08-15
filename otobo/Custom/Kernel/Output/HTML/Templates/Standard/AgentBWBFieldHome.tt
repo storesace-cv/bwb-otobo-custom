@@ -29,15 +29,25 @@
     <p class="BWBFieldMuted">Crie o ticket e abra de seguida a folha de trabalho.</p>
   </header>
   [% IF Data.Error %]<div class="BWBFieldError" role="alert">[% Data.Error | html %]</div>[% END %]
+  [% IF !Data.Customers.size %]
+  <p class="BWBFieldEmpty">Não tem clientes atribuídos. Peça ao responsável para lhe associar clientes ou lojas.</p>
+  [% ELSE %]
   <form class="BWBFieldForm" method="post" action="[% Env("CGIHandle") %]" id="BWBFieldTicketForm">
     <input type="hidden" name="Action" value="AgentBWBFieldHome">
     <input type="hidden" name="Subaction" value="StoreTicket">
     <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]">
-    <label for="CustomerUser">Utilizador de cliente</label>
-    <select name="CustomerUser" id="CustomerUser" required>
+    <label for="CustomerID">Cliente</label>
+    <select name="CustomerID" id="CustomerID" required>
       <option value="">— Selecionar —</option>
+      [% FOREACH C IN Data.Customers %]
+      <option value="[% C.CustomerID | html %]">[% C.Label | html %]</option>
+      [% END %]
+    </select>
+    <label for="CustomerUser">Utilizador de cliente</label>
+    <select name="CustomerUser" id="CustomerUser" required disabled>
+      <option value="">— Selecionar cliente primeiro —</option>
       [% FOREACH U IN Data.CustomerUsers %]
-      <option value="[% U.Login | html %]">[% U.Label | html %]</option>
+      <option value="[% U.Login | html %]" data-customer-id="[% U.CustomerID | html %]" hidden disabled>[% U.Label | html %]</option>
       [% END %]
     </select>
     <label for="Title">Título</label>
@@ -48,6 +58,7 @@
       <button type="submit" class="BWBFieldPrimary">Gravar e abrir folha</button>
     </div>
   </form>
+  [% END %]
 
 [% ELSE %]
   <header class="BWBFieldSectionHead">
@@ -110,24 +121,4 @@
   </section>
 [% END %]
 </div>
-<script>
-(function(){
-  var Touch=window.matchMedia('(hover: none) and (pointer: coarse)').matches||window.matchMedia('(max-width: 1024px)').matches;
-  if(!Touch)return;
-  document.querySelectorAll('.BWBFieldForm select').forEach(function(S){
-    if(S.dataset.bwbTouchReady)return;S.dataset.bwbTouchReady='1';
-    var L=document.querySelector('label[for="'+S.id+'"]'),Title=L?L.textContent.trim():'Selecionar';
-    var Trigger=document.createElement('button');Trigger.type='button';Trigger.className='BWBTactileSelect';
-    function refresh(){var O=S.options[S.selectedIndex];Trigger.textContent=O&&O.value?O.textContent:'— Selecionar —';Trigger.classList.toggle('Placeholder',!O||!O.value);}
-    refresh();S.classList.add('BWBNativeSelectHidden');S.insertAdjacentElement('afterend',Trigger);
-    Trigger.addEventListener('click',function(){
-      var Overlay=document.createElement('div');Overlay.className='BWBTactileOverlay';Overlay.setAttribute('role','dialog');Overlay.setAttribute('aria-modal','true');Overlay.setAttribute('aria-label',Title);
-      var Panel=document.createElement('div');Panel.className='BWBTactilePanel';
-      var Head=document.createElement('div');Head.className='BWBTactilePanelHeader';var H=document.createElement('strong');H.textContent=Title;var Close=document.createElement('button');Close.type='button';Close.className='BWBTactileClose';Close.setAttribute('aria-label','Fechar');Close.textContent='×';Head.append(H,Close);
-      var Options=document.createElement('div');Options.className='BWBTactileOptions';
-      Array.from(S.options).forEach(function(O){if(!O.value)return;var B=document.createElement('button');B.type='button';B.className='BWBTactileOption'+(O.selected?' Selected':'');B.textContent=O.textContent;B.onclick=function(){S.value=O.value;S.dispatchEvent(new Event('change',{bubbles:true}));refresh();Overlay.remove();Trigger.focus();};Options.appendChild(B);});
-      Panel.append(Head,Options);Overlay.appendChild(Panel);document.body.appendChild(Overlay);Close.onclick=function(){Overlay.remove();Trigger.focus();};Overlay.onclick=function(E){if(E.target===Overlay){Overlay.remove();Trigger.focus();}};
-    });
-  });
-})();
-</script>
+[%# Tactile selects + customer cascade are handled by Core.Agent.BWBFieldMode.js %]
