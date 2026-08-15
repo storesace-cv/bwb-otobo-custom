@@ -1,0 +1,15 @@
+---
+description: Continuidade BWB OTOBO — base de conhecimento oficial + GitHub obrigatória
+alwaysApply: true
+---
+
+# Continuidade bwb-otobo-custom
+
+Antes de planear ou alterar código neste repositório:
+
+1. Ler `docs/KNOWLEDGE-BASE.md`.
+2. Usar as URLs oficiais OTOBO 11.0 em `docs/REFERENCES.md` (admin, user, developer, installation) para o mecanismo em causa — acesso directo, não inventar APIs.
+3. Consultar `docs/FEATURES.md`, `docs/ARCHITECTURE.md` e o código em `otobo/Custom/` para o comportamento BWB já existente.
+4. Seguir `docs/DEVELOPMENT.md`, `docs/OPERATIONS.md` e `docs/SECURITY.md`.
+
+Regras críticas: só camada personalizada; isolamento BWB/ZS; PT-PT UTF-8; sem segredos no Git; sem deploy arriscado a produção sem revisão explícita; actualizar `docs/FEATURES.md` quando o comportamento mudar.

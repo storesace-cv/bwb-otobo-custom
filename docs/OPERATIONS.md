@@ -1,5 +1,7 @@
 # Operação e publicação
 
+Manuais oficiais de instalação/administração: [REFERENCES.md](REFERENCES.md). Base de continuidade: [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md).
+
 ## Acesso SSH local
 
 No computador autorizado do administrador, criar `~/.ssh/config` a partir de [`config/ssh-config.example`](../config/ssh-config.example). A chave privada já existe localmente e não deve ser copiada.
