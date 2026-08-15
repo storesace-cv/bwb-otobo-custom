@@ -68,7 +68,7 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Activação por defeito: colaborador (`ResponsibleUserIDGet != UserID`) + dispositivo de campo (`pointer: coarse` ou viewport ≤1024px).
 - Persistência: `localStorage.BWBFieldMode` + preferência `UserBWBFieldMode`.
 - No Field **não há** switch Desktop; só **Field ↔ Mobile standard**.
-- Menu reduzido (visível): Painel de Controlo, Calendário, Procurar, Ajuda.
+- Menu reduzido (visível): Painel de Controlo, Calendário, Procurar, Ajuda — etiquetas fixas em português de Portugal; o menu Agent completo fica oculto.
 - Painel (`AgentBWBFieldHome`): zona operacional (Folhas → tickets do técnico → folha; Tickets → Cliente → Utilizador → título/problema → abrir folha) e dashboard informativo (tickets abertos + folhas abertas/pausadas).
 - Criação de ticket no Field: selects tácteis (bottom-sheet ≥52px); utilizadores filtrados pelo cliente escolhido.
 - Visual: tema claro estilo Cursor (cinzentos claros / branco, texto escuro) em `BWBFieldMode.css`; acções Cancelar/Pausa/Terminar da folha mantêm cores semânticas.
