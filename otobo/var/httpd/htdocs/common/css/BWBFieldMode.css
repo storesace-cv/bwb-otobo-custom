@@ -1,12 +1,14 @@
 :root {
-  --bwb-field-bg: #0a0a0a;
-  --bwb-field-surface: #1a1a1a;
-  --bwb-field-surface-2: #2a2a2a;
-  --bwb-field-border: #3f3f3f;
-  --bwb-field-text: #f5f5f5;
-  --bwb-field-text-muted: #a3a3a3;
-  --bwb-field-accent: #e5e5e5;
-  --bwb-field-overlay: rgba(0, 0, 0, 0.72);
+  /* Cursor-like light greys (not dark mode) */
+  --bwb-field-bg: #f3f3f3;
+  --bwb-field-surface: #ffffff;
+  --bwb-field-surface-2: #ececec;
+  --bwb-field-border: #d6d6d6;
+  --bwb-field-text: #1a1a1a;
+  --bwb-field-text-muted: #6b6b6b;
+  --bwb-field-accent: #1a1a1a;
+  --bwb-field-accent-contrast: #ffffff;
+  --bwb-field-overlay: rgba(0, 0, 0, 0.42);
 }
 
 body.BWBFieldMode {
@@ -27,10 +29,23 @@ body.BWBFieldMode #Footer.BWBFooter {
   text-shadow: none !important;
 }
 
+body.BWBFieldMode #Header {
+  border-bottom: 1px solid var(--bwb-field-border);
+  background: var(--bwb-field-surface) !important;
+}
+
 body.BWBFieldMode #Header a,
 body.BWBFieldMode #Navigation a,
-body.BWBFieldMode #Footer.BWBFooter a {
+body.BWBFieldMode #Footer.BWBFooter a,
+body.BWBFieldMode #Header .UserName,
+body.BWBFieldMode #ToolBar a,
+body.BWBFieldMode #ToolBar span {
   color: var(--bwb-field-text) !important;
+}
+
+body.BWBFieldMode #Navigation {
+  background: var(--bwb-field-surface) !important;
+  border-bottom: 1px solid var(--bwb-field-border);
 }
 
 body.BWBFieldMode #ViewModeSwitch {
@@ -54,10 +69,11 @@ body.BWBFieldMode #BWBFieldModeSwitch {
   padding: 10px 16px;
   border: 1px solid var(--bwb-field-border);
   border-radius: 10px;
-  background: var(--bwb-field-surface-2);
+  background: var(--bwb-field-surface);
   color: var(--bwb-field-text);
   font-size: 16px;
   text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 body.BWBFieldMode .BWBFieldHome {
@@ -74,18 +90,29 @@ body.BWBFieldMode .BWBFieldHome {
 }
 
 .BWBFieldSectionHead h1 { font-size: 24px; }
-.BWBFieldZone h2 { font-size: 18px; margin-top: 28px; border-bottom: 1px solid var(--bwb-field-border); padding-bottom: 8px; }
-.BWBFieldZone h3 { font-size: 16px; margin-top: 20px; color: var(--bwb-field-text-muted); font-weight: 600; }
+.BWBFieldZone h2 {
+  font-size: 18px;
+  margin-top: 28px;
+  border-bottom: 1px solid var(--bwb-field-border);
+  padding-bottom: 8px;
+}
+.BWBFieldZone h3 {
+  font-size: 16px;
+  margin-top: 20px;
+  color: var(--bwb-field-text-muted);
+  font-weight: 600;
+}
 
 .BWBFieldMuted { color: var(--bwb-field-text-muted); font-size: 16px; line-height: 1.45; }
 .BWBFieldBack {
   display: inline-flex;
   align-items: center;
   min-height: 48px;
-  color: var(--bwb-field-accent) !important;
+  color: var(--bwb-field-text) !important;
   text-decoration: none;
   font-size: 16px;
   margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .BWBFieldOps {
@@ -104,6 +131,7 @@ body.BWBFieldMode .BWBFieldHome {
   background: var(--bwb-field-surface);
   color: var(--bwb-field-text) !important;
   text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .BWBFieldOpCard strong {
@@ -138,6 +166,7 @@ body.BWBFieldMode .BWBFieldHome {
   color: var(--bwb-field-text) !important;
   text-decoration: none;
   font-size: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .BWBFieldEmpty {
@@ -147,8 +176,9 @@ body.BWBFieldMode .BWBFieldHome {
 }
 
 .BWBFieldError {
-  background: #3a1515;
-  color: #ffc9c9;
+  background: #fde8e6;
+  color: #7b1710;
+  border: 1px solid #f0b8b0;
   border-radius: 10px;
   padding: 14px 16px;
   margin-bottom: 16px;
@@ -172,7 +202,7 @@ body.BWBFieldMode .BWBFieldHome {
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid var(--bwb-field-border);
-  background: var(--bwb-field-surface-2);
+  background: var(--bwb-field-surface);
   color: var(--bwb-field-text);
 }
 
@@ -187,14 +217,14 @@ body.BWBFieldMode .BWBFieldHome {
   border: 0;
   border-radius: 10px;
   background: var(--bwb-field-accent);
-  color: #111;
+  color: var(--bwb-field-accent-contrast);
   cursor: pointer;
 }
 
-.BWBRunning { color: #d4d4d4; }
-.BWBPaused { color: #f0c674; }
+.BWBRunning { color: #3d3d3d; }
+.BWBPaused { color: #8a5a00; }
 
-/* Work sheet remapped under Field Mode */
+/* Work sheet remapped under Field Mode — keep light surfaces */
 body.BWBFieldMode .BWBWorkSheet .SheetHeader,
 body.BWBFieldMode .BWBWorkSheet .WorkCard,
 body.BWBFieldMode .BWBWorkSheet .ProtectedText,
@@ -203,7 +233,11 @@ body.BWBFieldMode .BWBEditor,
 body.BWBFieldMode .BWBEditorToolbar {
   background: var(--bwb-field-surface) !important;
   color: var(--bwb-field-text) !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.BWBFieldMode .BWBWorkSheet .SheetHeader {
+  background: var(--bwb-field-surface-2) !important;
 }
 
 body.BWBFieldMode .BWBWorkSheet,
@@ -228,21 +262,30 @@ body.BWBFieldMode .BWBEditorToolbar button,
 body.BWBFieldMode .BWBTactileSelect,
 body.BWBFieldMode .BWBTactileOption,
 body.BWBFieldMode .BWBTactilePanel {
-  background: var(--bwb-field-surface-2) !important;
+  background: var(--bwb-field-surface) !important;
   color: var(--bwb-field-text) !important;
   border-color: var(--bwb-field-border) !important;
+}
+
+body.BWBFieldMode .BWBTactilePanel {
+  background: var(--bwb-field-surface-2) !important;
 }
 
 body.BWBFieldMode .BWBTactileOverlay { background: var(--bwb-field-overlay) !important; }
 body.BWBFieldMode .BWBTactileOption.Selected,
 body.BWBFieldMode .BWBWorkSheet .VisibilityChoice label:has(input:checked) {
   border-color: var(--bwb-field-accent) !important;
-  background: #303030 !important;
+  background: var(--bwb-field-surface-2) !important;
 }
 
 body.BWBFieldMode .BWBWorkSheet .VisibilityChoice label {
-  background: var(--bwb-field-surface-2) !important;
+  background: var(--bwb-field-surface) !important;
   border-color: var(--bwb-field-border) !important;
+  color: var(--bwb-field-text) !important;
+}
+
+body.BWBFieldMode .BWBTactileClose {
+  background: var(--bwb-field-surface-2) !important;
   color: var(--bwb-field-text) !important;
 }
 
