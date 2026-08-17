@@ -1,0 +1,70 @@
+/* BWB Customer Ticket Zoom — Responder contextual + Fechar ocorrência */
+
+#oooContent.BWBTicketZoom.BWBReplyContextual .BWBHeaderReplySlot {
+    display: none;
+}
+
+#oooContent.BWBTicketZoom .BWBWorkSheetToolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+#oooContent.BWBTicketZoom .BWBArticleActions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 16px 16px;
+}
+
+/* Mesmo formato para Fechar e Responder — só a cor muda. */
+#oooContent.BWBTicketZoom .BWBCloseOccurrence,
+#oooContent.BWBTicketZoom .BWBReplyHere {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    width: max-content;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#oooContent.BWBTicketZoom .BWBCloseOccurrence {
+    background: #16a34a;
+}
+
+#oooContent.BWBTicketZoom .BWBCloseOccurrence:hover,
+#oooContent.BWBTicketZoom .BWBCloseOccurrence:focus {
+    background: #15803d;
+}
+
+#oooContent.BWBTicketZoom .BWBReplyHere {
+    background: #2563eb;
+}
+
+#oooContent.BWBTicketZoom .BWBReplyHere:hover,
+#oooContent.BWBTicketZoom .BWBReplyHere:focus {
+    background: #1d4ed8;
+}
+
+@media only screen and (max-width: 767px) {
+    #oooContent.BWBTicketZoom .BWBCloseOccurrence,
+    #oooContent.BWBTicketZoom .BWBReplyHere {
+        width: 100%;
+        max-width: 100%;
+    }
+}

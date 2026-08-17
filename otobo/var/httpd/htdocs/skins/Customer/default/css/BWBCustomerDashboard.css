@@ -1,0 +1,9 @@
+/* BWB: lista «Tickets recentes» no portal cliente.
+   O skin Default fixa altura em .oooTile_TicketList > div com overflow:hidden,
+   o que corta tickets sem permitir deslocamento. Corrigir só o overflow. */
+
+.oooTile_TicketList > div {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}

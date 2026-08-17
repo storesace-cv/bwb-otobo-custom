@@ -1,0 +1,87 @@
+<div id="BWBAddCustomerEmailDialog" class="BWBAddCustomerEmailDialog">
+    <p class="BWBAddCustomerEmailLead">Associe este endereço ao utilizador de cliente a que pertence.</p>
+    <div class="BWBAddCustomerEmailAddress" title="[% Data.SenderEmail | html %]">[% Data.SenderEmail | html %]</div>
+
+    <form id="BWBAddCustomerEmailForm" action="[% Env("Baselink") | html %]" method="post">
+        <input type="hidden" name="Action" value="AgentBWBAddCustomerEmail" />
+        <input type="hidden" name="Subaction" value="Add" />
+        <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]" />
+        <input type="hidden" name="ChallengeToken" value="[% Data.ChallengeToken | html %]" />
+
+        <div class="SpacingTop">
+            <label for="BWBAddCustomerEmailCustomerID"><strong>Cliente</strong></label>
+            <div class="Field">
+                <select id="BWBAddCustomerEmailCustomerID" name="CustomerID" class="Modernize Validate_Required" required>
+                    <option value="">— Selecionar —</option>
+[% FOREACH Customer IN Data.Customers %]
+                    <option value="[% Customer.ID | html %]">[% Customer.Label | html %]</option>
+[% END %]
+                </select>
+            </div>
+        </div>
+
+        <div class="SpacingTop">
+            <label for="BWBAddCustomerEmailUserLogin"><strong>Utilizador de cliente</strong></label>
+            <div class="Field">
+                <select id="BWBAddCustomerEmailUserLogin" name="CustomerUserLogin" class="Modernize Validate_Required" required disabled>
+                    <option value="">— Selecionar o cliente primeiro —</option>
+                </select>
+            </div>
+        </div>
+
+        <p class="BWBAddCustomerEmailNote">
+            Este endereço será usado apenas para reconhecer mensagens recebidas.
+            Os e-mails enviados pelo sistema continuarão a seguir para o endereço principal do utilizador seleccionado.
+        </p>
+        <div class="BWBAddCustomerEmailError Hidden" role="alert" aria-live="polite"></div>
+    </form>
+</div>
+
+<style type="text/css">
+.Dialog .BWBAddCustomerEmailDialog {
+    box-sizing: border-box;
+    max-width: 520px;
+    padding: 4px 2px 8px;
+    color: #172033;
+    font-size: 14px;
+    line-height: 1.45;
+}
+.Dialog .BWBAddCustomerEmailLead {
+    margin: 0 0 12px;
+    color: #4f5b6b;
+}
+.Dialog .BWBAddCustomerEmailAddress {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border: 1px solid #d9dee5;
+    border-radius: 6px;
+    background: #f3f5f7;
+    font-weight: 700;
+    word-break: break-word;
+}
+.Dialog .BWBAddCustomerEmailDialog label {
+    display: block;
+    margin: 0 0 6px;
+}
+.Dialog .BWBAddCustomerEmailDialog select {
+    width: 100%;
+    min-height: 40px;
+    box-sizing: border-box;
+}
+.Dialog .BWBAddCustomerEmailNote {
+    margin: 16px 0 0;
+    padding: 10px 12px;
+    border-left: 4px solid #0d1b69;
+    background: #f6f8fa;
+    color: #445166;
+    font-size: 13px;
+}
+.Dialog .BWBAddCustomerEmailError {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dc4a4a;
+    border-radius: 6px;
+    background: #fff0f0;
+    color: #9f1d1d;
+}
+</style>

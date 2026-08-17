@@ -1,0 +1,14 @@
+# Módulos em Custom/Kernel/System carregados por pedidos web.
+# Atualizar esta lista no mesmo commit que introduza uma nova dependência web.
+Kernel/System/BWBAccess.pm
+Kernel/System/BWBConvertCustomer.pm
+Kernel/System/BWBCustomerUserEmail.pm
+Kernel/System/BWBFieldMode.pm
+Kernel/System/BWBInvite.pm
+Kernel/System/BWBOperationType.pm
+Kernel/System/BWBResultType.pm
+Kernel/System/BWBStore.pm
+Kernel/System/BWBWorkSession.pm
+Kernel/System/BWBWorkSheet.pm
+Kernel/System/Ticket/Permission/BWBCustomerOwnerCheck.pm
+Kernel/System/Ticket/TicketSearch.pm

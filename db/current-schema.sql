@@ -82,6 +82,22 @@ CREATE TABLE `bwb_customer_owner` (
   CONSTRAINT `fk_bwb_customer_owner_user` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `bwb_customer_user_email`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bwb_customer_user_email` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `customer_user_login` varchar(191) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `create_by` int(11) NOT NULL,
+  `change_time` datetime NOT NULL,
+  `change_by` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `bwb_customer_user_email_unique_email` (`email`),
+  KEY `bwb_customer_user_email_login` (`customer_user_login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `bwb_invite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;

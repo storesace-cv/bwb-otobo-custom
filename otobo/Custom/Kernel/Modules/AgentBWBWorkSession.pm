@@ -92,6 +92,11 @@ sub Run {
         );
         if ( $SessionRemoved ) {
             $Kernel::OM->Get('Kernel::System::Web::UploadCache')->FormIDRemove( FormID => $Data{FormID} );
+            my $FieldMode = $Kernel::OM->Get('Kernel::System::BWBFieldMode');
+            my $Pref = $FieldMode->PreferenceGet( UserID => $Self->{UserID} );
+            if ( $FieldMode->IsCollaborator( UserID => $Self->{UserID} ) && !( defined $Pref && $Pref eq '0' ) ) {
+                return $Layout->Redirect( OP => 'Action=AgentBWBFieldHome' );
+            }
             return $Layout->Redirect( OP=>'Action=AgentTicketZoom;TicketID='.$TicketID );
         }
         $Data{Error} = 'Não foi possível cancelar a folha de trabalho. O ticket não foi alterado.';
@@ -122,6 +127,11 @@ sub Run {
                 NewOwnerID=>($Request->GetParam(Param=>'NewOwnerID')||0),PendingDate=>($Request->GetParam(Param=>'PendingDate')||''));
             if ($Minutes) {
                 $Kernel::OM->Get('Kernel::System::Web::UploadCache')->FormIDRemove(FormID=>$Data{FormID});
+                my $FieldMode = $Kernel::OM->Get('Kernel::System::BWBFieldMode');
+                my $Pref = $FieldMode->PreferenceGet( UserID => $Self->{UserID} );
+                if ( $FieldMode->IsCollaborator( UserID => $Self->{UserID} ) && !( defined $Pref && $Pref eq '0' ) ) {
+                    return $Layout->Redirect( OP => 'Action=AgentBWBFieldHome' );
+                }
                 return $Layout->Redirect(OP=>'Action=AgentTicketZoom;TicketID='.$TicketID);
             }
             $Data{Error}=$Work->LastError()||'Não foi possível terminar o trabalho.';

@@ -22,18 +22,39 @@ sub Run {
     my $Subaction  = $Self->{Subaction} || $Request->GetParam( Param => 'Subaction' ) || '';
 
     if ( $Subaction eq 'Bootstrap' ) {
+        my $Work     = $Kernel::OM->Get('Kernel::System::BWBWorkSession');
+        my $Sheet    = $Kernel::OM->Get('Kernel::System::BWBWorkSheet');
+        my $Active   = $Work->ActiveGet( UserID => $Self->{UserID} );
+        my $ActiveWork;
+        if ($Active) {
+            my $Draft = $Sheet->DraftGet( SessionID => $Active->{SessionID} ) || {};
+            $ActiveWork = {
+                TicketID  => $Active->{TicketID},
+                SessionID => $Active->{SessionID},
+                Paused    => $Draft->{PausedAt} ? 1 : 0,
+            };
+        }
         return $Self->_JSON(
-            Layout    => $Layout,
-            Data      => {
+            Layout => $Layout,
+            Data   => {
                 Success      => 1,
                 Collaborator => $FieldMode->IsCollaborator( UserID => $Self->{UserID} ) ? 1 : 0,
                 Preference   => $FieldMode->PreferenceGet( UserID => $Self->{UserID} ),
+                ActiveWork   => $ActiveWork,
             },
         );
     }
 
     if ( $Subaction eq 'SetMode' ) {
         $Layout->ChallengeTokenCheck();
+        # Field Mode is exclusively for collaborators (not responsible agents).
+        if ( !$FieldMode->IsCollaborator( UserID => $Self->{UserID} ) ) {
+            $FieldMode->PreferenceSet( UserID => $Self->{UserID}, Value => 0 );
+            return $Self->_JSON(
+                Layout => $Layout,
+                Data   => { Success => 0, Mode => 'mobile', Collaborator => 0 },
+            );
+        }
         my $Mode = $Request->GetParam( Param => 'Mode' ) || '';
         my $On   = ( $Mode eq 'field' || $Mode eq '1' ) ? 1 : 0;
         $FieldMode->PreferenceSet( UserID => $Self->{UserID}, Value => $On );
@@ -41,6 +62,11 @@ sub Run {
             Layout => $Layout,
             Data   => { Success => 1, Mode => $On ? 'field' : 'mobile' },
         );
+    }
+
+    # Full Field Home UI is for collaborators only.
+    if ( !$FieldMode->IsCollaborator( UserID => $Self->{UserID} ) ) {
+        return $Layout->Redirect( OP => 'Action=AgentDashboard' );
     }
 
     if ( $Subaction eq 'StoreTicket' ) {
@@ -61,6 +87,7 @@ sub Run {
         $Data{View}          = 'create';
         $Data{Customers}     = $Self->_CustomersForAgent();
         $Data{CustomerUsers} = $Self->_CustomerUsersForAgent();
+        $Data{Priorities}    = $Self->_PrioritiesForForm();
         $Data{Error}         = $Request->GetParam( Param => 'Error' ) || '';
     }
     else {
@@ -136,8 +163,15 @@ sub _OpenWorkSessions {
         Bind => [ \$Self->{UserID} ],
     );
 
-    my @Rows;
+    # Drain the cursor before TicketAccessCheck/TicketGet — those reuse the same DB handle.
+    my @Raw;
     while ( my ( $SessionID, $TicketID, $WorkType, $StartUTC, $PausedAt ) = $DB->FetchrowArray() ) {
+        push @Raw, [ $SessionID, $TicketID, $WorkType, $StartUTC, $PausedAt ];
+    }
+
+    my @Rows;
+    for my $Row (@Raw) {
+        my ( $SessionID, $TicketID, $WorkType, $StartUTC, $PausedAt ) = @{$Row};
         next if !$Access->TicketAccessCheck( UserID => $Self->{UserID}, TicketID => $TicketID );
         my %T = $Ticket->TicketGet( TicketID => $TicketID, DynamicFields => 0, Silent => 1 );
         next if !%T;
@@ -198,6 +232,8 @@ sub _CustomerUsersForAgent {
     my $CustomerIDs = $Access->CustomerIDsGet( UserID => $Self->{UserID} ) || [];
 
     my @Users;
+    my @Candidates;
+
     if ( @{$CustomerIDs} ) {
         my $Placeholders = join ',', map {'?'} @{$CustomerIDs};
         my @Bind = map { \$_ } @{$CustomerIDs};
@@ -208,19 +244,9 @@ sub _CustomerUsersForAgent {
             )
             )
         {
+            # Drain the cursor before CustomerUserAccessCheck — that call reuses the same DB handle.
             while ( my ( $Login, $First, $Last, $Email, $CustomerID ) = $DB->FetchrowArray() ) {
-                next if !$Access->CustomerUserAccessCheck(
-                    UserID            => $Self->{UserID},
-                    CustomerUserLogin => $Login,
-                );
-                my $Name = join( ' ', grep {$_} ( $First, $Last ) ) || $Login;
-                push @Users, {
-                    Login      => $Login,
-                    Name       => $Name,
-                    Email      => $Email || '',
-                    CustomerID => $CustomerID,
-                    Label      => "$Name <$Login>",
-                };
+                push @Candidates, [ $Login, $First, $Last, $Email, $CustomerID ];
             }
         }
     }
@@ -239,25 +265,48 @@ sub _CustomerUsersForAgent {
         )
         )
     {
-        my %Seen = map { $_->{Login} => 1 } @Users;
         while ( my ( $Login, $First, $Last, $Email, $CustomerID ) = $DB->FetchrowArray() ) {
-            next if $Seen{$Login}++;
-            next if !$Access->CustomerUserAccessCheck(
-                UserID            => $Self->{UserID},
-                CustomerUserLogin => $Login,
-            );
-            my $Name = join( ' ', grep {$_} ( $First, $Last ) ) || $Login;
-            push @Users, {
-                Login      => $Login,
-                Name       => $Name,
-                Email      => $Email || '',
-                CustomerID => $CustomerID,
-                Label      => "$Name <$Login>",
-            };
+            push @Candidates, [ $Login, $First, $Last, $Email, $CustomerID ];
         }
     }
 
+    my %Seen;
+    for my $Row (@Candidates) {
+        my ( $Login, $First, $Last, $Email, $CustomerID ) = @{$Row};
+        next if !$Login || $Seen{$Login}++;
+        next if !$Access->CustomerUserAccessCheck(
+            UserID            => $Self->{UserID},
+            CustomerUserLogin => $Login,
+        );
+        my $Name = join( ' ', grep {$_} ( $First, $Last ) ) || $Login;
+        push @Users, {
+            Login      => $Login,
+            Name       => $Name,
+            Email      => $Email || '',
+            CustomerID => $CustomerID,
+            Label      => "$Name <$Login>",
+        };
+    }
+
     return \@Users;
+}
+
+sub _PrioritiesForForm {
+    my ($Self) = @_;
+    my $PriorityObject = $Kernel::OM->Get('Kernel::System::Priority');
+    my %List = $PriorityObject->PriorityList( Valid => 1 );
+
+    # Ordem por ID (nesta instalação: maior ID = maior urgência). Por defeito: a mais alta.
+    my @Priorities;
+    for my $ID ( sort { $a <=> $b } keys %List ) {
+        push @Priorities, {
+            PriorityID => $ID,
+            Name       => $List{$ID},
+            Selected   => 0,
+        };
+    }
+    $Priorities[-1]{Selected} = 1 if @Priorities;
+    return \@Priorities;
 }
 
 sub _StoreTicket {
@@ -270,6 +319,7 @@ sub _StoreTicket {
 
     my $CustomerID   = $Request->GetParam( Param => 'CustomerID' )   || '';
     my $CustomerUser = $Request->GetParam( Param => 'CustomerUser' ) || '';
+    my $PriorityID   = $Request->GetParam( Param => 'PriorityID' )   || '';
     my $Title        = $Request->GetParam( Param => 'Title' )        || '';
     my $Body         = $Request->GetParam( Param => 'Body' )         || '';
     $Title =~ s/^\s+|\s+$//g;
@@ -286,6 +336,7 @@ sub _StoreTicket {
     return $Fail->('Indique o utilizador de cliente.') if !$CustomerUser;
     return $Fail->('Indique o título.')                if !$Title;
     return $Fail->('Descreva o problema.')             if !$Body;
+    return $Fail->('Indique a prioridade.')            if !$PriorityID || $PriorityID !~ m{\A\d+\z};
     return $Fail->('Sem permissão para este cliente.')
         if !$Access->CustomerAccessCheck(
             UserID     => $Self->{UserID},
@@ -309,6 +360,9 @@ sub _StoreTicket {
     return $Fail->('O utilizador não pertence ao cliente escolhido.')
         if $UserCustomerID ne $CustomerID;
 
+    my %ValidPriorities = $Kernel::OM->Get('Kernel::System::Priority')->PriorityList( Valid => 1 );
+    return $Fail->('Prioridade inválida.') if !$ValidPriorities{$PriorityID};
+
     my $QueueName = $FieldMode->DefaultQueueName( UserID => $Self->{UserID} );
     my $QueueID   = $Kernel::OM->Get('Kernel::System::Queue')->QueueLookup( Queue => $QueueName );
     return $Fail->("Fila $QueueName indisponível.") if !$QueueID;
@@ -317,7 +371,7 @@ sub _StoreTicket {
         Title        => $Title,
         QueueID      => $QueueID,
         Lock         => 'lock',
-        Priority     => '3 normal',
+        PriorityID   => $PriorityID,
         State        => 'open',
         CustomerID   => $CustomerID,
         CustomerUser => $CustomerUser,
@@ -326,22 +380,85 @@ sub _StoreTicket {
     );
     return $Fail->('Não foi possível criar o ticket.') if !$TicketID;
 
+    # Artigo inicial em nome do utilizador de cliente (mesmo princípio do
+    # encaminhamento "CODIGO | email | Fwd: título"), não em nome do colaborador.
+    my $FromName = join(
+        ' ',
+        grep {$_} ( $Customer{UserFirstname}, $Customer{UserLastname} )
+    ) || $Customer{UserFullname} || $CustomerUser;
+    my $FromEmail = $Customer{UserEmail} || '';
+    my $From = $FromEmail ? "$FromName <$FromEmail>" : $FromName;
+
+    my $To = 'Helpdesk - BWB <helpdesk@bwb.pt>';
+    my %Queue = $Kernel::OM->Get('Kernel::System::Queue')->QueueGet( ID => $QueueID );
+    if ( $Queue{SystemAddressID} ) {
+        my %Address = $Kernel::OM->Get('Kernel::System::SystemAddress')->SystemAddressGet(
+            ID => $Queue{SystemAddressID},
+        );
+        if ( $Address{Name} ) {
+            $To = $Address{Realname}
+                ? "$Address{Realname} <$Address{Name}>"
+                : $Address{Name};
+        }
+    }
+
     my $ArticleBackend = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForChannel(
-        ChannelName => 'Phone',
+        ChannelName => 'Email',
     );
     my $ArticleID = $ArticleBackend->ArticleCreate(
         TicketID             => $TicketID,
-        SenderType           => 'agent',
+        SenderType           => 'customer',
         IsVisibleForCustomer => 1,
         Subject              => $Title,
         Body                 => $Body,
         ContentType          => 'text/plain; charset=utf-8',
-        HistoryType          => 'AddNote',
-        HistoryComment       => 'Ticket criado no modo de campo',
-        From                 => $Layout->{UserFullname} || $Layout->{UserLogin},
+        HistoryType          => 'EmailCustomer',
+        HistoryComment       => 'Ticket criado no modo de campo em nome do cliente',
+        From                 => $From,
+        To                   => $To,
         UserID               => $Self->{UserID},
     );
     return $Fail->('Ticket criado, mas o artigo falhou.') if !$ArticleID;
+
+    # Folha obrigatória e já associada a este ticket (fluxo Field).
+    my $Types = $Kernel::OM->Get('Kernel::System::BWBOperationType');
+    my @Available = @{ $Types->AvailableList( UserID => $Self->{UserID} ) || [] };
+    my $WorkType;
+    for my $Item (@Available) {
+        my $Name = $Item->{Name} || next;
+        if ( $Name =~ m{presencial}i ) {
+            $WorkType = $Name;
+            last;
+        }
+    }
+    $WorkType ||= $Available[0]->{Name} if @Available;
+    return $Fail->('Ticket criado, mas não há tipo de intervenção disponível para abrir a folha.')
+        if !$WorkType;
+
+    my $Work  = $Kernel::OM->Get('Kernel::System::BWBWorkSession');
+    my $Sheet = $Kernel::OM->Get('Kernel::System::BWBWorkSheet');
+    if (
+        !$Work->Start(
+            UserID    => $Self->{UserID},
+            TicketID  => $TicketID,
+            WorkType  => $WorkType,
+            NoArticle => 1,
+        )
+        )
+    {
+        return $Fail->('Ticket criado, mas não foi possível abrir a folha de trabalho.');
+    }
+    my $Active = $Work->ActiveGet( UserID => $Self->{UserID} );
+    if ( !$Active || int( $Active->{TicketID} ) != int($TicketID) ) {
+        return $Fail->('Ticket criado, mas a folha não ficou associada a este ticket.');
+    }
+    my $FormID = 'BWBWork' . $Active->{SessionID};
+    $Sheet->DraftSave(
+        SessionID => $Active->{SessionID},
+        UserID    => $Self->{UserID},
+        Body      => '',
+        FormID    => $FormID,
+    );
 
     return $Layout->Redirect( OP => 'Action=AgentBWBWorkSession;TicketID=' . $TicketID );
 }

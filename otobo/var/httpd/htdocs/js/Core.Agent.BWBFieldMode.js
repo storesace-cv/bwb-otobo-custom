@@ -95,9 +95,19 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         Nav.dataset.bwbFieldNavBuilt = '1';
     }
 
-    function EnsureSwitch() {
+    function EnsureSwitch(Allowed) {
         var Footer = document.getElementById('Footer');
-        if (!Footer || document.getElementById('BWBFieldModeSwitch')) {
+        var Existing = document.getElementById('BWBFieldModeSwitch');
+        if (!Allowed) {
+            if (Existing) {
+                Existing.remove();
+            }
+            return;
+        }
+        if (!Footer || Existing) {
+            if (Existing) {
+                UpdateSwitchLabel(Existing);
+            }
             return;
         }
         var Link = document.createElement('a');
@@ -139,17 +149,23 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         }
     }
 
-    function ApplyShell(On) {
-        document.body.classList.toggle('BWBFieldMode', !!On);
-        if (On) {
+    function ApplyShell(On, Collaborator) {
+        var AllowField = !!Collaborator && !!On;
+        document.body.classList.toggle('BWBFieldMode', AllowField);
+        if (AllowField) {
             MarkNav();
             var Desktop = document.getElementById('ViewModeSwitch');
             if (Desktop) {
                 Desktop.style.display = 'none';
             }
         }
-        EnsureSwitch();
+        EnsureSwitch(!!Collaborator);
         UpdateSwitchLabel();
+    }
+
+    function DisableFieldForAgent() {
+        SetLocalMode(0);
+        ApplyShell(0, 0);
     }
 
     function MaybeRedirectHome() {
@@ -160,6 +176,28 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         if (Action === 'AgentDashboard') {
             window.location.replace((Core.Config.Get('Baselink') || 'index.pl?') + 'Action=AgentBWBFieldHome');
         }
+    }
+
+    function MaybeForceActiveWork(ActiveWork) {
+        if (!document.body.classList.contains('BWBFieldMode') || !ActiveWork || !ActiveWork.TicketID) {
+            return;
+        }
+        if (ActiveWork.Paused) {
+            return;
+        }
+        var Action = Core.Config.Get('Action') || '';
+        var TicketID = String(Core.Config.Get('TicketID') || '');
+        if (Action === 'AgentBWBWorkSession' && TicketID === String(ActiveWork.TicketID)) {
+            return;
+        }
+        if (Action === 'AgentBWBFieldHome') {
+            // Bootstrap/SetMode stay; other Field Home views are redirected by server guard.
+            return;
+        }
+        window.location.replace(
+            (Core.Config.Get('Baselink') || 'index.pl?')
+            + 'Action=AgentBWBWorkSession;TicketID=' + encodeURIComponent(ActiveWork.TicketID)
+        );
     }
 
     function BootstrapFromServer(Callback) {
@@ -323,60 +361,56 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
             return;
         }
 
-        var Finish = function () {
+        var Finish = function (Data) {
             EnhanceFieldForms();
+            if (Data && Data.Collaborator && Data.ActiveWork) {
+                MaybeForceActiveWork(Data.ActiveWork);
+            }
         };
 
-        var Local = GetLocalMode();
-        if (Local === 1) {
-            ApplyShell(1);
-            MaybeRedirectHome();
-            Finish();
-            return;
-        }
-        if (Local === 0) {
-            ApplyShell(0);
-            EnsureSwitch();
-            UpdateSwitchLabel();
-            Finish();
-            return;
-        }
-
-        // No explicit preference yet: default Field for collaborators on field devices.
-        if (!IsFieldDevice()) {
-            EnsureSwitch();
-            UpdateSwitchLabel();
-            Finish();
-            return;
-        }
-
+        // Always ask the server: Field Mode is collaborators-only.
         BootstrapFromServer(function (Data) {
-            if (Data.Preference === '1' || Data.Preference === 1) {
-                SetLocalMode(1);
-                ApplyShell(1);
-                MaybeRedirectHome();
-                Finish();
+            var Collaborator = !!(Data && Data.Collaborator);
+            if (!Collaborator) {
+                DisableFieldForAgent();
+                Finish({});
                 return;
             }
-            if (Data.Preference === '0' || Data.Preference === 0) {
+
+            var Local = GetLocalMode();
+            var Pref = Data.Preference;
+
+            if (Pref === '0' || Pref === 0) {
                 SetLocalMode(0);
-                ApplyShell(0);
-                EnsureSwitch();
-                UpdateSwitchLabel();
-                Finish();
+                ApplyShell(0, 1);
+                Finish(Data);
                 return;
             }
-            if (Data.Collaborator) {
+            if (Pref === '1' || Pref === 1 || Local === 1) {
+                SetLocalMode(1);
+                ApplyShell(1, 1);
+                MaybeRedirectHome();
+                Finish(Data);
+                return;
+            }
+            if (Local === 0) {
+                ApplyShell(0, 1);
+                Finish(Data);
+                return;
+            }
+
+            // No preference yet: default Field only for collaborators on field devices.
+            if (IsFieldDevice()) {
                 SetLocalMode(1);
                 PersistServer('field');
-                ApplyShell(1);
+                ApplyShell(1, 1);
                 MaybeRedirectHome();
-                Finish();
+                Finish(Data);
                 return;
             }
-            EnsureSwitch();
-            UpdateSwitchLabel();
-            Finish();
+
+            ApplyShell(0, 1);
+            Finish(Data);
         });
     };
 

@@ -255,6 +255,10 @@ sub Run {
         if ( !%UserData || !$BWBAccessObject->CustomerUserAccessCheck( UserID => $Self->{UserID}, CustomerUserLogin => $User ) ) {
             return $LayoutObject->FatalError( Message => 'Não tem autorização para aceder a este utilizador.' );
         }
+        my $AdditionalEmailObject = $Kernel::OM->Get('Kernel::System::BWBCustomerUserEmail');
+        my $AdditionalEmails = $AdditionalEmailObject->EmailsGet( CustomerUserLogin => $User );
+        $UserData{BWBAdditionalEmail1} = $AdditionalEmails->[0] || '';
+        $UserData{BWBAdditionalEmail2} = $AdditionalEmails->[1] || '';
 
         my $Output = $NavBar;
         $Output .= $LayoutObject->Notify( Info => Translatable('Customer updated!') )
@@ -375,6 +379,8 @@ sub Run {
             }
         }
         $GetParam{ID} = $ParamObject->GetParam( Param => 'ID' ) || '';
+        $GetParam{BWBAdditionalEmail1} = $ParamObject->GetParam( Param => 'BWBAdditionalEmail1' ) || '';
+        $GetParam{BWBAdditionalEmail2} = $ParamObject->GetParam( Param => 'BWBAdditionalEmail2' ) || '';
 
         # check email address
         if (
@@ -392,6 +398,16 @@ sub Run {
         my %CurrentUserData = $CustomerUserObject->CustomerUserDataGet(
             User => $GetParam{ID},
         );
+        my $AdditionalEmailObject = $Kernel::OM->Get('Kernel::System::BWBCustomerUserEmail');
+        my $ValidatedAdditionalEmails = $AdditionalEmailObject->EmailsValidate(
+            CustomerUserLogin => $GetParam{ID},
+            PrimaryEmail      => $GetParam{UserEmail},
+            Emails            => [ $GetParam{BWBAdditionalEmail1}, $GetParam{BWBAdditionalEmail2} ],
+        );
+        if ( !$ValidatedAdditionalEmails ) {
+            $Errors{BWBAdditionalEmailInvalid} = 'ServerError';
+            $Note .= $LayoutObject->Notify( Priority => 'Error', Info => $AdditionalEmailObject->LastError );
+        }
         if (
             !%CurrentUserData
             || !$BWBAccessObject->CustomerUserAccessCheck( UserID => $Self->{UserID}, CustomerUserLogin => $GetParam{ID} )
@@ -428,6 +444,16 @@ sub Run {
                     %GetParam,
                     UserID => $Self->{UserID},
                 );
+            }
+
+            if ( !$UpdateOnlyPreferences && $UpdateSuccess ) {
+                if ( !$AdditionalEmailObject->EmailsSet(
+                    CustomerUserLogin => $GetParam{ID},
+                    Emails            => $ValidatedAdditionalEmails,
+                    UserID            => $Self->{UserID},
+                ) ) {
+                    $Note .= $LayoutObject->Notify( Priority => 'Error', Info => $AdditionalEmailObject->LastError );
+                }
             }
 
             if ( $GetParam{UserPassword} && ( $CurrentUserData{UserPassword} // '' ) ne $GetParam{UserPassword} ) {
@@ -609,6 +635,9 @@ sub Run {
         my $Note = '';
         my ( %GetParam, %Errors );
 
+        $GetParam{BWBAdditionalEmail1} = $ParamObject->GetParam( Param => 'BWBAdditionalEmail1' ) || '';
+        $GetParam{BWBAdditionalEmail2} = $ParamObject->GetParam( Param => 'BWBAdditionalEmail2' ) || '';
+
         my $AutoLoginCreation = $ConfigObject->Get($Source)->{AutoLoginCreation};
 
         # Get dynamic field backend object.
@@ -673,6 +702,16 @@ sub Run {
             $Errors{ErrorType}        = $CheckItemObject->CheckErrorType() . 'ServerErrorMsg';
         }
 
+        my $AdditionalEmailObject = $Kernel::OM->Get('Kernel::System::BWBCustomerUserEmail');
+        my $ValidatedAdditionalEmails = $AdditionalEmailObject->EmailsValidate(
+            PrimaryEmail => $GetParam{UserEmail},
+            Emails       => [ $GetParam{BWBAdditionalEmail1}, $GetParam{BWBAdditionalEmail2} ],
+        );
+        if ( !$ValidatedAdditionalEmails ) {
+            $Errors{BWBAdditionalEmailInvalid} = 'ServerError';
+            $Note .= $LayoutObject->Notify( Priority => 'Error', Info => $AdditionalEmailObject->LastError );
+        }
+
         # Check CustomerID, if CustomerCompanySupport is enabled.
         if ( $ConfigObject->Get($Source)->{CustomerCompanySupport} && $GetParam{UserCustomerID} ) {
 
@@ -695,6 +734,14 @@ sub Run {
                 Source => $Source
             );
             if ($User) {
+
+                if ( !$AdditionalEmailObject->EmailsSet(
+                    CustomerUserLogin => $User,
+                    Emails            => $ValidatedAdditionalEmails,
+                    UserID            => $Self->{UserID},
+                ) ) {
+                    $Note .= $LayoutObject->Notify( Priority => 'Error', Info => $AdditionalEmailObject->LastError );
+                }
 
                 $Kernel::OM->Get('Kernel::System::BWBInvite')->CreateAndSend(
                     Type => 'customer', Login => $User, Email => $GetParam{UserEmail},
@@ -1504,6 +1551,22 @@ sub _Edit {
                     Data => { Name => $Entry->[0] },
                 );
             }
+        }
+    }
+
+    if ( !$UpdateOnlyPreferences ) {
+        for my $Index ( 1 .. 2 ) {
+            my $Name = "BWBAdditionalEmail$Index";
+            $LayoutObject->Block(
+                Name => 'BWBAdditionalEmail',
+                Data => {
+                    Name    => $Name,
+                    Label   => "E-mail adicional $Index",
+                    Value   => $Param{$Name} || '',
+                    Invalid => $Param{Errors}->{BWBAdditionalEmailInvalid} || '',
+                    First   => $Index == 1 ? 1 : 0,
+                },
+            );
         }
     }
 

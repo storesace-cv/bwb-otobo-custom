@@ -490,24 +490,14 @@ sub Run {
                     );
                 }
 
-                # redirect
-                if (
-                    !$ConfigObject->Get('Frontend::Module')->{AdminUserGroup}
-                    && $ConfigObject->Get('Frontend::Module')->{AdminRoleUser}
-                    )
-                {
-                    return $LayoutObject->Redirect(
-                        OP => "Action=AdminRoleUser;Subaction=User;ID=$UserID",
-                    );
-                }
-                if ( $ConfigObject->Get('Frontend::Module')->{AdminUserGroup} ) {
-                    return $LayoutObject->Redirect(
-                        OP => "Action=AdminUserGroup;Subaction=User;ID=$UserID",
-                    );
-                }
-                else {
-                    return $LayoutObject->Redirect( OP => 'Action=AdminUser' );
-                }
+                # Groups/roles BWB are already assigned above. Do not follow the
+                # stock OTOBO redirect to AdminUserGroup/AdminRoleUser — those
+                # modules are admin-only, while AdminUser is also allowed for
+                # bwb_customer_managers (e.g. Amadeu). Redirecting there caused
+                # "Sem permissões para utilizar este módulo!" after a successful create.
+                return $LayoutObject->Redirect(
+                    OP => "Action=AdminUser;Subaction=Change;UserID=$UserID;Notification=Update"
+                );
             }
             else {
                 $Note = $LogObject->GetLogEntry(

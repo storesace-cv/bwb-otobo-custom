@@ -53,6 +53,8 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | Lojas | `Kernel/System/BWBStore.pm`, `Kernel/Modules/AdminBWBStore.pm` |
 | Convites | `Kernel/System/BWBInvite.pm`, `Kernel/Modules/PublicBWBInvite.pm` |
 | Folhas de trabalho | `Kernel/System/BWBWorkSession.pm`, `Kernel/System/BWBWorkSheet.pm`, `Kernel/Modules/AgentBWBWorkSession.pm` |
+| Portal cliente (zoom) | `CustomerBWBTicketClose.pm`, templates `CustomerTicketZoom*`, `js/Core.Customer.BWBTicketZoom.js` |
+| E-mails alternativos cliente | `BWBCustomerUserEmail.pm`, `AgentBWBAddCustomerEmail.pm`, `PostMaster/Filter/BWBCustomerUserEmail.pm` |
 | Modo de campo | `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `js/Core.Agent.BWBFieldMode.js` |
 | Tipos de operação/resultados | `BWBOperationType.pm`, `BWBResultType.pm` e respetivos módulos Admin |
 | Conversão postmaster | `BWBConvertCustomer.pm`, `AgentBWBConvertCustomer.pm` |

@@ -12,6 +12,7 @@ Actuar como Engenheiro de Software Principal: excelência técnica, performance,
 2. Usar acesso directo aos manuais oficiais em [docs/REFERENCES.md](docs/REFERENCES.md) para o mecanismo OTOBO em causa.
 3. Consultar [docs/FEATURES.md](docs/FEATURES.md) e o código em `otobo/Custom/` para o comportamento BWB já existente.
 4. Respeitar [docs/SECURITY.md](docs/SECURITY.md) e [docs/OPERATIONS.md](docs/OPERATIONS.md).
+5. Ler e actualizar [docs/RUNTIME-PERMISSIONS.md](docs/RUNTIME-PERMISSIONS.md) sempre que a alteração criar, mover ou passar a carregar um módulo, template, ficheiro estático ou configuração.
 
 ## Regras críticas
 
@@ -25,6 +26,6 @@ Actuar como Engenheiro de Software Principal: excelência técnica, performance,
 
 1. Consultar documentação (oficial + repo) → identificar módulos/templates/JS/config.
 2. Plano breve → implementar com rigor técnico.
-3. `scripts/check.sh` → testes (agente BWB, ZS, cliente).
-4. **Documentar sempre** o impacto em `docs/` (no mínimo `FEATURES.md` se o comportamento mudar).
-5. Commit claro e push; produção só com revisão explícita.
+3. `scripts/check.sh` e `scripts/verify-runtime-permissions.sh --production` → testes (agente BWB, ZS, cliente) e permissões de execução pelo Apache.
+4. **Documentar sempre** o impacto em `docs/` (no mínimo `FEATURES.md` se o comportamento mudar) e actualizar `RUNTIME-PERMISSIONS.md`/`scripts/runtime-web-system-modules.txt` quando aplicável.
+5. Commit claro e push; produção só com revisão explícita. Uma publicação só está concluída depois da verificação de permissões e de um teste HTTP ao ecrã afetado.

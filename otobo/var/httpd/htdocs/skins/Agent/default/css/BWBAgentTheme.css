@@ -1,0 +1,376 @@
+/* BWB Agent visual theme — greys/blacks only, WCAG-oriented contrast.
+   Overrides OTOBO skin tokens (--col*) so chrome stays readable on light UI.
+   Does NOT change menus structure, dashboards layout, or Field Mode behaviour.
+   Excludes login screen. */
+
+:root {
+  /* Shared BWB tokens */
+  --bwb-field-bg: #f3f3f3;
+  --bwb-field-surface: #ffffff;
+  --bwb-field-surface-2: #ececec;
+  --bwb-field-border: #d6d6d6;
+  --bwb-field-text: #1a1a1a;
+  --bwb-field-text-muted: #5c5c5c;
+  --bwb-field-accent: #1a1a1a;
+  --bwb-field-accent-contrast: #ffffff;
+  --bwb-field-overlay: rgba(0, 0, 0, 0.42);
+
+  /* OTOBO Default skin tokens — no yellow highlight on light chrome.
+     Text uses near-black; surfaces use light greys (ISO/WCAG-friendly contrast). */
+  --colMainDark: #1a1a1a;
+  --colMainLight: #3d3d3d;
+  --colMainHover: #2a2a2a;
+  --colBGElement: #ffffff;
+  --colBGLight: #f3f3f3;
+  --colBGLightMedium: #ececec;
+  --colBGMedium: #e0e0e0;
+  --colBGMediumDark: #c8c8c8;
+  --colBGDark: #b0b0b0;
+  --colTextLight: #5c5c5c;
+  --colTextMedium: #3d3d3d;
+  --colTextDark: #1a1a1a;
+  --colTextLink: #1a1a1a;
+  --colHighlight: #1a1a1a;
+  --colHoverLight: #ececec;
+  --colHoverDark: #d6d6d6;
+  --colShadowDark: rgba(0, 0, 0, 0.14);
+}
+
+body:not(.LoginScreen) {
+  background: var(--bwb-field-bg) !important;
+  background-image: none !important;
+  color: var(--bwb-field-text);
+
+  /* Re-assert skin tokens on body so Core.Default :root cannot win later in cascade. */
+  --colMainDark: #1a1a1a;
+  --colMainLight: #3d3d3d;
+  --colMainHover: #2a2a2a;
+  --colBGElement: #ffffff;
+  --colBGLight: #f3f3f3;
+  --colBGLightMedium: #ececec;
+  --colBGMedium: #e0e0e0;
+  --colTextLight: #5c5c5c;
+  --colTextMedium: #3d3d3d;
+  --colTextDark: #1a1a1a;
+  --colTextLink: #1a1a1a;
+  --colHighlight: #1a1a1a;
+  --colHoverLight: #ececec;
+  --colHoverDark: #d6d6d6;
+}
+
+body:not(.LoginScreen) #AppWrapper,
+body:not(.LoginScreen) #Header,
+body:not(.LoginScreen) .MainBox,
+body:not(.LoginScreen) #Footer.BWBFooter {
+  background: var(--bwb-field-bg) !important;
+  background-image: none !important;
+  color: var(--bwb-field-text) !important;
+  text-shadow: none !important;
+}
+
+/* PC: nav strip must not paint a full-width grey bar — only the header surface. */
+body:not(.LoginScreen) #NavigationContainer {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+body:not(.LoginScreen) #Header {
+  border-bottom: 1px solid var(--bwb-field-border);
+  background: var(--bwb-field-surface) !important;
+}
+
+/* Agent logo: black mark on light header (AgentLogo was a light PNG). */
+body:not(.LoginScreen) #Header #Logo {
+  background-image: url(/otobo-web/common/img/bwb-black-compact.svg) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  background-color: transparent !important;
+}
+
+body:not(.LoginScreen) #Header .UserName,
+body:not(.LoginScreen) #ToolBar a span.Counter {
+  color: var(--bwb-field-text) !important;
+}
+
+/* Toolbar icons: skin uses --colHighlight (was yellow on white). Now near-black. */
+body:not(.LoginScreen) #ToolBar a i {
+  color: var(--bwb-field-text) !important;
+}
+
+/* User menu (avatar / logo options): light panel + dark text — never dark-on-dark. */
+body:not(.LoginScreen) #ToolBar li.UserAvatar div,
+body:not(.LoginScreen) #ToolBar li.UserAvatar div a,
+body:not(.LoginScreen) #ToolBar li.UserAvatar div span,
+body:not(.LoginScreen) #ToolBar li.UserAvatar div strong {
+  background: var(--bwb-field-surface) !important;
+  background-color: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+  border-color: var(--bwb-field-border) !important;
+}
+
+body:not(.LoginScreen) #ToolBar li.UserAvatar div:after {
+  border-bottom-color: var(--bwb-field-surface) !important;
+}
+
+body:not(.LoginScreen) #ToolBar li.UserAvatar div a:hover,
+body.Visible-ScreenXL #ToolBar li.UserAvatar div a:hover {
+  background: var(--bwb-field-surface-2) !important;
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) #ToolBar li.UserAvatar div span {
+  border-bottom: 1px solid var(--bwb-field-border) !important;
+}
+
+/* Fulltext search: light field + dark text (not dark-on-dark). */
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"],
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"]:focus,
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"]:not(.InputField_Search) {
+  background: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+  border: 1px solid var(--bwb-field-border) !important;
+  box-shadow: none !important;
+}
+
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"]::placeholder,
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"]::-webkit-input-placeholder,
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"]::-moz-placeholder,
+body:not(.LoginScreen) #ToolBar .Extended input[type="text"]:-ms-input-placeholder {
+  color: var(--bwb-field-text-muted) !important;
+  opacity: 1;
+}
+
+body:not(.LoginScreen) #ToolBar .Extended.SearchFulltext:before {
+  color: var(--bwb-field-text) !important;
+}
+
+/* Top navigation on light chrome: dark text + dark underline (not yellow). */
+body:not(.LoginScreen) #Navigation {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+body:not(.LoginScreen) #Navigation > li > a {
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) #Navigation > li:hover > a,
+body:not(.LoginScreen) #Navigation > li:active > a,
+body:not(.LoginScreen) #Navigation > .Selected > a {
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) #Navigation > li > a:after {
+  background: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) #Navigation a i {
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) #Navigation a i.fa.fa-search {
+  color: var(--bwb-field-text) !important;
+}
+
+/* Dropdowns: light surface + dark text (never dark bg + dark text). */
+body:not(.LoginScreen) #Navigation > .Active > ul {
+  background: var(--bwb-field-surface) !important;
+  border: 1px solid var(--bwb-field-border);
+  box-shadow: 0 4px 16px var(--colShadowDark);
+}
+
+body:not(.LoginScreen) #Navigation > .Active > ul > li {
+  background: var(--bwb-field-surface) !important;
+}
+
+body:not(.LoginScreen) #Navigation > .Active > ul > li > a,
+body:not(.LoginScreen) #Navigation > .Active > ul > li > a:hover {
+  background-color: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+  border-bottom-color: var(--bwb-field-border) !important;
+}
+
+body:not(.LoginScreen) #Navigation > .Active > ul > li:hover,
+body:not(.LoginScreen) #Navigation > .Active > ul > li:hover > a,
+body:not(.LoginScreen) #Navigation > .Active > ul > li > a:hover {
+  background: var(--bwb-field-surface-2) !important;
+  background-color: var(--bwb-field-surface-2) !important;
+  color: var(--bwb-field-text) !important;
+}
+
+/* 3rd-level menus if present */
+body:not(.LoginScreen) #Navigation > .Active > ul ul {
+  background: var(--bwb-field-surface) !important;
+  border: 1px solid var(--bwb-field-border);
+}
+
+body:not(.LoginScreen) #Navigation > .Active > ul ul a {
+  background: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) #Footer.BWBFooter a {
+  color: var(--bwb-field-text) !important;
+}
+
+/* —— Mobile standard (≤1024px): header, hamburger, left nav, right sidebar —— */
+@media only screen and (min-width: 0px) and (max-width: 1024px) {
+  body:not(.LoginScreen) #Header {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+
+  body:not(.LoginScreen) #ToolBar,
+  body:not(.LoginScreen).RTL #ToolBar {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  body:not(.LoginScreen) #ToolBar li i,
+  body:not(.LoginScreen) #ToolBar a i,
+  body:not(.LoginScreen) #ToolBar li.UserAvatar i {
+    color: #1a1a1a !important;
+  }
+
+  body:not(.LoginScreen) #ToolBar li a span.Counter {
+    color: #5c5c5c !important;
+  }
+
+  body:not(.LoginScreen) .ResponsiveHandle,
+  body:not(.LoginScreen) #ResponsiveNavigationHandle,
+  body:not(.LoginScreen) #ResponsiveSidebarHandle {
+    color: #1a1a1a !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #d6d6d6;
+    border-radius: 6px;
+  }
+
+  body:not(.LoginScreen) .ResponsiveSidebarContainer {
+    background: rgba(0, 0, 0, 0.35) !important;
+  }
+
+  /* Right dashboard sidebar (Definições / eventos / últimos tickets). */
+  body:not(.LoginScreen) .LayoutFixedSidebar.SidebarLast .ResponsiveSidebarContainer > .SidebarColumn,
+  body:not(.LoginScreen) .LayoutFixedSidebar.SidebarFirst .ResponsiveSidebarContainer > .SidebarColumn {
+    background: #f3f3f3 !important;
+    background-color: #f3f3f3 !important;
+    color: #1a1a1a !important;
+  }
+
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .WidgetSimple,
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .WidgetSimple > .Content,
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .WidgetSimple > .Header {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    border-color: #d6d6d6 !important;
+  }
+
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .WidgetSimple > .Header,
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .WidgetSimple > .Header h2,
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .WidgetSimple > .Header a,
+  body:not(.LoginScreen) .ResponsiveSidebarContainer .SettingsWidget label,
+  body:not(.LoginScreen) .ResponsiveSidebarContainer a {
+    color: #1a1a1a !important;
+  }
+
+  /* Left slide-out navigation menu. */
+  body:not(.LoginScreen) #NavigationContainer,
+  body:not(.LoginScreen).RTL #NavigationContainer {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+
+  body:not(.LoginScreen) #NavigationContainer #Navigation,
+  body:not(.LoginScreen) #NavigationContainer #Navigation > li,
+  body:not(.LoginScreen) #NavigationContainer #Navigation > li > a {
+    background: transparent !important;
+    color: #1a1a1a !important;
+    border-color: #d6d6d6 !important;
+  }
+
+  body:not(.LoginScreen) #NavigationContainer #Navigation > li {
+    border-top: 1px solid #d6d6d6 !important;
+  }
+
+  body:not(.LoginScreen) #NavigationContainer #Navigation > li > a:after {
+    display: none !important;
+  }
+
+  body:not(.LoginScreen) #NavigationContainer #Navigation > .Active > ul,
+  body:not(.LoginScreen) #NavigationContainer #Navigation > .Active > ul > li,
+  body:not(.LoginScreen) #NavigationContainer #Navigation > .Active > ul > li > a {
+    background: #ececec !important;
+    color: #1a1a1a !important;
+    border-color: #d6d6d6 !important;
+  }
+
+  body:not(.LoginScreen) #Header #Logo {
+    background-image: url(/otobo-web/common/img/bwb-black-compact.svg) !important;
+    background-position: center center !important;
+  }
+}
+
+/* Content surfaces — colours only */
+body:not(.LoginScreen) .WidgetSimple,
+body:not(.LoginScreen) .WidgetFull,
+body:not(.LoginScreen) .Content,
+body:not(.LoginScreen) .OverviewBox,
+body:not(.LoginScreen) .UseFilterBox,
+body:not(.LoginScreen) table.DataTable thead th {
+  background-color: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+  text-shadow: none !important;
+}
+
+body:not(.LoginScreen) .WidgetSimple > .Header,
+body:not(.LoginScreen) .WidgetFull > .Header {
+  background: var(--bwb-field-surface-2) !important;
+  border-bottom: 1px solid var(--bwb-field-border);
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) .WidgetSimple > .Header h2,
+body:not(.LoginScreen) .WidgetFull > .Header h2,
+body:not(.LoginScreen) .WidgetSimple > .Header a,
+body:not(.LoginScreen) .WidgetFull > .Header a {
+  color: var(--bwb-field-text) !important;
+}
+
+/* Work sheet surfaces */
+body:not(.LoginScreen) .BWBWorkSheet .SheetHeader,
+body:not(.LoginScreen) .BWBWorkSheet .WorkCard,
+body:not(.LoginScreen) .BWBWorkSheet .ProtectedText,
+body:not(.LoginScreen) .BWBWorkSheet .VisibilityChoice,
+body:not(.LoginScreen) .BWBEditor,
+body:not(.LoginScreen) .BWBEditorToolbar {
+  background: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) .BWBWorkSheet .SheetHeader {
+  background: var(--bwb-field-surface-2) !important;
+}
+
+body:not(.LoginScreen) .BWBWorkSheet,
+body:not(.LoginScreen) .BWBWorkSheet label {
+  color: var(--bwb-field-text) !important;
+}
+
+body:not(.LoginScreen) .BWBWorkSheet .HeaderTitle,
+body:not(.LoginScreen) .BWBWorkSheet .TicketRef,
+body:not(.LoginScreen) .BWBWorkSheet .SaveStatus {
+  color: var(--bwb-field-text-muted) !important;
+}
+
+body:not(.LoginScreen) .BWBWorkSheet select,
+body:not(.LoginScreen) .BWBWorkSheet input[type="text"],
+body:not(.LoginScreen) .BWBWorkSheet input[type="datetime-local"],
+body:not(.LoginScreen) .BWBEditorBody,
+body:not(.LoginScreen) .BWBEditorToolbar button {
+  background: var(--bwb-field-surface) !important;
+  color: var(--bwb-field-text) !important;
+  border-color: var(--bwb-field-border) !important;
+}

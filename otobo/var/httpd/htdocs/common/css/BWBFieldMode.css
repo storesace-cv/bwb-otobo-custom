@@ -1,5 +1,5 @@
 :root {
-  /* Cursor-like light greys (not dark mode) */
+  /* Palette shared with BWBAgentTheme.css (Agent PC + Field) */
   --bwb-field-bg: #f3f3f3;
   --bwb-field-surface: #ffffff;
   --bwb-field-surface-2: #ececec;
@@ -11,42 +11,7 @@
   --bwb-field-overlay: rgba(0, 0, 0, 0.42);
 }
 
-body.BWBFieldMode {
-  background: var(--bwb-field-bg) !important;
-  background-image: none !important;
-  color: var(--bwb-field-text);
-}
-
-body.BWBFieldMode #AppWrapper,
-body.BWBFieldMode #Header,
-body.BWBFieldMode #Navigation,
-body.BWBFieldMode #NavigationContainer,
-body.BWBFieldMode .MainBox,
-body.BWBFieldMode #Footer.BWBFooter {
-  background: var(--bwb-field-bg) !important;
-  background-image: none !important;
-  color: var(--bwb-field-text) !important;
-  text-shadow: none !important;
-}
-
-body.BWBFieldMode #Header {
-  border-bottom: 1px solid var(--bwb-field-border);
-  background: var(--bwb-field-surface) !important;
-}
-
-body.BWBFieldMode #Header a,
-body.BWBFieldMode #Navigation a,
-body.BWBFieldMode #Footer.BWBFooter a,
-body.BWBFieldMode #Header .UserName,
-body.BWBFieldMode #ToolBar a,
-body.BWBFieldMode #ToolBar span {
-  color: var(--bwb-field-text) !important;
-}
-
-body.BWBFieldMode #Navigation {
-  background: var(--bwb-field-surface) !important;
-  border-bottom: 1px solid var(--bwb-field-border);
-}
+/* Field Mode behaviour/layout only — chrome colours come from BWBAgentTheme.css */
 
 body.BWBFieldMode #ViewModeSwitch {
   display: none !important;

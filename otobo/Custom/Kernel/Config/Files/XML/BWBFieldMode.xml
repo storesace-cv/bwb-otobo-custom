@@ -39,6 +39,15 @@
             </Array>
         </Value>
     </Setting>
+    <Setting Name="Loader::Agent::CommonCSS###999-BWBAgentTheme" Required="0" Valid="1">
+        <Description Translatable="1">Tema visual claro do Agent (apenas cores/superfícies; sem alterar menus nem fluxos). Carrega por último para ganhar ao skin Default.</Description>
+        <Navigation>Frontend::Base::Loader</Navigation>
+        <Value>
+            <Array>
+                <Item>BWBAgentTheme.css</Item>
+            </Array>
+        </Value>
+    </Setting>
     <Setting Name="Loader::Agent::CommonCSS###961-BWBFieldMode" Required="0" Valid="1">
         <Description Translatable="1">CSS do modo de campo BWB.</Description>
         <Navigation>Frontend::Base::Loader</Navigation>
@@ -46,6 +55,20 @@
             <Array>
                 <Item>BWBFieldMode.css</Item>
             </Array>
+        </Value>
+    </Setting>
+    <Setting Name="PreApplicationModule###001-BWBAgentSessionGuard" Required="0" Valid="1">
+        <Description Translatable="1">Colaboradores: uma única sessão Agent activa (login noutro equipamento termina as restantes).</Description>
+        <Navigation>Frontend::Agent</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">Kernel::Modules::BWBAgentSessionGuard</Item>
+        </Value>
+    </Setting>
+    <Setting Name="PreApplicationModule###002-BWBFieldWorkGuard" Required="0" Valid="1">
+        <Description Translatable="1">Modo de campo: com folha em execução, obriga a permanecer nessa folha.</Description>
+        <Navigation>Frontend::Agent</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">Kernel::Modules::BWBFieldWorkGuard</Item>
         </Value>
     </Setting>
 </otobo_config>

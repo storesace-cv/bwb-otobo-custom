@@ -315,6 +315,16 @@
                     </div>
 [% RenderBlockEnd("DynamicField") %]
 [% RenderBlockEnd("Item") %]
+[% RenderBlockStart("BWBAdditionalEmail") %]
+                        <label for="[% Data.Name | html %]">[% Data.Label | html %]:</label>
+                        <div class="Field">
+                            <input id="[% Data.Name | html %]" type="email" name="[% Data.Name | html %]" class="W50pc Validate_Email [% Data.Invalid | html %]" value="[% Data.Value | html %]" />
+                            [% IF Data.First %]
+                            <div class="FieldExplanation">Usado apenas para reconhecer mensagens recebidas. Todos os envios continuam a ser feitos exclusivamente para o e-mail principal.</div>
+                            [% END %]
+                        </div>
+                        <div class="Clear"></div>
+[% RenderBlockEnd("BWBAdditionalEmail") %]
                         [% IF Data.Action == 'Change' %]
                         <div class="Field SpacingTop" style="margin-bottom:12px">
                             <button class="CallForAction" type="submit" name="BWBInviteMode" value="password-reset" formnovalidate><span><i class="fa fa-key"></i> Reset da palavra-passe</span></button>

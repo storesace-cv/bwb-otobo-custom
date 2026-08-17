@@ -54,6 +54,12 @@
     <input type="text" name="Title" id="Title" required maxlength="200" autocomplete="off">
     <label for="Body">Problema</label>
     <textarea name="Body" id="Body" rows="8" required></textarea>
+    <label for="PriorityID">Prioridade</label>
+    <select name="PriorityID" id="PriorityID" required>
+      [% FOREACH P IN Data.Priorities %]
+      <option value="[% P.PriorityID | html %]"[% IF P.Selected %] selected[% END %]>[% P.Name | html %]</option>
+      [% END %]
+    </select>
     <div class="BWBFieldActions">
       <button type="submit" class="BWBFieldPrimary">Gravar e abrir folha</button>
     </div>
@@ -89,7 +95,7 @@
     <ul class="BWBFieldList">
       [% FOREACH T IN Data.OpenTickets %]
       <li>
-        <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% T.TicketID | html %]">
+        <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% T.TicketID | html %]">
           <strong>Ticket#[% T.TicketNumber | html %]</strong>
           <span class="BWBFieldMuted">[% T.Customer | html %]</span>
           <span>[% T.Title | html %]</span>

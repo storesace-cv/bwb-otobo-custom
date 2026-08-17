@@ -16,4 +16,17 @@ else
     echo "Validação Perl ignorada: defina OTOBO_HOME numa instalação OTOBO."
 fi
 
+MANIFEST="$ROOT/scripts/runtime-web-system-modules.txt"
+DOC="$ROOT/docs/RUNTIME-PERMISSIONS.md"
+test -f "$MANIFEST"
+test -f "$DOC"
+
+while IFS= read -r relative; do
+    case "$relative" in ''|'#'*) continue ;; esac
+    test -f "$ROOT/otobo/Custom/$relative" || {
+        echo "Módulo runtime declarado mas inexistente: $relative" >&2
+        exit 1
+    }
+done < "$MANIFEST"
+
 echo "Verificação local concluída."

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 our @ObjectDependencies = (
-    'Kernel::System::CustomerUser',
+    'Kernel::System::BWBCustomerUserEmail',
 );
 
 sub new {
@@ -36,21 +36,15 @@ sub Run {
         $SenderEmail = $Email if $Email;
     }
 
-    my $KnownCustomerUser = 0;
+    my $KnownCustomerUser = $GetParam->{'X-OTOBO-CustomerUser'} ? 1 : 0;
     if ($SenderEmail) {
-        my $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
-        my %Candidates = $CustomerUserObject->CustomerSearch(
-            PostMasterSearch => $SenderEmail,
-            Valid            => 1,
+        my $Data = $Kernel::OM->Get('Kernel::System::BWBCustomerUserEmail')->CustomerUserDataGetByEmail(
+            Email => $SenderEmail,
         );
-        CANDIDATE:
-        for my $Login ( keys %Candidates ) {
-            my %Data = $CustomerUserObject->CustomerUserDataGet( User => $Login );
-            next CANDIDATE if !%Data;
-            if ( lc( $Data{UserEmail} // '' ) eq $SenderEmail ) {
-                $KnownCustomerUser = 1;
-                last CANDIDATE;
-            }
+        if ($Data) {
+            $KnownCustomerUser = 1;
+            $GetParam->{'X-OTOBO-CustomerUser'} ||= $Data->{UserLogin};
+            $GetParam->{'X-OTOBO-CustomerNo'}   ||= $Data->{UserCustomerID};
         }
     }
 

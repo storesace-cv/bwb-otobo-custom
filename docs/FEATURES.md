@@ -15,8 +15,11 @@ Caminhos abaixo são relativos a `otobo/Custom/`, salvo indicação em contrári
 - Empresa cliente com várias lojas; loja `S - Sede` criada por defeito.
 - Utilizadores cliente associados a loja; clientes a agente responsável.
 - Colaboradores com acesso por cliente ou por loja.
-- Código: `Kernel/System/BWBStore.pm`, `Kernel/Modules/AdminBWBStore.pm`, eventos `CustomerCompany/Event/BWB*.pm`, XML `Config/Files/XML/BWBStores.xml`.
-- Tabelas: `bwb_store`, `bwb_customer_owner`, `bwb_collaborator_customer`, `bwb_collaborator_store`, `bwb_agent_hierarchy`.
+- `AdminUser` (módulo «Agentes e colaboradores») está aberto a `admin` e `bwb_customer_managers`. Após criar utilizador, o redirect fica em `AdminUser` (edição do novo user) — **não** em `AdminUserGroup`/`AdminRoleUser` (só `admin`); caso contrário gestores como Amadeu viam «Sem permissões para utilizar este módulo!» embora o utilizador tivesse sido criado.
+- **E-mails alternativos do utilizador de cliente:** até **dois** endereços adicionais (`bwb_customer_user_email`), geridos na ficha `AdminCustomerUser`. Servem **só** para reconhecer correio de entrada (novo ticket / follow-up) via `PostMaster::PreFilterModule###090-BWBCustomerUserEmail` + `BWBCustomerUserEmail.pm`. A **saída** de e-mails do sistema continua exclusivamente para o e-mail principal (`UserEmail`).
+- **Associar e-mail no zoom do ticket:** menu `Associar e-mail a utilizador de cliente` (`TicketMenu/BWBAddCustomerEmail`) quando o remetente ainda não é reconhecido. Modal nativo `Core.UI.Dialog.ShowContentDialog` (JS `Core.Agent.BWBAddCustomerEmailDialog.js`): Cliente → Utilizadores desse cliente (filtrados por `BWBAccess`) → grava alias + `TicketCustomerSet` + recarrega o zoom. Endpoint `AgentBWBAddCustomerEmail` devolve fragmento HTML (`Dialog=1`) ou JSON (`Subaction=CustomerUsers|Add`).
+- Código: `Kernel/System/BWBStore.pm`, `Kernel/Modules/AdminBWBStore.pm`, `Kernel/Modules/AdminUser.pm`, `Kernel/Modules/AdminCustomerUser.pm`, `Kernel/Modules/AgentBWBAddCustomerEmail.pm`, `Kernel/System/BWBCustomerUserEmail.pm`, `PostMaster/Filter/BWBCustomerUserEmail.pm`, eventos `CustomerCompany/Event/BWB*.pm`, XML `BWBStores.xml` / `BWBCustomerUserEmail.xml` / `BWBAddCustomerEmail.xml`.
+- Tabelas: `bwb_store`, `bwb_customer_owner`, `bwb_collaborator_customer`, `bwb_collaborator_store`, `bwb_agent_hierarchy`, `bwb_customer_user_email`.
 
 ## Filas e correio ZS
 
@@ -55,24 +58,38 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Transporte / templates personalizados: `Ticket/Event/NotificationEvent/Transport/Email.pm`, templates `NotificationEvent/Email/*.tt`.
 - Regras de notificação em produção (SysConfig/DB) incluem, entre outras, notificações ZS para o grupo de gestão e fecho com anexos ao cliente — consultar sempre a configuração viva no servidor antes de alterar.
 - Fila de correio OTOBO: `Maint::Email::MailQueue`; entrega via Sendmail/Postfix no servidor.
+- Branding nos e-mails: texto visível usa **Helpdesk**, não «OTOBO». Notificações na BD: «Abrir o ticket/marcação no Helpdesk» (`db/migrations/2026-08-16-email-otobo-to-helpdesk.sql`). Corpos de palavra-passe/conta: `ZZZBWBEmailBranding.pm`. As tags internas `<OTOBO_*>` mantêm-se (são placeholders do motor, não marca).
 
 ## Dashboard e interface
 
 - Trabalho aberto: `Output/HTML/Dashboard/BWBOpenWork.pm`, configs em `otobo/Kernel/Config/Files/ZZZBWBDashboard*.pm`.
 - Recursos estáticos BWB/ZS: `otobo/var/httpd/htdocs/`.
 - Interface em português de Portugal, UTF-8, responsiva (alvos de toque ≥ 44 px; folha/Field ≥ 48 px).
+- Tema visual Agent (PC e mobile standard): `BWBAgentTheme.css` (loader `999`, por último) — cinzentos/pretos; PC `#NavigationContainer` transparente; mobile: header/toolbar claros, hamburger preto, sidebar direita (`.SidebarColumn`) e menu esquerdo claros; logo `bwb-black-compact.svg`. Login excluído. Sem alteração de menus/fluxos.
+- Portal cliente (`CustomerDashboard`): a tile «Tickets recentes» tem altura fixa no skin Default com `overflow:hidden`, o que cortava linhas sem scroll. Override `BWBCustomerDashboard.css` (loader `Loader::Module::CustomerDashboard###999-BWBCustomerDashboard`) aplica `overflow-y: auto` no contentor da lista — XML `BWBCustomerPortal.xml`.
+- Portal cliente (`CustomerTicketZoom`):
+  - Ordem das comunicações: mais recente em cima (núcleo OTOBO, `reverse` na lista).
+  - «Responder» contextual na **última comunicação do helpdesk** (`agent` ou `system`); o botão do cabeçalho fica oculto quando existe esse artigo (`BWBReplyContextual`). JS `Core.Customer.BWBTicketZoom.js` **injecta** o botão no DOM após o `TicketZoom` nativo (não altera a estrutura HTML do `MIMEBase`, para não partir a TOC/`iframe`).
+  - «Fechar ocorrência» só se o estado for `Pendente a aguardar cliente` (rótulo PT: «A aguardar resposta do cliente»), preferencialmente no artigo «Folha de trabalho»; acção `CustomerBWBTicketClose` (ChallengeToken + `TicketCustomerPermission`, estado → `encerrado com êxito`, artigo cliente de confirmação).
+  - Templates Custom: `CustomerTicketZoom.tt` (atributos `data-bwb-*`); CSS `BWBCustomerTicketZoom.css`.
 
 ## Modo de campo (Field Mode)
 
 - Terceiro modo de UI Agent para técnicos no terreno (colaboradores), sobre o responsive OTOBO — **não** é portal cliente.
-- Activação por defeito: colaborador (`ResponsibleUserIDGet != UserID`) + dispositivo de campo (`pointer: coarse` ou viewport ≤1024px).
-- Persistência: `localStorage.BWBFieldMode` + preferência `UserBWBFieldMode`.
+- Activação por defeito: **apenas colaboradores** (`ResponsibleUserIDGet != UserID`) em dispositivo de campo; agentes responsáveis (ex.: Jorge) **nunca** entram em Field Mode (nem switch, nem Painel Field).
+- Persistência: `localStorage.BWBFieldMode` + preferência `UserBWBFieldMode` (ignoradas se o utilizador não for colaborador).
 - No Field **não há** switch Desktop; só **Field ↔ Mobile standard**.
 - Menu reduzido (visível): Painel de Controlo, Calendário, Procurar, Ajuda — etiquetas fixas em português de Portugal; o menu Agent completo fica oculto.
-- Painel (`AgentBWBFieldHome`): zona operacional (Folhas → tickets do técnico → folha; Tickets → Cliente → Utilizador → título/problema → abrir folha) e dashboard informativo (tickets abertos + folhas abertas/pausadas).
+- Painel (`AgentBWBFieldHome`): zona operacional (Folhas → tickets do técnico → folha; Tickets → Cliente → Utilizador → título/problema → prioridade → abrir folha) e dashboard informativo (tickets abertos + folhas abertas/pausadas).
 - Criação de ticket no Field: selects tácteis (bottom-sheet ≥52px); utilizadores filtrados pelo cliente escolhido.
-- Visual: tema claro estilo Cursor (cinzentos claros / branco, texto escuro) em `BWBFieldMode.css`; acções Cancelar/Pausa/Terminar da folha mantêm cores semânticas.
-- Código: `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `AgentBWBFieldHome.tt`, `js/Core.Agent.BWBFieldMode.js`, XML `BWBFieldMode.xml` (SysConfig carrega de `Kernel/Config/Files/XML/`; o deploy copia para lá a partir de `Custom/.../XML/`).
+- Artigo inicial da criação Field: canal Email, `SenderType=customer`, `From` = nome/email do utilizador de cliente (mesmo princípio do encaminhamento `CODIGO | email | Fwd: título`); o colaborador fica só como proprietário/criador do sistema para abrir a folha.
+- Lista de utilizadores de cliente: esgotar o cursor SQL antes de `CustomerUserAccessCheck` (e sessões abertas antes de `TicketAccessCheck`) — o mesmo handle `DB` não pode fazer `Prepare` aninhado durante `FetchrowArray`, senão só o primeiro utilizador aparece.
+- Prioridade na criação rápida: select no formulário (prioridades válidas via `PriorityList`); por defeito a mais alta (maior `PriorityID`, nesta instalação `4 crítico`); `TicketCreate` usa `PriorityID` (evita nomes inglês vs PT).
+- Visual Field: layout/táctil em `BWBFieldMode.css`; paleta partilhada com `BWBAgentTheme.css` (Agent PC); acções Cancelar/Pausa/Terminar da folha mantêm cores semânticas.
+- Sessão Agent: idle `1200` s (20 min) e `SessionCheckRemoteIP=0` via `ZZZBWBSession.pm` (evita logout por mudança de IP móvel).
+- **Um equipamento de cada vez (colaboradores):** `PreApplicationModule` `BWBAgentSessionGuard` — em cada pedido, elimina outras sessões `AgentInterface` do mesmo `UserID`. Responsáveis/admins não são afectados.
+- Folha obrigatória em Field: após «Gravar e abrir folha» inicia sessão com tipo `Intervenção presencial` (ou primeiro disponível); links de tickets no painel vão para `AgentBWBWorkSession`; com folha **em execução** o guard `BWBFieldWorkGuard` força essa folha; em **pausa** pode usar o painel mas não abrir outra folha/ticket.
+- Código: `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `Kernel/Modules/BWBAgentSessionGuard.pm`, `Kernel/Modules/BWBFieldWorkGuard.pm`, `AgentBWBFieldHome.tt`, `js/Core.Agent.BWBFieldMode.js`, XML `BWBFieldMode.xml`, `ZZZBWBSession.pm`, `BWBAgentTheme.css`.
 - Fila por defeito na criação rápida: `zsangola-in` se o responsável hierárquico for Amadeu (UserID 4); caso contrário `bwb-in`.
 
 ## Ao desenvolver funcionalidade nova ou alterar existente

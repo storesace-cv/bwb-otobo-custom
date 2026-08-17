@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="Loader::Module::CustomerDashboard###999-BWBCustomerDashboard" Required="0" Valid="1">
+        <Description Translatable="1">CSS BWB do dashboard cliente: scroll vertical na lista de tickets recentes.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>BWBCustomerDashboard.css</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="CustomerFrontend::Module###CustomerBWBTicketClose" Required="0" Valid="1">
+        <Description Translatable="1">Acção do portal cliente para encerrar ocorrência em confirmação.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group"><Array></Array></Item>
+                    <Item Key="GroupRo"><Array></Array></Item>
+                    <Item Key="Description" Translatable="1">Encerrar ocorrência (confirmação do cliente)</Item>
+                    <Item Key="NavBarName"></Item>
+                    <Item Key="Title" Translatable="1">Encerrar ocorrência</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::CustomerTicketZoom###999-BWBCustomerTicketZoom" Required="0" Valid="1">
+        <Description Translatable="1">CSS/JS BWB do zoom de ticket no portal cliente (Responder contextual e Fechar ocorrência).</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>BWBCustomerTicketZoom.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Customer.BWBTicketZoom.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+</otobo_config>
