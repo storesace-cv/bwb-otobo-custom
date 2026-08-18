@@ -26,7 +26,7 @@ Sem folha **iniciada**, o responsável **não** vê o trabalho em curso nesse qu
 
 1. Abrir **Painel de Controlo**.
 2. Ir ao bloco **«Folhas de trabalho abertas»**.
-3. Cada linha é uma folha **em execução** ou **em pausa**: cliente, número do ticket, título, **técnico**, estado, início e duração.
+3. Cada linha é uma folha **em execução** ou **em pausa**: cliente, **loja**, número do ticket, título, **técnico**, estado, início e duração.
 4. Clicar na linha abre a folha desse técnico.
 
 Nessa folha o responsável **consulta** (tipo, técnico, notas, se está em pausa). **Não** pode pausar, terminar nem cancelar — o técnico no terreno continua a ser quem edita.
@@ -46,6 +46,8 @@ Se o bloco não aparecer: no próprio painel, nas definições dos widgets, acti
 3. O histórico do ticket mostra mudanças de proprietário e de estado.
 
 Para um cliente concreto (ex.: KITX): **Procurar** pelo nome ou código do cliente, ou filtrar a vista de tickets.
+
+A **loja** do ticket (informação à direita, junto ao cliente) é a loja **desta ocorrência**, não necessariamente a da ficha do utilizador. Se o e-mail veio de uma pessoa da Sede mas o assunto é de outra loja, no zoom use **Alterar loja**. Isso não muda a ficha do utilizador.
 
 ---
 

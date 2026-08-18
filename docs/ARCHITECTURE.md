@@ -24,6 +24,7 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 
 - Uma empresa cliente pode ter várias lojas; a loja `S - Sede` é criada por defeito.
 - Os utilizadores de cliente pertencem a uma loja.
+- Cada ticket tem a **sua** loja (`bwb_ticket_store`), copiada na criação da ficha do utilizador; o agente pode corrigi-la sem alterar a ficha.
 - Os clientes pertencem a um agente responsável.
 - Colaboradores podem ter acesso por cliente ou por loja.
 - A separação BWB/ZS Angola é aplicada por filas, propriedade de cliente e permissões personalizadas.
@@ -63,6 +64,7 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | Área | Código relevante |
 |---|---|
 | Lojas | `Kernel/System/BWBStore.pm`, `Kernel/Modules/AdminBWBStore.pm` |
+| Loja no ticket | `BWBTicketStore.pm`, `Ticket/Event/BWBTicketStore.pm`, `AgentBWBTicketStore.pm`, XML `BWBTicketStore.xml` |
 | Convites | `Kernel/System/BWBInvite.pm`, `Kernel/Modules/PublicBWBInvite.pm` |
 | Folhas de trabalho | `Kernel/System/BWBWorkSession.pm`, `Kernel/System/BWBWorkSheet.pm`, `Kernel/Modules/AgentBWBWorkSession.pm` |
 | Duração contabilizada (ficha cliente) | `BWBCustomerCompany.pm`, `AdminCustomerCompany`, filtro `BWBHideAccountedDuration`, XML `BWBAccountedDuration.xml` |
@@ -78,4 +80,5 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | Isolamento de acessos | `BWBAccess.pm`, `Ticket/Permission/BWBCustomerOwnerCheck.pm` |
 | Devoluções DSN | `BWBBounce.pm`, `PostMaster/Filter/BWBBounce.pm`, `PostMaster/FollowUpCheck/BWBBounce.pm`, `BWBBounceNotify.pm` |
 | E-mail | `Ticket/Event/NotificationEvent/Transport/Email.pm`, templates NotificationEvent |
+| Modelo de resposta `mod-apple-01` | HTML `Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html` + `standard_template` / `queue_standard_template` |
 | Dashboard | `Output/HTML/Dashboard/BWBOpenWork.pm`, configurações `ZZZBWBDashboard*.pm` |

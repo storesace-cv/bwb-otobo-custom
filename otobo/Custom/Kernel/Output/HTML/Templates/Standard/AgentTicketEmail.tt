@@ -1,0 +1,4 @@
+# --
+# BWB: alias para o template partilhado de intake.
+# --
+[% INCLUDE "AgentBWBTicketIntake.tt" %]

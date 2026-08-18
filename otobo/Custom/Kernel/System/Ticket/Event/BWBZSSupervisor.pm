@@ -6,6 +6,7 @@ use utf8;
 
 our @ObjectDependencies = (
     'Kernel::System::BWBAccess',
+    'Kernel::System::BWBTicketIntake',
     'Kernel::System::BWBWorkSession',
     'Kernel::System::BWBZSSupervisorNotify',
     'Kernel::System::Log',
@@ -27,6 +28,8 @@ sub Run {
     my $Access = $Kernel::OM->Get('Kernel::System::BWBAccess');
 
     if ( $Event eq 'TicketCreate' ) {
+        my $Intake = $Kernel::OM->Get('Kernel::System::BWBTicketIntake');
+        return 1 if $Intake->IsSupervisorNotifySkipped();
         $Kernel::OM->Get('Kernel::System::BWBZSSupervisorNotify')->Notify(
             TicketID    => $TicketID,
             ActorUserID => $UserID,

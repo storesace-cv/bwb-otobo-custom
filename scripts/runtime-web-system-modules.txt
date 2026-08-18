@@ -12,11 +12,14 @@ Kernel/System/BWBInvite.pm
 Kernel/System/BWBOperationType.pm
 Kernel/System/BWBResultType.pm
 Kernel/System/BWBStore.pm
+Kernel/System/BWBTicketIntake.pm
+Kernel/System/BWBTicketStore.pm
 Kernel/System/BWBTimeSpent.pm
 Kernel/System/BWBWorkSession.pm
 Kernel/System/BWBWorkSheet.pm
 Kernel/System/BWBZSSupervisorNotify.pm
 Kernel/System/Ticket/Event/BWBBounce.pm
+Kernel/System/Ticket/Event/BWBTicketStore.pm
 Kernel/System/Ticket/Event/BWBZSSupervisor.pm
 Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 Kernel/System/Ticket/Permission/BWBCustomerOwnerCheck.pm

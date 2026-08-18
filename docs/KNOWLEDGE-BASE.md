@@ -19,10 +19,11 @@ Antes de planear ou alterar código:
 | 1 | [REFERENCES.md](REFERENCES.md) | Manuais oficiais: administração, utilização, desenvolvimento, instalação |
 | 2 | [ARCHITECTURE.md](ARCHITECTURE.md) | Domínios funcionais e componentes BWB |
 | 3 | [FEATURES.md](FEATURES.md) | Catálogo do que já foi desenvolvido e como se comporta |
-| 4 | [DEVELOPMENT.md](DEVELOPMENT.md) | Princípios, fluxo de alteração e validação |
-| 5 | [OPERATIONS.md](OPERATIONS.md) | Publicação, SSH, cópias de segurança |
-| 6 | [SECURITY.md](SECURITY.md) | Segredos, isolamento BWB/ZS, o que nunca versionar |
-| 7 | [INVENTORY.md](INVENTORY.md) | O que veio da produção e tabelas próprias |
+| 4 | [ROADMAP.md](ROADMAP.md) | Entregue recentemente e passos seguintes |
+| 5 | [DEVELOPMENT.md](DEVELOPMENT.md) | Princípios, fluxo de alteração e validação |
+| 6 | [OPERATIONS.md](OPERATIONS.md) | Publicação, SSH, cópias de segurança |
+| 7 | [SECURITY.md](SECURITY.md) | Segredos, isolamento BWB/ZS, o que nunca versionar |
+| 8 | [INVENTORY.md](INVENTORY.md) | O que veio da produção e tabelas próprias |
 
 Depois disso, identificar no código os módulos Perl, templates TT, JavaScript e XML/PM de configuração envolvidos na tarefa.
 

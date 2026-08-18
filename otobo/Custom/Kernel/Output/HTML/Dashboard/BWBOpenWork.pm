@@ -127,6 +127,9 @@ sub Run {
             TicketNumber   => $Ticket{TicketNumber},
             Title          => $Ticket{Title},
             Customer       => $Ticket{CustomerCompanyName} || $Ticket{CustomerName} || $Ticket{CustomerID} || '-',
+            Store          => $Kernel::OM->Get('Kernel::System::BWBTicketStore')->LabelGet(
+                TicketID => $TicketID,
+            ) || '-',
             Technician     => $Technician{UserFullname} || $Technician{UserLogin} || '-',
             WorkType       => $WorkType,
             Start          => $Start,

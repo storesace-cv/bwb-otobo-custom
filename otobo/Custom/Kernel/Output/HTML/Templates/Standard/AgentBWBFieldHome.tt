@@ -12,6 +12,7 @@
       <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% T.TicketID | html %]">
         <strong>Ticket#[% T.TicketNumber | html %]</strong>
         <span class="BWBFieldMuted">[% T.Customer | html %]</span>
+        <span class="BWBFieldMuted">[% T.Store | html %]</span>
         <span>[% T.Title | html %]</span>
         <span class="BWBFieldMuted">[% T.State | html %]</span>
       </a>
@@ -98,6 +99,7 @@
         <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% T.TicketID | html %]">
           <strong>Ticket#[% T.TicketNumber | html %]</strong>
           <span class="BWBFieldMuted">[% T.Customer | html %]</span>
+          <span class="BWBFieldMuted">[% T.Store | html %]</span>
           <span>[% T.Title | html %]</span>
         </a>
       </li>
@@ -114,6 +116,8 @@
       <li>
         <a class="BWBFieldListItem" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% W.TicketID | html %]">
           <strong>Ticket#[% W.TicketNumber | html %]</strong>
+          <span class="BWBFieldMuted">[% W.Customer | html %]</span>
+          <span class="BWBFieldMuted">[% W.Store | html %]</span>
           <span class="[% W.StatusClass | html %]">[% W.Status | html %]</span>
           <span>[% W.Title | html %]</span>
           <span class="BWBFieldMuted">[% W.WorkType | html %]</span>

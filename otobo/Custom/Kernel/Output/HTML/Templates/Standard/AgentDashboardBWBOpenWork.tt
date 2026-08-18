@@ -4,8 +4,8 @@
     .BWBOpenWorkTable .BWBPaused { background:#fff1dd; color:#8a4b00; }
     .BWBOpenWorkTable td a.AsBlock { min-height:28px; }
     @media (max-width: 767px) {
-        .BWBOpenWorkTable th:nth-child(4), .BWBOpenWorkTable td:nth-child(4),
-        .BWBOpenWorkTable th:nth-child(6), .BWBOpenWorkTable td:nth-child(6) { display:none; }
+        .BWBOpenWorkTable th:nth-child(5), .BWBOpenWorkTable td:nth-child(5),
+        .BWBOpenWorkTable th:nth-child(7), .BWBOpenWorkTable td:nth-child(7) { display:none; }
         .BWBOpenWorkTable .BWBWorkStatus { min-width:68px; }
     }
 </style>
@@ -13,6 +13,7 @@
     <thead>
         <tr>
             <th>[% Translate("Cliente") | html %]</th>
+            <th>[% Translate("Loja") | html %]</th>
             <th>[% Translate("Ticket#") | html %]</th>
             <th>[% Translate("Título") | html %]</th>
             <th>[% Translate("Técnico") | html %]</th>
@@ -25,6 +26,7 @@
 [% RenderBlockStart("BWBOpenWorkRow") %]
         <tr class="Row">
             <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Customer | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Store | html %]</a></td>
             <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.TicketNumber | html %]</a></td>
             <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]" title="[% Data.WorkType | html %]">[% Data.Title | html %]</a></td>
             <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentBWBWorkSession;TicketID=[% Data.TicketID | uri %]">[% Data.Technician | html %]</a></td>
@@ -34,7 +36,7 @@
         </tr>
 [% RenderBlockEnd("BWBOpenWorkRow") %]
 [% RenderBlockStart("BWBOpenWorkNone") %]
-        <tr><td colspan="7">[% Translate("Não existem folhas de trabalho abertas ou em pausa.") | html %]</td></tr>
+        <tr><td colspan="8">[% Translate("Não existem folhas de trabalho abertas ou em pausa.") | html %]</td></tr>
 [% RenderBlockEnd("BWBOpenWorkNone") %]
     </tbody>
 </table>

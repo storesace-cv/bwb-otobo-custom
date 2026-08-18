@@ -7,6 +7,7 @@ use utf8;
 our @ObjectDependencies = (
     'Kernel::Output::HTML::Layout',
     'Kernel::System::BWBAccess',
+    'Kernel::System::BWBTicketStore',
     'Kernel::System::BWBConvertCustomer',
     'Kernel::System::BWBCustomerUserEmail',
     'Kernel::System::CustomerCompany',
@@ -139,6 +140,12 @@ sub Run {
                 },
             );
         }
+
+        $Kernel::OM->Get('Kernel::System::BWBTicketStore')->EnsureFromCustomerUser(
+            TicketID    => $TicketID,
+            UserID      => $Self->{UserID},
+            OnlyIfEmpty => 1,
+        );
 
         return $LayoutObject->JSONReply(
             Data => {

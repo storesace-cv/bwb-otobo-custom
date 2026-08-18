@@ -222,6 +222,26 @@ CREATE TABLE `bwb_store` (
   CONSTRAINT `fk_bwb_store_valid` FOREIGN KEY (`valid_id`) REFERENCES `valid` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `bwb_ticket_store`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bwb_ticket_store` (
+  `ticket_id` bigint(20) NOT NULL,
+  `store_id` int(11) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `create_by` int(11) NOT NULL,
+  `change_time` datetime NOT NULL,
+  `change_by` int(11) NOT NULL,
+  PRIMARY KEY (`ticket_id`),
+  KEY `bwb_ticket_store_store_id` (`store_id`),
+  KEY `fk_bwb_ticket_store_create_by` (`create_by`),
+  KEY `fk_bwb_ticket_store_change_by` (`change_by`),
+  CONSTRAINT `fk_bwb_ticket_store_change_by` FOREIGN KEY (`change_by`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_bwb_ticket_store_create_by` FOREIGN KEY (`create_by`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_bwb_ticket_store_store` FOREIGN KEY (`store_id`) REFERENCES `bwb_store` (`id`),
+  CONSTRAINT `fk_bwb_ticket_store_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `bwb_work_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;

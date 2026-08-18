@@ -179,6 +179,17 @@ body:not(.LoginScreen) #Navigation > .Active > ul {
   box-shadow: 0 4px 16px var(--colShadowDark);
 }
 
+/*
+ * Ticket ActionRow/Cluster (Custom.LoginBackground.css) sit at 5000–6000 so
+ * ticket menus appear above widgets. Core #NavigationContainer is z-index 20;
+ * NavContainerZIndex (5500) is applied on click only, not on hover. An open
+ * main-menu dropdown must stack above that ticket chrome.
+ */
+body:not(.LoginScreen) #NavigationContainer:has(#Navigation > .Active),
+body:not(.LoginScreen) #NavigationContainer.NavContainerZIndex {
+  z-index: 7000 !important;
+}
+
 body:not(.LoginScreen) #Navigation > .Active > ul > li {
   background: var(--bwb-field-surface) !important;
 }

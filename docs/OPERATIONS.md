@@ -33,9 +33,21 @@ ssh bwb-otobo-prod 'hostname && /opt/otobo/bin/otobo.Daemon.pl status'
 
 O script nunca apaga ficheiros remotos e exige `--apply` de propósito. A matriz obrigatória está em [RUNTIME-PERMISSIONS.md](RUNTIME-PERMISSIONS.md): o código e o SysConfig compilado (`ZZZAAuto.pm` / `ZZZBWB*.pm`) carregados pelo Apache recebem leitura via grupo `www-data`; fontes XML SysConfig e segredos permanecem privados do utilizador `otobo`. Após `Maint::Config::Rebuild` o deploy reaplica permissões em `ZZZAAuto.pm` (o rebuild volta a deixar o ficheiro ilegível para o Apache). O processo termina com verificação como `www-data` e teste HTTP ao painel (incluindo detecção da mensagem «not registered in Kernel/Config.pm»). Para mudanças de base de dados, a migração deve ser revista e executada separadamente.
 
-Nota operacional: sem modelos `Answer` ligados à fila (`queue_standard_template`), o zoom do ticket **não mostra** «Responder». Migração de referência: `db/migrations/2026-08-17-queue-answer-templates.sql`.
+Nota operacional: sem modelos `Answer` ligados à fila (`queue_standard_template`), o zoom do ticket **não mostra** «Responder». Migração de referência: `db/migrations/2026-08-17-queue-answer-templates.sql`. Modelo de resposta `mod-apple-01` (cartão Helpdesk, escolhível em Responder):
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo standard_template queue_standard_template > /root/otobo-backups/standard_template-before-mod-apple-01.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-19-mod-apple-01-answer-template.sql
+```
 
 Folhas ZS já no sistema em que o responsável (UserID 4) ficou dono da sessão depois de passar o ticket a um colaborador: `db/migrations/2026-08-17-zs-supervisor-session-handoff.sql` (rever o `SELECT` equivalente no servidor antes do `UPDATE`).
+
+Loja persistida no ticket (`bwb_ticket_store`, DF `BWBStore`, texto da notificação de ticket novo): aplicar **com** a publicação do código, depois `Maint::Cache::Delete`:
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo ticket dynamic_field dynamic_field_value notification_event_message > /root/otobo-backups/ticket-store-before.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-18-ticket-store.sql
+```
 
 Devolução DSN criada como ticket novo (ex. `2026081762000058` / id 437, 2026-08-17): fundir para o ticket original (`2026081762000049` / id 436) depois de tornar o artigo da DSN não visível ao cliente, e disparar `BWBBounceNotify` para o proprietário **e** o agente responsável. Não reabrir o ticket encerrado.
 

@@ -31,6 +31,7 @@ our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::Output::HTML::Layout',
     'Kernel::System::BWBCustomerCompany',
+    'Kernel::System::BWBTicketStore',
     'Kernel::System::CustomerCompany',
     'Kernel::System::CustomerUser',
     'Kernel::System::DB',
@@ -205,8 +206,41 @@ sub SendNotification {
             String => $CustomerCompanyName,
         );
 
-        $Notification{Body} =~ s/&lt;OTOBO_BWB_CUSTOMER_COMPANY&gt;/$CustomerCompanyName/g;
-        $Notification{Body} =~ s/<OTOBO_BWB_CUSTOMER_COMPANY>/$CustomerCompanyName/g;
+        $Notification{Body} = $Self->_ReplaceHTMLPlaceholder(
+            Text  => $Notification{Body},
+            Name  => 'OTOBO_BWB_CUSTOMER_COMPANY',
+            Value => $CustomerCompanyName,
+        );
+    }
+
+    # Loja do ticket (persistida), não a da ficha do utilizador.
+    if (
+        $Notification{Body}
+        && $Notification{Body} =~ /OTOBO_BWB_STORE/
+        )
+    {
+        my $StoreData   = $Kernel::OM->Get('Kernel::System::BWBTicketStore')->Get(
+            TicketID => $Param{TicketID},
+        ) || {};
+        my $StoreLabel  = $StoreData->{Label}       || '';
+        my $StoreStreet = $StoreData->{StoreStreet} || '';
+        my $StoreHTML   = $StoreLabel ? $Self->_HTMLLines( $StoreLabel )  : '';
+        my $StreetHTML  = ( $StoreLabel && $StoreStreet )
+            ? $Self->_HTMLLines($StoreStreet)
+            : '';
+
+        $Notification{Body} = $Self->_ReplaceHTMLPlaceholder(
+            Text      => $Notification{Body},
+            Name      => 'OTOBO_BWB_STORE',
+            Value     => $StoreHTML,
+            ConsumeBr => $StoreHTML ? 0 : 1,
+        );
+        $Notification{Body} = $Self->_ReplaceHTMLPlaceholder(
+            Text      => $Notification{Body},
+            Name      => 'OTOBO_BWB_STORE_STREET',
+            Value     => $StreetHTML,
+            ConsumeBr => $StreetHTML ? 0 : 1,
+        );
     }
 
     if ( $Param{Notification}->{ContentType} && $Param{Notification}->{ContentType} eq 'text/html' ) {
@@ -971,6 +1005,40 @@ sub SecurityOptionsGet {
 
     return \%SecurityOptions;
 
+}
+
+# Replace <NAME>, &lt;NAME&gt; and &amp;lt;NAME&amp;gt;, with an optional trailing <br>.
+sub _ReplaceHTMLPlaceholder {
+    my ( $Self, %Param ) = @_;
+    my $Text  = $Param{Text} // '';
+    my $Name  = $Param{Name} || return $Text;
+    my $Value     = defined $Param{Value} ? $Param{Value} : '';
+    my $ConsumeBr = $Param{ConsumeBr} ? '(?:<br\s*/?>)?' : '';
+
+    $Text =~ s{
+        (?:&amp;lt;|&lt;|<)
+        \Q$Name\E
+        (?:&amp;gt;|&gt;|>)
+        $ConsumeBr
+    }{$Value}gx;
+
+    return $Text;
+}
+
+# Escape HTML and keep postal-address line breaks.
+sub _HTMLLines {
+    my ( $Self, $String ) = @_;
+    return '' if !defined $String || $String eq '';
+
+    my $HTMLUtils = $Kernel::OM->Get('Kernel::System::HTMLUtils');
+    my @Lines     = split /(?:\r\n|\n|\r)/, $String;
+    my @HTML;
+    for my $Line (@Lines) {
+        $Line =~ s/^\s+|\s+$//g;
+        next if $Line eq '';
+        push @HTML, $HTMLUtils->ToHTML( String => $Line );
+    }
+    return join '<br>', @HTML;
 }
 
 1;

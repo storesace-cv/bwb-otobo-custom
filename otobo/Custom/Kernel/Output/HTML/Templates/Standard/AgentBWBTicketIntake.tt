@@ -1,0 +1,144 @@
+# --
+# BWB: registo em nome do cliente (layout OTOBO FormScreen, cascata Field).
+# --
+<div class="MainBox ARIARoleMain FormScreen">
+
+    <h1>[% Data.ScreenTitle | html %]</h1>
+
+    <div class="ContentColumn">
+        <form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" id="BWBTicketIntakeForm" class="Validate PreventMultipleSubmits BWBTicketIntakeForm">
+            <input type="hidden" name="Action" value="[% Data.FormAction | html %]"/>
+            <input type="hidden" name="Subaction" value="StoreNew"/>
+            <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]"/>
+            <input type="hidden" name="QueueID" value="[% Data.QueueID | html %]"/>
+
+            [% IF Data.Error %]
+            <div class="ServerError" role="alert">
+                <p>[% Data.Error | html %]</p>
+            </div>
+            [% END %]
+
+            <fieldset class="TableLike">
+
+                <div class="Field">
+                    <p class="AsteriskExplanation">[% Translate("All fields marked with an asterisk (*) are mandatory.") | html %]</p>
+                    [% IF Data.Origin == 'phone' %]
+                    <p class="Explanation">Registe o pedido em nome do cliente. O cliente receberá um e-mail a confirmar o registo.</p>
+                    [% ELSE %]
+                    <p class="Explanation">Registe um pedido indicado por e-mail que não chegou ao helpdesk. O cliente receberá confirmação do registo.</p>
+                    [% END %]
+                </div>
+                <div class="Clear"></div>
+
+                <label for="BWBCustomerID" class="Mandatory"><span class="Marker">*</span> [% Translate("Customer") | html %]:</label>
+                <div class="Field">
+                    <select name="CustomerID" id="BWBCustomerID" required autocomplete="off">
+                        <option value="">— [% Translate("Select") | html %] —</option>
+                        [% FOREACH C IN Data.Customers %]
+                        <option value="[% C.CustomerID | html %]"[% IF Data.FormCustomerID == C.CustomerID || ( !Data.FormCustomerID && Data.SelectedCustomerID == C.CustomerID ) %] selected[% END %]>[% C.Label | html %]</option>
+                        [% END %]
+                    </select>
+                </div>
+                <div class="Clear"></div>
+
+                <label for="BWBCustomerUser" class="Mandatory"><span class="Marker">*</span> [% Translate("Customer user") | html %]:</label>
+                <div class="Field">
+                    <select name="CustomerUser" id="BWBCustomerUser" required disabled autocomplete="off">
+                        <option value="">— Selecionar o cliente primeiro —</option>
+                        [% FOREACH U IN Data.CustomerUsers %]
+                        <option value="[% U.Login | html %]" data-customer-id="[% U.CustomerID | html %]" hidden disabled[% IF Data.FormCustomerUser == U.Login || ( !Data.FormCustomerUser && Data.SelectedCustomerUser == U.Login ) %] selected[% END %]>[% U.Label | html %]</option>
+                        [% END %]
+                    </select>
+                </div>
+                <div class="Clear"></div>
+
+                <label for="BWBQueueName">[% Translate("To queue") | html %]:</label>
+                <div class="Field">
+                    <input type="text" id="BWBQueueName" value="[% Data.QueueName | html %]" readonly disabled/>
+                </div>
+                <div class="Clear"></div>
+
+                <label for="BWBPriorityID" class="Mandatory"><span class="Marker">*</span> [% Translate("Priority") | html %]:</label>
+                <div class="Field">
+                    <select name="PriorityID" id="BWBPriorityID" required>
+                        [% FOREACH P IN Data.Priorities %]
+                        <option value="[% P.PriorityID | html %]"[% IF Data.FormPriorityID == P.PriorityID || ( !Data.FormPriorityID && P.Selected ) %] selected[% END %]>[% P.Name | html %]</option>
+                        [% END %]
+                    </select>
+                </div>
+                <div class="Clear"></div>
+
+                <label for="BWBSubject" class="Mandatory"><span class="Marker">*</span> [% Translate("Subject") | html %]:</label>
+                <div class="Field">
+                    <input type="text" name="Subject" id="BWBSubject" maxlength="200" value="[% Data.FormSubject | html %]" required/>
+                </div>
+                <div class="Clear"></div>
+
+                <label class="Mandatory" for="BWBBody"><span class="Marker">*</span> [% Translate("Text") | html %]:</label>
+                <div class="Field">
+                    <textarea id="BWBBody" name="Body" title="[% Translate("Message body") | html %]" rows="12" required>[% Data.FormBody | html %]</textarea>
+                </div>
+                <div class="Clear"></div>
+
+                <div class="Field BWBTicketIntakeActions">
+                    <button class="Primary CallForAction" type="submit" value="submit">
+                        <span><i class="fa fa-check"></i> [% Data.SubmitLabel | html %]</span>
+                    </button>
+                    <a class="CallForAction" href="[% Env("Baselink") %]Action=AgentDashboard">
+                        <span>[% Translate("Cancel") | html %]</span>
+                    </a>
+                </div>
+                <div class="Clear"></div>
+
+            </fieldset>
+        </form>
+        <div class="Clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+(function () {
+    var Customer = document.getElementById('BWBCustomerID');
+    var User = document.getElementById('BWBCustomerUser');
+    if (!Customer || !User) {
+        return;
+    }
+
+    function FilterUsers() {
+        var CustomerID = Customer.value || '';
+        var Placeholder = User.querySelector('option[value=""]');
+        Array.from(User.options).forEach(function (Option) {
+            if (!Option.value) {
+                return;
+            }
+            var Match = CustomerID && Option.getAttribute('data-customer-id') === CustomerID;
+            Option.hidden = !Match;
+            Option.disabled = !Match;
+            if (!Match && Option.selected) {
+                Option.selected = false;
+            }
+        });
+        User.disabled = !CustomerID;
+        if (Placeholder) {
+            Placeholder.textContent = CustomerID ? '— Selecionar —' : '— Selecionar o cliente primeiro —';
+            Placeholder.selected = true;
+        }
+        if (CustomerID) {
+            var Keep = Array.from(User.options).find(function (Option) {
+                return Option.value && Option.selected && Option.getAttribute('data-customer-id') === CustomerID && !Option.disabled;
+            });
+            if (Keep) {
+                User.value = Keep.value;
+            }
+            else {
+                User.value = '';
+            }
+        }
+        else {
+            User.value = '';
+        }
+    }
+
+    Customer.addEventListener('change', FilterUsers);
+    FilterUsers();
+})();
+</script>

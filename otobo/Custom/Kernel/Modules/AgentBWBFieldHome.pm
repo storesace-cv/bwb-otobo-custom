@@ -85,9 +85,13 @@ sub Run {
     }
     elsif ( $Subaction eq 'NewTicket' ) {
         $Data{View}          = 'create';
-        $Data{Customers}     = $Self->_CustomersForAgent();
-        $Data{CustomerUsers} = $Self->_CustomerUsersForAgent();
-        $Data{Priorities}    = $Self->_PrioritiesForForm();
+        $Data{Customers}     = $Kernel::OM->Get('Kernel::System::BWBTicketIntake')->CustomersForAgent(
+            UserID => $Self->{UserID},
+        );
+        $Data{CustomerUsers} = $Kernel::OM->Get('Kernel::System::BWBTicketIntake')->CustomerUsersForAgent(
+            UserID => $Self->{UserID},
+        );
+        $Data{Priorities}    = $Kernel::OM->Get('Kernel::System::BWBTicketIntake')->PrioritiesForForm();
         $Data{Error}         = $Request->GetParam( Param => 'Error' ) || '';
     }
     else {
@@ -140,6 +144,9 @@ sub _OpenTicketsForOwner {
             TicketNumber => $T{TicketNumber},
             Title        => $T{Title},
             Customer     => $T{CustomerCompanyName} || $T{CustomerName} || $T{CustomerID} || '-',
+            Store        => $Kernel::OM->Get('Kernel::System::BWBTicketStore')->LabelGet(
+                TicketID => $TicketID,
+            ) || '-',
             State        => $T{State},
         };
     }
@@ -180,6 +187,10 @@ sub _OpenWorkSessions {
             TicketID     => $TicketID,
             TicketNumber => $T{TicketNumber},
             Title        => $T{Title},
+            Customer     => $T{CustomerCompanyName} || $T{CustomerName} || $T{CustomerID} || '-',
+            Store        => $Kernel::OM->Get('Kernel::System::BWBTicketStore')->LabelGet(
+                TicketID => $TicketID,
+            ) || '-',
             WorkType     => $WorkType,
             Status       => $PausedAt ? 'Em pausa' : 'Em execução',
             StatusClass  => $PausedAt ? 'BWBPaused' : 'BWBRunning',
@@ -367,58 +378,20 @@ sub _StoreTicket {
     my $QueueID   = $Kernel::OM->Get('Kernel::System::Queue')->QueueLookup( Queue => $QueueName );
     return $Fail->("Fila $QueueName indisponível.") if !$QueueID;
 
-    my $TicketID = $Ticket->TicketCreate(
-        Title        => $Title,
-        QueueID      => $QueueID,
-        Lock         => 'lock',
-        PriorityID   => $PriorityID,
-        State        => 'open',
-        CustomerID   => $CustomerID,
-        CustomerUser => $CustomerUser,
-        OwnerID      => $Self->{UserID},
-        UserID       => $Self->{UserID},
+    my $TicketID = $Kernel::OM->Get('Kernel::System::BWBTicketIntake')->Create(
+        UserID          => $Self->{UserID},
+        CustomerID      => $CustomerID,
+        CustomerUser    => $CustomerUser,
+        QueueID         => $QueueID,
+        PriorityID      => $PriorityID,
+        Title           => $Title,
+        Body            => $Body,
+        Origin          => 'field',
+        SendDeclaration => 0,
+        OwnerID         => $Self->{UserID},
+        Lock            => 'lock',
     );
     return $Fail->('Não foi possível criar o ticket.') if !$TicketID;
-
-    # Artigo inicial em nome do utilizador de cliente (mesmo princípio do
-    # encaminhamento "CODIGO | email | Fwd: título"), não em nome do colaborador.
-    my $FromName = join(
-        ' ',
-        grep {$_} ( $Customer{UserFirstname}, $Customer{UserLastname} )
-    ) || $Customer{UserFullname} || $CustomerUser;
-    my $FromEmail = $Customer{UserEmail} || '';
-    my $From = $FromEmail ? "$FromName <$FromEmail>" : $FromName;
-
-    my $To = 'Helpdesk - BWB <helpdesk@bwb.pt>';
-    my %Queue = $Kernel::OM->Get('Kernel::System::Queue')->QueueGet( ID => $QueueID );
-    if ( $Queue{SystemAddressID} ) {
-        my %Address = $Kernel::OM->Get('Kernel::System::SystemAddress')->SystemAddressGet(
-            ID => $Queue{SystemAddressID},
-        );
-        if ( $Address{Name} ) {
-            $To = $Address{Realname}
-                ? "$Address{Realname} <$Address{Name}>"
-                : $Address{Name};
-        }
-    }
-
-    my $ArticleBackend = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForChannel(
-        ChannelName => 'Email',
-    );
-    my $ArticleID = $ArticleBackend->ArticleCreate(
-        TicketID             => $TicketID,
-        SenderType           => 'customer',
-        IsVisibleForCustomer => 1,
-        Subject              => $Title,
-        Body                 => $Body,
-        ContentType          => 'text/plain; charset=utf-8',
-        HistoryType          => 'EmailCustomer',
-        HistoryComment       => 'Ticket criado no modo de campo em nome do cliente',
-        From                 => $From,
-        To                   => $To,
-        UserID               => $Self->{UserID},
-    );
-    return $Fail->('Ticket criado, mas o artigo falhou.') if !$ArticleID;
 
     # Folha obrigatória e já associada a este ticket (fluxo Field).
     my $Types = $Kernel::OM->Get('Kernel::System::BWBOperationType');

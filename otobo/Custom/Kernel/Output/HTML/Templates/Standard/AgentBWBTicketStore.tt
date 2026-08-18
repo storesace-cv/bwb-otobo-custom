@@ -1,0 +1,85 @@
+<div id="BWBTicketStoreDialog" class="BWBTicketStoreDialog">
+    <p class="BWBTicketStoreLead">A loja deste ticket é independente da ficha do utilizador de cliente.</p>
+[% IF Data.CurrentLabel %]
+    <div class="BWBTicketStoreCurrent" title="[% Data.CurrentLabel | html %]">[% Data.CurrentLabel | html %]</div>
+[% END %]
+
+    <form id="BWBTicketStoreForm" action="[% Env("Baselink") | html %]" method="post" autocomplete="off">
+        <input type="hidden" name="Action" value="AgentBWBTicketStore" />
+        <input type="hidden" name="Subaction" value="Set" />
+        <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]" />
+        <input type="hidden" name="ChallengeToken" value="[% Data.ChallengeToken | html %]" />
+
+        <div class="SpacingTop">
+            <label for="BWBTicketStoreID"><strong>Loja</strong></label>
+            <div class="Field">
+                <select id="BWBTicketStoreID" name="StoreID" class="Validate_Required" required autocomplete="off">
+                    <option value="">— Selecionar —</option>
+[% FOREACH Store IN Data.Stores %]
+                    <option value="[% Store.StoreID | html %]"[% IF Data.CurrentStoreID && Data.CurrentStoreID == Store.StoreID %] selected[% END %]>[% Store.Label | html %]</option>
+[% END %]
+                </select>
+            </div>
+        </div>
+[% IF !Data.Stores.size %]
+        <p class="BWBTicketStoreNote">Não há lojas deste cliente acessíveis à sua conta.</p>
+[% ELSE %]
+        <p class="BWBTicketStoreNote">Só aparecem lojas do cliente deste ticket. A ficha do utilizador não é alterada.</p>
+[% END %]
+        <div class="BWBTicketStoreError Hidden" role="alert" aria-live="polite"></div>
+    </form>
+</div>
+
+<style type="text/css">
+.Dialog .BWBTicketStoreDialog {
+    box-sizing: border-box;
+    max-width: 520px;
+    padding: 4px 2px 8px;
+    color: #172033;
+    font-size: 14px;
+    line-height: 1.45;
+}
+.Dialog .BWBTicketStoreLead {
+    margin: 0 0 12px;
+    color: #4f5b6b;
+}
+.Dialog .BWBTicketStoreCurrent {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border: 1px solid #d9dee5;
+    border-radius: 6px;
+    background: #f3f5f7;
+    font-weight: 700;
+    word-break: break-word;
+}
+.Dialog .BWBTicketStoreDialog label {
+    display: block;
+    margin: 0 0 6px;
+}
+.Dialog .BWBTicketStoreDialog select {
+    width: 100%;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    border: 1px solid #c5ccd6;
+    border-radius: 4px;
+    background: #fff;
+    color: #172033;
+}
+.Dialog .BWBTicketStoreNote {
+    margin: 16px 0 0;
+    padding: 10px 12px;
+    border-left: 4px solid #0d1b69;
+    background: #f6f8fa;
+    color: #445166;
+    font-size: 13px;
+}
+.Dialog .BWBTicketStoreError {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dc4a4a;
+    border-radius: 6px;
+    background: #fff0f0;
+    color: #9f1d1d;
+}
+</style>

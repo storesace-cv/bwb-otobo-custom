@@ -8,6 +8,7 @@ use Unicode::Normalize qw(NFD);
 our @ObjectDependencies = qw(
     Kernel::System::BWBAccess
     Kernel::System::BWBStore
+    Kernel::System::BWBTicketStore
     Kernel::System::CustomerCompany
     Kernel::System::CustomerUser
     Kernel::System::DB
@@ -164,6 +165,11 @@ sub Convert {
         for my $TicketID ( @{$TicketIDs} ) {
             die "Falha ao associar o ticket $TicketID ao cliente.\n" if !$TicketObject->TicketCustomerSet(
                 No => $Param{CustomerID}, User => $CreatedUser, TicketID => $TicketID, UserID => $Param{UserID},
+            );
+            die "Falha ao gravar a loja do ticket $TicketID.\n" if !$Kernel::OM->Get('Kernel::System::BWBTicketStore')->EnsureFromCustomerUser(
+                TicketID    => $TicketID,
+                UserID      => $Param{UserID},
+                OnlyIfEmpty => 1,
             );
             die "Falha ao mover o ticket $TicketID.\n" if !$TicketObject->TicketQueueSet(
                 Queue => 'zsangola-in', TicketID => $TicketID, UserID => $Param{UserID}, SendNoNotification => 1,

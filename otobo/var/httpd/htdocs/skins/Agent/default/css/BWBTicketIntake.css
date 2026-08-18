@@ -1,0 +1,25 @@
+/* BWB ticket intake: fields stay inside the native OTOBO Field column. */
+.BWBTicketIntakeForm fieldset.TableLike > .Field {
+    width: 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+}
+
+.BWBTicketIntakeForm fieldset.TableLike select,
+.BWBTicketIntakeForm fieldset.TableLike input[type="text"],
+.BWBTicketIntakeForm fieldset.TableLike textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.BWBTicketIntakeForm .BWBTicketIntakeActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.BWBTicketIntakeForm .BWBTicketIntakeActions .CallForAction {
+    margin: 0;
+}

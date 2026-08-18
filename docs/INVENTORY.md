@@ -33,6 +33,7 @@ Data de referência: 15 de agosto de 2026.
 - `bwb_operation_type` e `bwb_operation_type_hidden`
 - `bwb_result_type` e `bwb_result_type_hidden`
 - `bwb_store`
+- `bwb_ticket_store`
 - `bwb_work_session`
 - `bwb_work_sheet`
 
