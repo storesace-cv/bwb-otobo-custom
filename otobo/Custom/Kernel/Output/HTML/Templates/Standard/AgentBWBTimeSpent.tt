@@ -1,0 +1,143 @@
+# --
+# Copyright (C) 2026 BWB
+# --
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>Tempo dispendido</h1>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Intervalo</h2></div>
+            <div class="Content">
+                <form action="[% Env("CGIHandle") %]" method="get" class="BWBTimeSpentFilter">
+                    <input type="hidden" name="Action" value="AgentBWBTimeSpent" />
+                    <fieldset class="TableLike">
+                        <label for="FromDate">De</label>
+                        <div class="Field">
+                            <input type="date" id="FromDate" name="FromDate" value="[% Data.FromDate | html %]" required />
+                        </div>
+                        <div class="Clear"></div>
+                        <label for="ToDate">Até</label>
+                        <div class="Field">
+                            <input type="date" id="ToDate" name="ToDate" value="[% Data.ToDate | html %]" required />
+                        </div>
+                        <div class="Clear"></div>
+                        <div class="Field SpacingTop">
+                            <button class="Primary CallForAction" type="submit"><span>Mostrar</span></button>
+                            <button class="CallForAction" type="submit" name="Subaction" value="PDF"><span>Gerar PDF</span></button>
+                        </div>
+                    </fieldset>
+                </form>
+                <p class="FieldExplanation">Folhas de trabalho da sua equipa (em curso, em pausa e terminadas) neste período. Só conta tempo com folha iniciada.</p>
+            </div>
+        </div>
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Resumo</h2></div>
+            <div class="Content">
+                <p><b>[% Data.Count | html %]</b> trabalhos<br>
+                Total: <b>[% Data.GrandDuration | html %]</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Trabalhos</h2></div>
+            <div class="Content">
+                <div class="OverflowAuto">
+                    <table class="DataTable BWBTimeSpentTable">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Loja</th>
+                                <th>Ticket#</th>
+                                <th>Título</th>
+                                <th>Técnico</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Início</th>
+                                <th>Fim</th>
+                                <th>Duração</th>
+                                <th>Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+[% RenderBlockStart("Row") %]
+                            <tr>
+                                <td>[% Data.Customer | html %]</td>
+                                <td>[% Data.Store | html %]</td>
+                                <td><a href="[% Env("Baselink") %]Action=[% IF Data.Closed %]AgentTicketZoom[% ELSE %]AgentBWBWorkSession[% END %];TicketID=[% Data.TicketID | uri %]">[% Data.TicketNumber | html %]</a></td>
+                                <td>[% Data.Title | html %]</td>
+                                <td>[% Data.Technician | html %]</td>
+                                <td>[% Data.WorkType | html %]</td>
+                                <td><span class="BWBWorkStatus [% Data.StatusClass | html %]">[% Data.Status | html %]</span></td>
+                                <td>[% Data.Start | html %]</td>
+                                <td>[% Data.End | html %]</td>
+                                <td>[% Data.Duration | html %]</td>
+                                <td>[% Data.Result | html %]</td>
+                            </tr>
+[% RenderBlockEnd("Row") %]
+[% RenderBlockStart("None") %]
+                            <tr><td colspan="11">Não há folhas de trabalho da equipa neste intervalo.</td></tr>
+[% RenderBlockEnd("None") %]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Totais por loja</h2></div>
+            <div class="Content">
+                <table class="DataTable">
+                    <thead>
+                        <tr><th>Cliente</th><th>Loja</th><th>Tempo</th></tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("StoreTotal") %]
+                        <tr>
+                            <td>[% Data.Customer | html %]</td>
+                            <td>[% Data.Store | html %]</td>
+                            <td>[% Data.Duration | html %]</td>
+                        </tr>
+[% RenderBlockEnd("StoreTotal") %]
+                        <tr>
+                            <td colspan="2"><b>Total</b></td>
+                            <td><b>[% Data.GrandDuration | html %]</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Totais por cliente</h2></div>
+            <div class="Content">
+                <table class="DataTable">
+                    <thead>
+                        <tr><th>Cliente</th><th>Tempo</th></tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("CustomerTotal") %]
+                        <tr>
+                            <td>[% Data.Customer | html %]</td>
+                            <td>[% Data.Duration | html %]</td>
+                        </tr>
+[% RenderBlockEnd("CustomerTotal") %]
+                        <tr>
+                            <td><b>Total</b></td>
+                            <td><b>[% Data.GrandDuration | html %]</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>
+<style>
+.BWBTimeSpentTable .BWBWorkStatus { display:inline-block; min-width:88px; padding:3px 9px; border-radius:12px; text-align:center; font-weight:700; }
+.BWBTimeSpentTable .BWBRunning { background:#e9f8ee; color:#176b36; }
+.BWBTimeSpentTable .BWBPaused { background:#fff1dd; color:#8a4b00; }
+.BWBTimeSpentTable .BWBClosed { background:#ececec; color:#3a3a3c; }
+.BWBTimeSpentFilter input[type="date"] { min-height:32px; }
+@media print {
+    .SidebarColumn, #Navigation, #Header, #Footer, .CallForAction { display:none !important; }
+    .ContentColumn { width:100% !important; }
+}
+</style>

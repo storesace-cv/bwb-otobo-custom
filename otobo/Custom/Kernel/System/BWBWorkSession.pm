@@ -9,6 +9,8 @@ our @ObjectDependencies = qw(
     Kernel::System::User Kernel::System::DateTime Kernel::System::DynamicField
     Kernel::System::DynamicField::Backend Kernel::System::Email Kernel::System::Queue
     Kernel::System::CustomerUser Kernel::System::Signature Kernel::System::Log
+    Kernel::System::BWBZSSupervisorNotify Kernel::System::Main
+    Kernel::System::BWBCustomerCompany
 );
 
 sub new { my ($Type) = @_; return bless {}, $Type; }
@@ -39,16 +41,45 @@ sub ActiveGet {
     );
 
     $DB->Prepare(
-        SQL  => 'SELECT id,ticket_id,work_type,start_time FROM bwb_work_session WHERE user_id=? AND end_time IS NULL ORDER BY id DESC LIMIT 1',
+        SQL  => 'SELECT id,ticket_id,user_id,work_type,start_time FROM bwb_work_session WHERE user_id=? AND end_time IS NULL ORDER BY id DESC LIMIT 1',
         Bind => [ \$Param{UserID} ],
     );
     my @Row = $DB->FetchrowArray();
-    return @Row ? { SessionID => $Row[0], TicketID => $Row[1], WorkType => $Row[2], StartTime => $Row[3] } : undef;
+    return @Row
+        ? { SessionID => $Row[0], TicketID => $Row[1], UserID => $Row[2], WorkType => $Row[3], StartTime => $Row[4] }
+        : undef;
+}
+
+sub OpenGetByTicket {
+    my ( $Self, %Param ) = @_;
+    return if !$Param{TicketID};
+    my $DB = $Kernel::OM->Get('Kernel::System::DB');
+    return if !$DB->Prepare(
+        SQL  => 'SELECT id,ticket_id,user_id,work_type,start_time FROM bwb_work_session WHERE ticket_id=? AND end_time IS NULL ORDER BY id DESC LIMIT 1',
+        Bind => [ \$Param{TicketID} ],
+    );
+    my @Row = $DB->FetchrowArray();
+    return @Row
+        ? { SessionID => $Row[0], TicketID => $Row[1], UserID => $Row[2], WorkType => $Row[3], StartTime => $Row[4] }
+        : undef;
+}
+
+sub TransferToUser {
+    my ( $Self, %Param ) = @_;
+    return if !$Param{SessionID} || !$Param{NewUserID};
+    my $Existing = $Self->ActiveGet( UserID => $Param{NewUserID} );
+    return if $Existing && int( $Existing->{SessionID} ) != int( $Param{SessionID} );
+    return $Kernel::OM->Get('Kernel::System::DB')->Do(
+        SQL  => 'UPDATE bwb_work_session SET user_id=? WHERE id=? AND end_time IS NULL',
+        Bind => [ \$Param{NewUserID}, \$Param{SessionID} ],
+    );
 }
 
 sub Start {
     my ( $Self, %Param ) = @_;
     return if !$Param{UserID} || !$Param{TicketID} || $Self->ActiveGet( UserID => $Param{UserID} );
+    my $OnTicket = $Self->OpenGetByTicket( TicketID => $Param{TicketID} );
+    return if $OnTicket;
     return if !$Kernel::OM->Get('Kernel::System::Ticket')->TicketPermission(
         Type => 'rw', TicketID => $Param{TicketID}, UserID => $Param{UserID}, LogNo => 1,
     );
@@ -57,6 +88,12 @@ sub Start {
     return if !$DB->Do(
         SQL  => 'INSERT INTO bwb_work_session(ticket_id,user_id,work_type,start_time,create_time) VALUES(?,?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP())',
         Bind => [ \$Param{TicketID}, \$Param{UserID}, \$Type ],
+    );
+    $Kernel::OM->Get('Kernel::System::BWBZSSupervisorNotify')->Notify(
+        TicketID    => $Param{TicketID},
+        ActorUserID => $Param{UserID},
+        Kind        => 'WorkStart',
+        WorkType    => $Type,
     );
     return 1 if $Param{NoArticle};
     my $Now = $Kernel::OM->Create('Kernel::System::DateTime')->Format( Format => '%d/%m/%Y às %H:%M' );
@@ -136,7 +173,7 @@ sub Finish {
     $Body .= '<tr><th style="background:#f2f2f2;text-align:right;padding:3px 8px;font-size:16px;white-space:nowrap;">Resultado:</th><td style="padding:3px 12px 3px 8px;font-weight:400;">'.$Result.'</td></tr>';
     $Body .= '<tr><th style="background:#f2f2f2;text-align:right;padding:3px 8px 7px 12px;font-size:16px;white-space:nowrap;">Estado aplicado ao ticket:</th><td style="padding:3px 12px 7px 8px;font-weight:600;">'.($StateLabel{$State} || $State).'</td></tr>';
     $Body .= '</tbody></table>';
-    $Body .= '<table role="presentation" style="border-collapse:collapse;width:auto;max-width:100%;border-bottom:1px solid #a1a1a6;"><tbody><tr>';
+    $Body .= '<table class="BWBAccountedDuration" role="presentation" style="border-collapse:collapse;width:auto;max-width:100%;border-bottom:1px solid #a1a1a6;"><tbody><tr>';
     $Body .= '<th style="background:#f2f2f2;text-align:right;padding:9px 8px 9px 12px;font-size:16px;white-space:nowrap;">Duração contabilizada:</th><td style="padding:9px 12px 9px 8px;font-weight:400;">'.$Minutes.' minutos</td>';
     $Body .= '</tr></tbody></table></div>';
     my $ArticleID = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForChannel( ChannelName => 'Internal' )->ArticleCreate(
@@ -160,25 +197,54 @@ sub Finish {
             $Signature = $SignatureData{Text} || '';
         }
         my $Recipient = $Customer{UserEmail} || $TicketData{CustomerUserID} || '';
-        my $MailBody = '<div style="font-family:'.$Font.';font-size:15px;line-height:1.5;color:#1d1d1f;max-width:760px;margin:auto;">'.$Body;
+        my $MailSheet = $Kernel::OM->Get('Kernel::System::BWBCustomerCompany')->MaybeStripAccountedDuration(
+            Content    => $Body,
+            CustomerID => $TicketData{CustomerID},
+            TicketID   => $Active->{TicketID},
+        );
+        my $MailBody = '<div style="font-family:'.$Font.';font-size:15px;line-height:1.5;color:#1d1d1f;max-width:760px;margin:auto;">'.$MailSheet;
         $MailBody .= '<div style="margin-top:32px;padding-top:20px;border-top:1px solid #d2d2d7;">'.$Signature.'</div>' if $Signature ne '';
         $MailBody .= '</div>';
         my $Subject = '[Ticket#'.($TicketData{TicketNumber} || '').'] Folha de trabalho: '.($TicketData{Title} || '');
         $Subject =~ s/[\r\n]+/ /g;
         my $Sent = $Recipient && $Address{Email} && $Kernel::OM->Get('Kernel::System::Email')->Send(
-            From     => ($Address{RealName} || $HelpdeskName).' <'.$Address{Email}.'>',
-            ReplyTo  => ($Address{RealName} || $HelpdeskName).' <'.$Address{Email}.'>',
-            To       => $Recipient,
-            Subject  => $Subject,
-            Charset  => 'utf-8',
-            MimeType => 'text/html',
-            Body     => $MailBody,
+            From      => ($Address{RealName} || $HelpdeskName).' <'.$Address{Email}.'>',
+            ReplyTo   => ($Address{RealName} || $HelpdeskName).' <'.$Address{Email}.'>',
+            To        => $Recipient,
+            Subject   => $Subject,
+            Charset   => 'utf-8',
+            MimeType  => 'text/html',
+            Body      => $MailBody,
+            ArticleID => $ArticleID,
         );
         if ( !$Sent || !$Sent->{Success} ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
                 Message  => "Não foi possível enviar por e-mail a folha de trabalho do ticket $Active->{TicketID} para $Recipient.",
             );
+        }
+        else {
+            my $Header    = $Sent->{Data}->{Header} || '';
+            my $MessageID = '';
+            if ( $Header =~ /Message-ID:\s*(<[^>]+>)/i ) {
+                $MessageID = $1;
+            }
+            elsif ( $Header =~ /Message-ID:\s*(\S+)/i ) {
+                $MessageID = $1;
+            }
+            if ($MessageID) {
+                my $MD5 = $Kernel::OM->Get('Kernel::System::Main')->MD5sum( String => $MessageID );
+                $DB->Do(
+                    SQL => 'UPDATE article_data_mime SET a_to=?, a_message_id=?, a_message_id_md5=? WHERE article_id=?',
+                    Bind => [ \$Recipient, \$MessageID, \$MD5, \$ArticleID ],
+                );
+            }
+            else {
+                $DB->Do(
+                    SQL  => 'UPDATE article_data_mime SET a_to=? WHERE article_id=?',
+                    Bind => [ \$Recipient, \$ArticleID ],
+                );
+            }
         }
     }
     return $Minutes;

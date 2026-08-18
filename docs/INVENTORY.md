@@ -2,6 +2,12 @@
 
 Data de referência: 15 de agosto de 2026.
 
+## Ambiente
+
+- **Hosting:** Euronodes VPS (IP `178.159.34.132`, hostname `helpdesk`).
+- **URL:** `https://helpdesk.storesace.cv/otobo/`.
+- **OTOBO:** `/opt/otobo`, versão **11.0.17**.
+
 ## Incluído
 
 - Código em `/opt/otobo/Custom`.
@@ -22,6 +28,7 @@ Data de referência: 15 de agosto de 2026.
 - `bwb_collaborator_customer`
 - `bwb_collaborator_store`
 - `bwb_customer_owner`
+- `bwb_customer_company_setting`
 - `bwb_invite`
 - `bwb_operation_type` e `bwb_operation_type_hidden`
 - `bwb_result_type` e `bwb_result_type_hidden`

@@ -8,7 +8,11 @@ Core.Agent = Core.Agent || {};
  * @exports TargetNS as Core.Agent.BWBAddCustomerEmailDialog
  * @description
  *      Modal nativo OTOBO (ShowContentDialog) para associar o remetente
- *      de um ticket a um utilizador de cliente como e-mail alternativo.
+ *      a um utilizador de cliente como e-mail alternativo.
+ *
+ *      Usa <select> nativo (sem Modernize): o InputField cria um <input>
+ *      de pesquisa que o browser trata como campo de e-mail e parte a UX.
+ *      ShowContentDialog recria o DOM — handlers só depois de abrir.
  */
 Core.Agent.BWBAddCustomerEmailDialog = (function (TargetNS) {
 
@@ -21,56 +25,60 @@ Core.Agent.BWBAddCustomerEmailDialog = (function (TargetNS) {
         $Error.removeClass('Hidden').text(Message || 'Não foi possível concluir a associação.');
     }
 
-    function BindForm($Root) {
-        var $Form = $Root.find('#BWBAddCustomerEmailForm');
-        var $Customer = $Form.find('#BWBAddCustomerEmailCustomerID');
+    function LoadCustomerUsers($Form, CustomerID) {
         var $User = $Form.find('#BWBAddCustomerEmailUserLogin');
 
-        $Customer.off('change.BWBAddCustomerEmail').on('change.BWBAddCustomerEmail', function () {
-            var CustomerID = $Customer.val() || '';
-            $User.prop('disabled', true).empty().append(
-                $('<option/>').val('').text(CustomerID ? 'A carregar…' : '— Selecionar o cliente primeiro —')
-            );
-            Core.UI.InputFields.Deactivate($User.parent());
-            if (Core.UI.InputFields.IsEnabled($User)) {
-                Core.UI.InputFields.Activate($User.parent());
+        $User.prop('disabled', true).empty().append(
+            $('<option/>').val('').text(CustomerID ? 'A carregar…' : '— Selecionar o cliente primeiro —')
+        );
+
+        if (!CustomerID) {
+            return;
+        }
+
+        $.ajax({
+            url: Baselink(),
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+            data: {
+                Action: 'AgentBWBAddCustomerEmail',
+                Subaction: 'CustomerUsers',
+                TicketID: $Form.find('input[name="TicketID"]').val(),
+                CustomerID: CustomerID
             }
-            if (!CustomerID) {
+        }).done(function (Response) {
+            $User.empty();
+            if (!Response || !Response.Success) {
+                $User.append($('<option/>').val('').text('— Sem utilizadores —'));
+                ShowFormError($Form, (Response && Response.Error) || 'Não foi possível carregar os utilizadores.');
                 return;
             }
-
-            $.ajax({
-                url: Baselink(),
-                type: 'GET',
-                dataType: 'json',
-                cache: false,
-                data: {
-                    Action: 'AgentBWBAddCustomerEmail',
-                    Subaction: 'CustomerUsers',
-                    TicketID: $Form.find('input[name="TicketID"]').val(),
-                    CustomerID: CustomerID,
-                    Dialog: 1
-                }
-            }).done(function (Response) {
-                $User.empty();
-                if (!Response || !Response.Success) {
-                    $User.append($('<option/>').val('').text('— Sem utilizadores —'));
-                    ShowFormError($Form, (Response && Response.Error) || 'Não foi possível carregar os utilizadores.');
-                    return;
-                }
-                $Form.find('.BWBAddCustomerEmailError').addClass('Hidden').text('');
-                $User.append($('<option/>').val('').text('— Selecionar —'));
-                $.each(Response.Users || [], function (Index, Item) {
-                    $User.append($('<option/>').val(Item.Login).text(Item.Label));
-                });
-                $User.prop('disabled', false);
-                if (Core.UI.InputFields.IsEnabled($User)) {
-                    Core.UI.InputFields.Activate($User.parent());
-                }
-            }).fail(function () {
-                $User.empty().append($('<option/>').val('').text('— Erro ao carregar —'));
-                ShowFormError($Form, 'Não foi possível carregar os utilizadores de cliente.');
+            $Form.find('.BWBAddCustomerEmailError').addClass('Hidden').text('');
+            $User.append($('<option/>').val('').text('— Selecionar —'));
+            $.each(Response.Users || [], function (Index, Item) {
+                $User.append($('<option/>').val(Item.Login).text(Item.Label));
             });
+            if (!(Response.Users || []).length) {
+                $User.find('option:first').text('— Sem utilizadores neste cliente —');
+            }
+            $User.prop('disabled', false);
+        }).fail(function () {
+            $User.empty().append($('<option/>').val('').text('— Erro ao carregar —'));
+            ShowFormError($Form, 'Não foi possível carregar os utilizadores de cliente.');
+        });
+    }
+
+    function BindForm($Dialog) {
+        var $Form = $Dialog.find('#BWBAddCustomerEmailForm');
+        var $Customer = $Form.find('#BWBAddCustomerEmailCustomerID');
+
+        if (!$Form.length || !$Customer.length) {
+            return;
+        }
+
+        $Customer.off('change.BWBAddCustomerEmail').on('change.BWBAddCustomerEmail', function () {
+            LoadCustomerUsers($Form, $.trim($Customer.val() || ''));
         });
     }
 
@@ -130,7 +138,6 @@ Core.Agent.BWBAddCustomerEmailDialog = (function (TargetNS) {
             Core.UI.Dialog.CloseDialog($('.Dialog:visible'));
 
             if (!$Content.length) {
-                // Resposta JSON de erro (ex.: endereço já associado).
                 try {
                     var Parsed = JSON.parse(Source);
                     if (Parsed && Parsed.Error) {
@@ -148,10 +155,8 @@ Core.Agent.BWBAddCustomerEmailDialog = (function (TargetNS) {
                 return;
             }
 
-            BindForm($Content);
-
             Core.UI.Dialog.ShowContentDialog(
-                $Content,
+                $Content[0].outerHTML,
                 'Associar e-mail a utilizador de cliente',
                 '15%',
                 'Center',
@@ -182,6 +187,8 @@ Core.Agent.BWBAddCustomerEmailDialog = (function (TargetNS) {
                 ],
                 true
             );
+
+            BindForm($('.Dialog:visible'));
         }).fail(function () {
             Core.UI.Dialog.CloseDialog($('.Dialog:visible'));
             Core.UI.Dialog.ShowAlert(
@@ -192,7 +199,6 @@ Core.Agent.BWBAddCustomerEmailDialog = (function (TargetNS) {
     }
 
     TargetNS.Init = function () {
-        // Captura na fase de captura: impede navegação/nova aba do menu do ticket.
         document.addEventListener('click', function (Event) {
             var Link = Event.target.closest('a[href*="Action=AgentBWBAddCustomerEmail"]');
             if (!Link) {

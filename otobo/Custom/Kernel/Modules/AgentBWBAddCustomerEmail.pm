@@ -29,7 +29,9 @@ sub Run {
     my $AccessObject = $Kernel::OM->Get('Kernel::System::BWBAccess');
     my $TicketID     = $ParamObject->GetParam( Param => 'TicketID' ) || 0;
     my $Dialog       = $ParamObject->GetParam( Param => 'Dialog' )   || 0;
-    my $Subaction    = $Self->{Subaction} || '';
+    my $Subaction    = $Self->{Subaction}
+        || $ParamObject->GetParam( Param => 'Subaction' )
+        || '';
 
     return $Self->_Error( $LayoutObject, $Dialog, 'Ticket inválido ou sem permissão.' )
         if !$TicketID || !$AccessObject->TicketAccessCheck(
@@ -202,16 +204,25 @@ sub _UsersForCustomer {
         Bind => [ \$Param{CustomerID} ],
     );
 
-    my @Users;
+    # Materializar todas as linhas antes de CustomerUserAccessCheck:
+    # esse método faz Prepare no mesmo DBObject e anula o cursor do SELECT.
+    my @Rows;
     while ( my @Row = $DBObject->FetchrowArray() ) {
+        push @Rows, [@Row];
+    }
+
+    my @Users;
+    for my $Row (@Rows) {
         next if !$AccessObject->CustomerUserAccessCheck(
             UserID            => $Param{UserID},
-            CustomerUserLogin => $Row[0],
+            CustomerUserLogin => $Row->[0],
         );
-        my $Name = join ' ', grep {$_} @Row[ 1, 2 ];
+        my $Name = join ' ', grep {$_} @{$Row}[ 1, 2 ];
+        # Parênteses — nunca «Nome <email>»: o Modernize/HTML e o autofill
+        # do browser interpretam «<…>» como marcação e partem a lista.
         push @Users, {
-            Login => $Row[0],
-            Label => ( $Name || $Row[0] ) . ( $Row[3] ? " <$Row[3]>" : '' ),
+            Login => $Row->[0],
+            Label => ( $Name || $Row->[0] ) . ( $Row->[3] ? " ($Row->[3])" : '' ),
         };
     }
     return \@Users;

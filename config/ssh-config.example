@@ -1,5 +1,8 @@
 # Copiar este bloco para ~/.ssh/config no computador autorizado.
 # A chave privada fica apenas no computador local.
+#
+# PRODUÇÃO HELPdesk: VPS Euronodes (178.159.34.132), NÃO DigitalOcean.
+# O nome do ficheiro da chave (digitalocean) é só convenção local histórica.
 Host bwb-otobo-prod
     HostName 178.159.34.132
     User root

@@ -17,6 +17,17 @@
  <div class="SheetHeader"><h1>Folha de trabalho</h1><div class="HeaderTicket">Ticket#[% Data.TicketNumber | html %]</div><div class="HeaderCustomer">[% Data.CustomerID | html %][% IF Data.CustomerName && Data.CustomerName != Data.CustomerID %] | [% Data.CustomerName | html %][% END %]</div><div class="HeaderCustomerUser">[% Data.CustomerUserName | html %]</div><div class="HeaderTitle">[% Data.TicketTitle | html %]</div></div>
  <div class="WorkCard">
   [% IF Data.Error %]<div class="ErrorBox">[% Data.Error | html %]</div>[% END %]
+  [% IF Data.ReadOnly %]
+    <div class="Paused"><strong>Vista do responsável ZS Angola.</strong> Folha de [% Data.TechnicianName | html %] — só leitura. O técnico continua a poder editar no terreno.</div>
+    <div class="ProtectedText WorkSummary"><div class="WorkSummaryItem"><span class="WorkSummaryLabel">Assistência técnica iniciada em:</span><span class="WorkSummaryValue">[% Data.StartTime | html %]</span></div><div class="WorkSummaryItem"><span class="WorkSummaryLabel">Tipo de intervenção:</span><span class="WorkSummaryValue">[% Data.WorkType | html %]</span></div><div class="WorkSummaryItem"><span class="WorkSummaryLabel">Técnico:</span><span class="WorkSummaryValue">[% Data.TechnicianName | html %]</span></div></div>
+    [% IF Data.Paused %]<div class="Paused"><strong>Trabalho em pausa.</strong> O tempo de pausa não será contabilizado.</div>[% END %]
+    <label>Notas do trabalho</label>
+    <div class="ProtectedText">[% Data.Body %]</div>
+    <div class="Actions"><a class="CallForAction" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]"><span>Voltar ao ticket</span></a></div>
+  [% ELSIF Data.BlockedStart %]
+    <div class="ErrorBox">Já existe uma folha de trabalho em curso neste ticket.</div>
+    <div class="Actions"><a class="CallForAction" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]"><span>Voltar ao ticket</span></a></div>
+  [% ELSE %]
   <form method="post" action="[% Env("CGIHandle") %]" id="BWBWorkForm" enctype="multipart/form-data">
    <input type="hidden" name="Action" value="AgentBWBWorkSession"><input type="hidden" name="TicketID" value="[% Data.TicketID | html %]"><input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]"><input type="hidden" name="FormID" value="[% Data.FormID | html %]">
    [% IF !Data.Active %]
@@ -46,6 +57,7 @@
     </div>
    [% END %]
   </form>
+  [% END %]
  </div>
 </div>
 <script>
@@ -70,7 +82,7 @@ document.querySelectorAll('.BWBWorkSheet select').forEach(function(S){
  });
 })();
 </script>
-[% IF Data.Active %]
+[% IF Data.Active && !Data.ReadOnly %]
 <script>
 (function(){var F=document.getElementById('BWBWorkForm'),T=document.getElementById('RichText'),E=document.getElementById('BWBEditorBody'),Timer,Finishing=false;
 function sync(){T.value=E.innerHTML;}

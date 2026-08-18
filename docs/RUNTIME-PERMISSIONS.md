@@ -9,14 +9,20 @@ Este documento é obrigatório para qualquer alteração ao OTOBO personalizado.
 | `Custom/Kernel/Modules` | `otobo:www-data` | `750` | `.pm` `640` | Controladores carregados pelo portal Agent/Cliente. |
 | `Custom/Kernel/Output` | `otobo:www-data` | `750` | `.pm` e `.tt` `640` | Menus, widgets e modelos HTML carregados pelo portal. |
 | Módulos web em `Custom/Kernel/System` indicados na lista de controlo | `otobo:www-data` | `750` nos diretórios ancestrais | `.pm` `640` | Serviços personalizados carregados durante pedidos web. |
-| Configurações, tarefas de consola, IMAP/PostMaster e segredos | `otobo:otobo` | `750` | `640` | Não são expostos ao utilizador do Apache sem necessidade. |
+| `Kernel/Config/Files/*.pm` (`ZZZAAuto.pm`, `ZZZBWB*.pm`, …) | `otobo:www-data` | directório `2750` | `.pm` `640` | SysConfig compilado carregado em **cada** pedido web. Sem leitura por `www-data` surge `Module … not registered in Kernel/Config.pm`. |
+| `Kernel/Config/Files/XML` e `User/` | `otobo:otobo` | `2750` | `640` | Fontes SysConfig e overrides de utilizador; só a consola/`Rebuild` precisa de as ler. |
+| `Kernel/Config.pm` e segredos (IMAP, DB, …) | `otobo:www-data` ou `otobo:otobo` conforme o ficheiro | — | `640` | `Config.pm` é lido pelo Apache; credenciais auxiliares ficam privadas ao `otobo`. |
 | `var/httpd/htdocs` | `otobo:www-data` | `755` | `644` | Recursos estáticos servidos pelo navegador. |
 
 `www-data` recebe apenas leitura e travessia dos componentes necessários. Nunca recebe escrita no código OTOBO.
 
+### Atenção: `Maint::Config::Rebuild`
+
+O rebuild reescreve `ZZZAAuto.pm` tipicamente como `otobo:otobo` `660`. O deploy **tem** de reaplicar `otobo:www-data` `640` **depois** do rebuild. Caso contrário o portal Agent/Cliente deixa de registar módulos (`AgentTicketZoom`, dashboard, etc.).
+
 ## Lista de controlo obrigatória
 
-`scripts/runtime-web-system-modules.txt` enumera os módulos de `Custom/Kernel/System` que são efetivamente carregados numa sessão web. Ao criar ou usar um novo serviço a partir de um módulo Agent/Cliente/Template, adicioná-lo à lista no mesmo commit.
+`scripts/runtime-web-system-modules.txt` enumera os módulos de `Custom/Kernel/System` que são efetivamente carregados numa sessão web. Ao criar ou usar um novo serviço a partir de um módulo Agent/Cliente/Template **ou de um evento de ticket**, adicioná-lo à lista no mesmo commit. Inclui `BWBZSSupervisorNotify.pm` / `Ticket/Event/BWBZSSupervisor.pm`, `BWBBounce.pm` / `BWBBounceNotify.pm` / `Ticket/Event/BWBBounce.pm` (DSN em `ArticleCreate`), `BWBEmailVerify.pm` (botão Verificar na ficha `AdminCustomerUser`), `BWBCustomerCompany.pm` (flag «Duração contabilizada» na ficha do cliente; também `FilterElementPost/BWBHideAccountedDuration.pm` em `Custom/Kernel/Output`), `BWBTimeSpent.pm` (relatório Tempo dispendido) e `Ticket/Event/NotificationEvent/Transport/Email.pm` (override de e-mail de notificação; sem leitura por `www-data` as notificações falham com «could not be loaded»). O gerador PDF `Custom/Kernel/Output/PDF/BWBTimeSpent.pm` fica na matriz `Custom/Kernel/Output` (`otobo:www-data` 640); os cabeçalhos `var/httpd/htdocs/common/img/pdf-header-bwb.png` e `pdf-header-zs.png` seguem a matriz `htdocs` (`644`). Os overrides `CustomerTicketArticleContent.pm` e `CustomerTicketPrint.pm` seguem a matriz `Custom/Kernel/Modules`.
 
 ## Fluxo obrigatório de publicação
 

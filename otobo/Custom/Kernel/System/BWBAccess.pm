@@ -36,6 +36,32 @@ sub ResponsibleUserIDGet {
     return $ResponsibleUserID || $Param{UserID};
 }
 
+# Amadeu (UserID 4) is the ZS Angola responsible agent. Collaborators inherit
+# that identity through bwb_agent_hierarchy. Keep this as the single numeric
+# source used by Field queues, invites and supervisor features.
+sub ZSResponsibleUserID {
+    return 4;
+}
+
+sub IsZSResponsible {
+    my ( $Self, %Param ) = @_;
+    return 0 if !$Param{UserID};
+    return int( $Param{UserID} ) == $Self->ZSResponsibleUserID() ? 1 : 0;
+}
+
+sub IsZSCollaborator {
+    my ( $Self, %Param ) = @_;
+    return 0 if !$Param{UserID} || $Self->IsZSResponsible( UserID => $Param{UserID} );
+    my $ResponsibleUserID = $Self->ResponsibleUserIDGet( UserID => $Param{UserID} );
+    return ( $ResponsibleUserID && int($ResponsibleUserID) == $Self->ZSResponsibleUserID() ) ? 1 : 0;
+}
+
+sub IsZSOperationUser {
+    my ( $Self, %Param ) = @_;
+    return 1 if $Self->IsZSResponsible( %Param );
+    return $Self->IsZSCollaborator( %Param );
+}
+
 sub CustomerOwnerSet {
     my ( $Self, %Param ) = @_;
     return if !$Param{CustomerID} || !$Param{OwnerUserID} || !$Param{UserID};
@@ -136,7 +162,7 @@ sub TicketAccessCheck {
     # registered as customer users.  Collaborators inherit the responsible
     # agent's queue scope.
     if ( ( $Ticket{Queue} // '' ) eq 'zsangola-in' || ( $Ticket{Queue} // '' ) eq 'zs-postmaster' ) {
-        return $Self->ResponsibleUserIDGet( UserID => $Param{UserID} ) == 4 ? 1 : 0;
+        return $Self->ResponsibleUserIDGet( UserID => $Param{UserID} ) == $Self->ZSResponsibleUserID() ? 1 : 0;
     }
 
     return 1 if $Ticket{CustomerID} && $Self->CustomerAccessCheck(

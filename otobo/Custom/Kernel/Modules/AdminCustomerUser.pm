@@ -63,6 +63,10 @@ sub Run {
     my $BWBAccessObject = $Kernel::OM->Get('Kernel::System::BWBAccess');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
+    if ( ( $Self->{Subaction} || '' ) eq 'VerifyEmail' ) {
+        return $Self->_VerifyEmail();
+    }
+
     my $Nav            = $ParamObject->GetParam( Param => 'Nav' )    || '';
     my $Source         = $ParamObject->GetParam( Param => 'Source' ) || 'CustomerUser';
     my $Search         = $ParamObject->GetParam( Param => 'Search' );
@@ -1910,6 +1914,28 @@ sub _EffectivePermissions {
     }
 
     return 1;
+}
+
+sub _VerifyEmail {
+    my ( $Self, %Param ) = @_;
+
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    $LayoutObject->ChallengeTokenCheck();
+
+    my $Email = $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => 'Email' ) || '';
+    my $Result = $Kernel::OM->Get('Kernel::System::BWBEmailVerify')->Check(
+        Email  => $Email,
+        UserID => $Self->{UserID},
+    );
+
+    return $LayoutObject->JSONReply(
+        Data => {
+            Success    => ( $Result->{Status} && $Result->{Status} ne 'limited' ) ? 1 : 0,
+            Status     => $Result->{Status}    || 'inconclusive',
+            Technical  => $Result->{Technical} || '',
+            Message    => $Result->{Message}   || 'Não foi possível verificar o endereço.',
+        },
+    );
 }
 
 1;

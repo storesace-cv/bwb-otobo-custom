@@ -98,6 +98,9 @@ sub Run {
             CustomerID => $CustomerID,
         );
         $Data{CustomerCompanyID} = $CustomerID;
+        $Data{BWBShowAccountedDuration} = $Kernel::OM->Get('Kernel::System::BWBCustomerCompany')->ShowAccountedDurationGet(
+            CustomerID => $CustomerID,
+        );
         my $Output = $LayoutObject->Header();
         $Output .= $LayoutObject->NavigationBar(
             Type => $NavigationBarType,
@@ -127,6 +130,7 @@ sub Run {
 
         my %Errors;
         $GetParam{CustomerCompanyID} = $ParamObject->GetParam( Param => 'CustomerCompanyID' );
+        $GetParam{BWBShowAccountedDuration} = $Self->_BWBShowAccountedDurationParam();
         if ( !$BWBAccessObject->CustomerAccessCheck( UserID => $Self->{UserID}, CustomerID => $GetParam{CustomerCompanyID} ) ) {
             return $LayoutObject->FatalError( Message => 'Não tem autorização para alterar este cliente.' );
         }
@@ -262,6 +266,12 @@ sub Run {
                     }
                 }
 
+                $Self->_BWBShowAccountedDurationSave(
+                    CustomerID => $GetParam{CustomerID},
+                    Value      => $GetParam{BWBShowAccountedDuration},
+                    UserID     => $Self->{UserID},
+                );
+
                 my $ContinueAfterSave = $ParamObject->GetParam( Param => 'ContinueAfterSave' ) || 0;
 
                 # if set DF error exists, create notification
@@ -377,6 +387,7 @@ sub Run {
         $LayoutObject->ChallengeTokenCheck();
 
         my %Errors;
+        $GetParam{BWBShowAccountedDuration} = $Self->_BWBShowAccountedDurationParam();
 
         my $CustomerCompanyKey = $ConfigObject->Get( $GetParam{Source} )->{CustomerCompanyKey};
         my $CustomerCompanyID;
@@ -456,6 +467,12 @@ sub Run {
                 )
                 )
             {
+
+                $Self->_BWBShowAccountedDurationSave(
+                    CustomerID => $GetParam{CustomerID},
+                    Value      => $GetParam{BWBShowAccountedDuration},
+                    UserID     => $Self->{UserID},
+                );
 
                 $Self->_Overview(
                     Nav    => $Nav,
@@ -793,6 +810,70 @@ sub _Edit {
             }
         }
     }
+
+    $Self->_BWBShowAccountedDurationFieldRender(%Param);
+
+    return 1;
+}
+
+sub _BWBShowAccountedDurationParam {
+    my ($Self) = @_;
+
+    my $Value = $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam(
+        Param => 'BWBShowAccountedDuration',
+    );
+    return 1 if !defined $Value || $Value eq '';
+    return $Value ? 1 : 0;
+}
+
+sub _BWBShowAccountedDurationSave {
+    my ( $Self, %Param ) = @_;
+
+    return $Kernel::OM->Get('Kernel::System::BWBCustomerCompany')->ShowAccountedDurationSet(
+        CustomerID => $Param{CustomerID},
+        Value      => defined $Param{Value} ? $Param{Value} : 1,
+        UserID     => $Param{UserID} || $Self->{UserID},
+    );
+}
+
+sub _BWBShowAccountedDurationFieldRender {
+    my ( $Self, %Param ) = @_;
+
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $Selected     = $Param{BWBShowAccountedDuration};
+    $Selected = 1 if !defined $Selected || $Selected eq '';
+
+    my $Option = $LayoutObject->BuildSelection(
+        Data => {
+            1 => 'Sim',
+            0 => 'Não',
+        },
+        Name        => 'BWBShowAccountedDuration',
+        ID          => 'BWBShowAccountedDuration',
+        SelectedID  => $Selected ? 1 : 0,
+        Class       => 'Modernize',
+        Translation => 0,
+        Sort        => 'NumericKey',
+        SortReverse => 1,
+    );
+    $Option .= '<p class="FieldExplanation">Se escolher Não, a duração contabilizada deixa de aparecer nas folhas enviadas ao cliente e no portal.</p>';
+
+    $LayoutObject->Block(
+        Name => 'PreferencesGeneric',
+        Data => {
+            Item => 'Duração contabilizada',
+        },
+    );
+    $LayoutObject->Block(
+        Name => 'PreferencesGenericOption',
+        Data => {
+            Item           => 'Duração contabilizada',
+            Name           => 'BWBShowAccountedDuration',
+            Option         => $Option,
+            MandatoryClass => '',
+            StarLabel      => '',
+        },
+    );
 
     return 1;
 }

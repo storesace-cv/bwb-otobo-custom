@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 our @ObjectDependencies = (
+    'Kernel::System::BWBBounce',
     'Kernel::System::BWBCustomerUserEmail',
 );
 
@@ -24,6 +25,16 @@ sub Run {
     return 1 if $Param{TicketID};
 
     my $GetParam = $Param{GetParam};
+    # A DSN is not a customer. Leave routing to BounceEmail / BWBBounce follow-up.
+    if ( $Kernel::OM->Get('Kernel::System::BWBBounce')->IsBounce( GetParam => $GetParam ) ) {
+        $Self->{CommunicationLogObject}->ObjectLog(
+            ObjectLogType => 'Message',
+            Priority      => 'Notice',
+            Key           => __PACKAGE__,
+            Value         => 'DSN detected; queue override skipped.',
+        );
+        return 1;
+    }
     my $Recipients = join ' ', map { $GetParam->{$_} // '' } qw(To Cc Delivered-To X-Original-To);
     return 1 if $Recipients !~ m{\bassistencia\@zsa-softwares\.com\b}i;
 

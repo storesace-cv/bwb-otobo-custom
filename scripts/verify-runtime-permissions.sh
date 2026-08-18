@@ -28,10 +28,23 @@ while IFS= read -r relative; do
     check_readable "/opt/otobo/Custom/$relative"
 done < /opt/otobo/Custom/scripts/runtime-web-system-modules.txt
 
-http_code=$(curl -ksS -o /dev/null -w "%{http_code}" \
+check_readable /opt/otobo/Kernel/Config.pm
+check_readable /opt/otobo/Kernel/Config/Files/ZZZAAuto.pm
+for zzz in /opt/otobo/Kernel/Config/Files/ZZZBWB*.pm; do
+    [ -e "$zzz" ] || continue
+    check_readable "$zzz"
+done
+
+body=$(mktemp)
+http_code=$(curl -ksS -o "$body" -w "%{http_code}" \
     https://127.0.0.1/otobo/index.pl?Action=AgentDashboard)
 echo "Painel Agent HTTP: $http_code"
-[ "$http_code" = 200 ] || failed=1
+if grep -Fq "not registered in Kernel/Config.pm" "$body"; then
+    echo "ERRO: resposta indica módulo não registado (ZZZAAuto.pm ilegível por www-data?)" >&2
+    failed=1
+fi
+rm -f "$body"
+[ "$http_code" = 200 ] || [ "$http_code" = 302 ] || failed=1
 [ "$failed" -eq 0 ] || exit 1
 echo "Permissões de execução web: OK"
 '

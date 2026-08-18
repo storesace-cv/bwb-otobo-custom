@@ -42,7 +42,7 @@
                     <p class='ooo12'><span class='ooo12g'>[% Translate('Queue') | html %]:</span> [% Translate(Data.Queue) | html | replace('::', '<wbr>::<wbr>') %]</p>
 [% RenderBlockEnd("Queue") %]
 [% RenderBlockStart("TicketTimeUnits") %]
-                    <p class='ooo12'><span class='ooo12g'>[% Translate('Accounted time') | html %]:</span> [% Data.TicketTimeUnits | html %]</p>
+                    <p class='ooo12 BWBAccountedDuration'><span class='ooo12g'>[% Translate('Accounted time') | html %]:</span> [% Data.TicketTimeUnits | html %]</p>
 [% RenderBlockEnd("TicketTimeUnits") %]
 [% RenderBlockStart("Owner") %]
                     <p class='ooo12'><span class='ooo12g'>[% Translate('Owner') | html %]:</span> [% Data.OwnerName | html %]</p>

@@ -21,7 +21,8 @@ ssh "$TARGET" "install -d -o otobo -g otobo -m 750 /opt/otobo/Custom/scripts"
 rsync -av "$ROOT/scripts/runtime-web-system-modules.txt" "$TARGET:/opt/otobo/Custom/scripts/"
 
 # rsync as root must not leave runtime files unreadable by Apache.
-# Config files remain private to the otobo account; only web-loaded code is group-readable.
+# SysConfig compilado (ZZZAAuto.pm / ZZZ*.pm) é carregado em cada pedido web:
+# tem de ser legível por www-data. Fontes XML e User/ permanecem privadas ao otobo.
 ssh "$TARGET" 'bash -s' <<'REMOTE'
 set -euo pipefail
 
@@ -49,10 +50,28 @@ while IFS= read -r relative; do
     done
 done < /opt/otobo/Custom/scripts/runtime-web-system-modules.txt
 
-chown -R otobo:otobo /opt/otobo/Kernel/Config/Files
-find /opt/otobo/Kernel/Config/Files -type d -exec chmod 2750 {} \;
-find /opt/otobo/Kernel/Config/Files -type f -exec chmod 640 {} \;
+apply_config_files_permissions() {
+    chown otobo:www-data /opt/otobo/Kernel/Config/Files
+    chmod 2750 /opt/otobo/Kernel/Config/Files
+    find /opt/otobo/Kernel/Config/Files -maxdepth 1 -type f -name '*.pm' \
+        -exec chown otobo:www-data {} + -exec chmod 640 {} +
+
+    if [ -d /opt/otobo/Kernel/Config/Files/XML ]; then
+        chown -R otobo:otobo /opt/otobo/Kernel/Config/Files/XML
+        find /opt/otobo/Kernel/Config/Files/XML -type d -exec chmod 2750 {} +
+        find /opt/otobo/Kernel/Config/Files/XML -type f -exec chmod 640 {} +
+    fi
+    if [ -d /opt/otobo/Kernel/Config/Files/User ]; then
+        chown -R otobo:otobo /opt/otobo/Kernel/Config/Files/User
+        find /opt/otobo/Kernel/Config/Files/User -type d -exec chmod 2750 {} +
+        find /opt/otobo/Kernel/Config/Files/User -type f -exec chmod 640 {} +
+    fi
+}
+
+apply_config_files_permissions
 su -c '/opt/otobo/bin/otobo.Console.pl Maint::Config::Rebuild' -s /bin/bash otobo
+# Rebuild reescreve ZZZAAuto.pm como otobo:otobo; reaplicar leitura web.
+apply_config_files_permissions
 su -c '/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete' -s /bin/bash otobo
 su -c '/opt/otobo/bin/otobo.Daemon.pl status' -s /bin/bash otobo
 systemctl reload apache2
@@ -67,8 +86,18 @@ while IFS= read -r relative; do
     case "$relative" in ''|'#'*) continue ;; esac
     check_readable "/opt/otobo/Custom/$relative"
 done < /opt/otobo/Custom/scripts/runtime-web-system-modules.txt
+check_readable /opt/otobo/Kernel/Config/Files/ZZZAAuto.pm
+check_readable /opt/otobo/Kernel/Config.pm
 
-curl -fsS -o /dev/null http://127.0.0.1/otobo/index.pl?Action=AgentDashboard
+body="$(mktemp)"
+code="$(curl -ksS -o "$body" -w '%{http_code}' https://127.0.0.1/otobo/index.pl?Action=AgentDashboard)"
+if grep -Fq 'not registered in Kernel/Config.pm' "$body"; then
+    echo "ERRO: resposta contém módulo não registado (ZZZAAuto ilegível?)" >&2
+    rm -f "$body"
+    exit 1
+fi
+rm -f "$body"
+test "$code" = 200 -o "$code" = 302
 REMOTE
 
 echo "Publicado. Cópia de segurança: $BACKUP"

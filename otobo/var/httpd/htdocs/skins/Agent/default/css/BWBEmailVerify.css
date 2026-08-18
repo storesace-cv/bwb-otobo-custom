@@ -1,0 +1,86 @@
+fieldset.TableLike .Field:has(> .BWBEmailVerifyButton) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 6px;
+}
+
+fieldset.TableLike .Field:has(> .BWBEmailVerifyButton) > input[type="email"],
+fieldset.TableLike .Field:has(> .BWBEmailVerifyButton) > input#UserEmail {
+    width: 50%;
+    max-width: 50%;
+    height: 28px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+button.CallForAction.BWBEmailVerifyButton,
+button.CallForAction.BWBEmailVerifyButton:hover,
+button.CallForAction.BWBEmailVerifyButton:focus,
+button.CallForAction.BWBEmailVerifyButton:active {
+    height: 28px;
+    box-sizing: border-box;
+    min-height: 0;
+    min-width: 8.5rem;
+    margin: 0;
+    padding: 0 18px;
+    border: 1px solid #3a3a3c;
+    border-radius: 3px;
+    background: #3a3a3c !important;
+    background-image: none !important;
+    box-shadow: none;
+    color: #fff !important;
+    line-height: 26px;
+    vertical-align: middle;
+}
+
+button.CallForAction.BWBEmailVerifyButton:hover,
+button.CallForAction.BWBEmailVerifyButton:focus {
+    background: #2c2c2e !important;
+    border-color: #2c2c2e;
+}
+
+button.CallForAction.BWBEmailVerifyButton span,
+button.CallForAction.BWBEmailVerifyButton:hover span,
+button.CallForAction.BWBEmailVerifyButton:focus span {
+    display: inline;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none;
+    color: #fff !important;
+    line-height: inherit;
+}
+
+.BWBEmailVerifyStatus {
+    flex: 1 0 100%;
+    display: block;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.BWBEmailVerifyTechnical {
+    font-weight: 600;
+}
+
+.BWBEmailVerifyPlain {
+    margin-top: 2px;
+}
+
+.BWBEmailVerifyStatus.is-valid {
+    color: #0b7a0b;
+}
+
+.BWBEmailVerifyStatus.is-invalid {
+    color: #c41e3a;
+}
+
+.BWBEmailVerifyStatus.is-inconclusive,
+.BWBEmailVerifyStatus.is-limited {
+    color: #8a6d00;
+}

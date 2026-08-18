@@ -27,10 +27,17 @@ Documentação no fim de cada tarefa: **sempre** actualizar os `docs/` afectados
 
 1. Validar sintaxe Perl dos módulos alterados no servidor, com o ambiente do OTOBO.
 2. Reconstituir configuração e limpar cache após alteração de XML/PM/TT/JS.
-3. Testar com um agente BWB, com Amadeu/colaborador ZS e com um utilizador cliente.
-4. Confirmar comportamento em computador e telemóvel, especialmente áreas de toque e modais.
+3. Testar com um agente BWB, com Amadeu/colaborador ZS e com um utilizador cliente. No ZS: dashboard do responsável deve listar **todas** as folhas da equipa; abrir a folha de um colaborador é só leitura; criar ticket/folha no Field deve gerar e-mail ao responsável (não ao cliente).
+4. Confirmar comportamento em computador e telemóvel, especialmente áreas de toque e modais. No Field: após «Gravar e abrir folha», a Folha de trabalho tem de ficar estável (sem recarregar sozinha).
 5. Verificar o registo do Apache e o registo OTOBO depois da publicação.
 6. Executar `scripts/check.sh` antes de publicar.
+7. Após alterações de **configuração** em produção (Apache, Postfix, cron, SysConfig, etc.), correr snapshot para pCloud:
+
+```sh
+ssh bwb-otobo-prod '/opt/bwb-helpdesk/scripts/backup-helpdesk-config-pcloud.sh'
+```
+
+Ver [OPERATIONS.md](OPERATIONS.md) — backups S3 (BD) + pCloud (configs).
 
 ## Convenções
 

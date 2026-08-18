@@ -1,14 +1,23 @@
 # Módulos em Custom/Kernel/System carregados por pedidos web.
 # Atualizar esta lista no mesmo commit que introduza uma nova dependência web.
 Kernel/System/BWBAccess.pm
+Kernel/System/BWBBounce.pm
+Kernel/System/BWBBounceNotify.pm
 Kernel/System/BWBConvertCustomer.pm
+Kernel/System/BWBCustomerCompany.pm
 Kernel/System/BWBCustomerUserEmail.pm
+Kernel/System/BWBEmailVerify.pm
 Kernel/System/BWBFieldMode.pm
 Kernel/System/BWBInvite.pm
 Kernel/System/BWBOperationType.pm
 Kernel/System/BWBResultType.pm
 Kernel/System/BWBStore.pm
+Kernel/System/BWBTimeSpent.pm
 Kernel/System/BWBWorkSession.pm
 Kernel/System/BWBWorkSheet.pm
+Kernel/System/BWBZSSupervisorNotify.pm
+Kernel/System/Ticket/Event/BWBBounce.pm
+Kernel/System/Ticket/Event/BWBZSSupervisor.pm
+Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 Kernel/System/Ticket/Permission/BWBCustomerOwnerCheck.pm
 Kernel/System/Ticket/TicketSearch.pm

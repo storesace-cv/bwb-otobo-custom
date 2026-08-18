@@ -90,9 +90,16 @@ sub Run {
     $Prepare{Bind} = \@Bind if @Bind;
     return if !$DBObject->Prepare(%Prepare);
 
-    my @Rows;
+    # Drain the cursor before TicketAccessCheck/TicketGet — those reuse the
+    # same DB handle and would otherwise hide every session after the first.
+    my @Raw;
     while ( my @Data = $DBObject->FetchrowArray() ) {
-        my ( $SessionID, $TicketID, $TechnicianID, $WorkType, $StartUTC, $PausedAt, $PausedSeconds, $ActiveSeconds ) = @Data;
+        push @Raw, [@Data];
+    }
+
+    my @Rows;
+    for my $Data (@Raw) {
+        my ( $SessionID, $TicketID, $TechnicianID, $WorkType, $StartUTC, $PausedAt, $PausedSeconds, $ActiveSeconds ) = @{$Data};
         next if !$AccessObject->TicketAccessCheck( UserID => $Self->{UserID}, TicketID => $TicketID );
 
         my %Ticket = $TicketObject->TicketGet( TicketID => $TicketID, DynamicFields => 0, Silent => 1 );

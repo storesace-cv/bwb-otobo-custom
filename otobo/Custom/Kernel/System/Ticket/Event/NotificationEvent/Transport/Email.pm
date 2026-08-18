@@ -30,6 +30,7 @@ use parent qw(Kernel::System::Ticket::Event::NotificationEvent::Transport::Base)
 our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::Output::HTML::Layout',
+    'Kernel::System::BWBCustomerCompany',
     'Kernel::System::CustomerCompany',
     'Kernel::System::CustomerUser',
     'Kernel::System::DB',
@@ -368,6 +369,11 @@ SQL
         };
     }
     else {
+
+        $Notification{Body} = $Kernel::OM->Get('Kernel::System::BWBCustomerCompany')->MaybeStripAccountedDuration(
+            Content  => $Notification{Body},
+            TicketID => $Param{TicketID},
+        );
 
         my $QueueObject   = $Kernel::OM->Get('Kernel::System::Queue');
         my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');

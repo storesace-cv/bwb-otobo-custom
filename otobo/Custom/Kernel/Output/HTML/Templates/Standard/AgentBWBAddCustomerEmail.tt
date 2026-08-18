@@ -2,7 +2,7 @@
     <p class="BWBAddCustomerEmailLead">Associe este endereço ao utilizador de cliente a que pertence.</p>
     <div class="BWBAddCustomerEmailAddress" title="[% Data.SenderEmail | html %]">[% Data.SenderEmail | html %]</div>
 
-    <form id="BWBAddCustomerEmailForm" action="[% Env("Baselink") | html %]" method="post">
+    <form id="BWBAddCustomerEmailForm" action="[% Env("Baselink") | html %]" method="post" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
         <input type="hidden" name="Action" value="AgentBWBAddCustomerEmail" />
         <input type="hidden" name="Subaction" value="Add" />
         <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]" />
@@ -11,7 +11,7 @@
         <div class="SpacingTop">
             <label for="BWBAddCustomerEmailCustomerID"><strong>Cliente</strong></label>
             <div class="Field">
-                <select id="BWBAddCustomerEmailCustomerID" name="CustomerID" class="Modernize Validate_Required" required>
+                <select id="BWBAddCustomerEmailCustomerID" name="CustomerID" class="Validate_Required" required autocomplete="off">
                     <option value="">— Selecionar —</option>
 [% FOREACH Customer IN Data.Customers %]
                     <option value="[% Customer.ID | html %]">[% Customer.Label | html %]</option>
@@ -23,7 +23,7 @@
         <div class="SpacingTop">
             <label for="BWBAddCustomerEmailUserLogin"><strong>Utilizador de cliente</strong></label>
             <div class="Field">
-                <select id="BWBAddCustomerEmailUserLogin" name="CustomerUserLogin" class="Modernize Validate_Required" required disabled>
+                <select id="BWBAddCustomerEmailUserLogin" name="CustomerUserLogin" class="Validate_Required" required disabled autocomplete="off">
                     <option value="">— Selecionar o cliente primeiro —</option>
                 </select>
             </div>
@@ -67,6 +67,15 @@
     width: 100%;
     min-height: 40px;
     box-sizing: border-box;
+    padding: 6px 10px;
+    border: 1px solid #c5ccd6;
+    border-radius: 4px;
+    background: #fff;
+    color: #172033;
+}
+.Dialog .BWBAddCustomerEmailDialog select:disabled {
+    background: #eef1f4;
+    color: #6b7785;
 }
 .Dialog .BWBAddCustomerEmailNote {
     margin: 16px 0 0;

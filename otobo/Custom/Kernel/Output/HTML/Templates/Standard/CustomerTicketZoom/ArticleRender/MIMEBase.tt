@@ -51,7 +51,7 @@
                         <i class='ooofo ooofo-close oooClose'></i>
                         [% FOREACH ArticleField IN Data.ArticleMetaFields %]
                         <!-- show accounted time and dynamic fields -->
-                        <p class='ooo12'><span class='ooo12g'>[% Translate(ArticleField.value.Label) | html %]:</span>
+                        <p class='ooo12[% IF ArticleField.value.Label == "Accounted time" %] BWBAccountedDuration[% END %]'><span class='ooo12g'>[% Translate(ArticleField.value.Label) | html %]:</span>
                         [% IF ArticleField.value.Link %]
                             <a href="[% ArticleField.value.Link | Interpolate %]"
                                 [% IF ArticleField.value.LinkPreview %] data-trigger="floater" data-floater-url="[% ArticleField.value.LinkPreview | Interpolate %]"[% END %]

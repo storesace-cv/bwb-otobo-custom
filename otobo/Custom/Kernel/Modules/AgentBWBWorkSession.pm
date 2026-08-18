@@ -35,8 +35,33 @@ sub Run {
             CustomerID => $TicketData{CustomerID},
         );
     }
+    my $Access = $Kernel::OM->Get('Kernel::System::BWBAccess');
+    my $OwnActive = $Work->ActiveGet( UserID => $Self->{UserID} );
+    my $TicketSession = $Work->OpenGetByTicket( TicketID => $TicketID );
+
+    my $SupervisorSession;
+    if (
+        $Access->IsZSResponsible( UserID => $Self->{UserID} )
+        && $TicketSession
+        && int( $TicketSession->{UserID} ) != int( $Self->{UserID} )
+        && $Access->IsZSCollaborator( UserID => $TicketSession->{UserID} )
+        )
+    {
+        $SupervisorSession = $TicketSession;
+    }
+
+    if ( $SupervisorSession && $Self->{Subaction} ) {
+        return $Layout->ErrorScreen( Message => 'A folha de trabalho da equipa é só de leitura.' );
+    }
+    if ( !$SupervisorSession && $OwnActive && $OwnActive->{TicketID} != $TicketID ) {
+        return $Layout->ErrorScreen( Message=>'Já tem um trabalho ativo noutro ticket.' );
+    }
+
+    my $Active = $SupervisorSession
+        || ( $OwnActive && int( $OwnActive->{TicketID} ) == int($TicketID) ? $OwnActive : undef );
+    my $TechUserID = ( $Active && $Active->{UserID} ) ? $Active->{UserID} : $Self->{UserID};
     my %TechnicianData = $Kernel::OM->Get('Kernel::System::User')->GetUserData(
-        UserID => $Self->{UserID},
+        UserID => $TechUserID,
     );
     my $CustomerUserName = $CustomerUserData{UserFullname}
         || join( ' ', grep { defined $_ && length $_ } @CustomerUserData{qw(UserFirstname UserLastname)} )
@@ -46,16 +71,14 @@ sub Run {
         || join( ' ', grep { defined $_ && length $_ } @TechnicianData{qw(UserFirstname UserLastname)} )
         || $TechnicianData{UserLogin}
         || 'Técnico';
-    my $Active = $Work->ActiveGet( UserID=>$Self->{UserID} );
-    if ( $Active && $Active->{TicketID} != $TicketID ) {
-        return $Layout->ErrorScreen( Message=>'Já tem um trabalho ativo noutro ticket.' );
-    }
     my $FormID = $Request->GetParam( Param=>'FormID' ) || ( $Active ? 'BWBWork'.$Active->{SessionID} : 'BWBWorkNew'.$Self->{UserID}.$TicketID );
     my %Data = (
         TicketID=>$TicketID, TicketNumber=>$TicketData{TicketNumber}, TicketTitle=>$TicketData{Title},
         CustomerID=>$TicketData{CustomerID}||'',
         CustomerName=>$CustomerCompanyData{CustomerCompanyName}||$TicketData{CustomerName}||$TicketData{CustomerID}||'Cliente',
         CustomerUserName=>$CustomerUserName, TechnicianName=>$TechnicianName, Active=>$Active?1:0,
+        ReadOnly=>$SupervisorSession?1:0,
+        BlockedStart=>(!$Active && $TicketSession)?1:0,
         WorkTypes=>$Types->AvailableList(UserID=>$Self->{UserID}), Results=>$Results->AvailableList(UserID=>$Self->{UserID}),
         FormID=>$FormID,
     );
@@ -74,10 +97,15 @@ sub Run {
         }
     }
 
-    $Active=$Work->ActiveGet(UserID=>$Self->{UserID});
+    if ( !$SupervisorSession ) {
+        $Active = $Work->ActiveGet( UserID => $Self->{UserID} );
+        $Active = undef if $Active && int( $Active->{TicketID} ) != int($TicketID);
+    }
     my $Draft=$Active ? $Sheet->DraftGet(SessionID=>$Active->{SessionID}) : {};
-    $Data{Active}=$Active?1:0; $Data{WorkType}=$Active->{WorkType}; $Data{StartTime}=$Active->{StartTime};
+    $Data{Active}=$Active?1:0; $Data{WorkType}=$Active ? $Active->{WorkType} : ''; $Data{StartTime}=$Active ? $Active->{StartTime} : '';
     $Data{Body}=$Draft->{Body}||''; $Data{Paused}=$Draft->{PausedAt}?1:0; $Data{FormID}=$Draft->{FormID}||$FormID;
+    $Data{ReadOnly}=$SupervisorSession?1:0;
+    $Data{BlockedStart}=(!$Active && $Work->OpenGetByTicket(TicketID=>$TicketID))?1:0;
 
     if ( $Active && $Self->{Subaction} eq 'Cancel' ) {
         $Layout->ChallengeTokenCheck();
@@ -137,6 +165,8 @@ sub Run {
             $Data{Error}=$Work->LastError()||'Não foi possível terminar o trabalho.';
         }
     }
+
+    $Layout->AddJSData( Key => 'TicketID', Value => $TicketID );
 
     my @Owners=$Ticket->TicketOwnerList(TicketID=>$TicketID); $Data{Owners}=\@Owners;
     my @Meta=$Kernel::OM->Get('Kernel::System::Web::UploadCache')->FormIDGetAllFilesMeta(FormID=>$Data{FormID});

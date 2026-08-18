@@ -48,7 +48,7 @@ sub PreRun {
 
     my $Layout = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $Request = $Kernel::OM->Get('Kernel::System::Web::Request');
-    my $TicketID = $Request->GetParam( Param => 'TicketID' ) || 0;
+    my $TicketID = $Self->{TicketID} || $Request->GetParam( Param => 'TicketID' ) || 0;
     my $Subaction = $Self->{Subaction} || $Request->GetParam( Param => 'Subaction' ) || '';
 
     # Running (not paused): only the work sheet for that ticket.

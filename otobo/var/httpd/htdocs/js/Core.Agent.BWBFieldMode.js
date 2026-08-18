@@ -178,6 +178,34 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         }
     }
 
+    function QueryParam(Name) {
+        var Search = (window.location.search || '').replace(/^\?/, '');
+        var Parts = Search.split(/[;&]/);
+        var Index;
+        for (Index = 0; Index < Parts.length; Index++) {
+            var Pair = Parts[Index].split('=');
+            var Key = decodeURIComponent(Pair[0] || '').replace(/\+/g, ' ');
+            if (Key === Name) {
+                return decodeURIComponent((Pair[1] || '').replace(/\+/g, ' '));
+            }
+        }
+        return '';
+    }
+
+    function CurrentTicketID() {
+        var FromConfig = Core.Config.Get('TicketID');
+        var FromURL = QueryParam('TicketID');
+        var Field = document.querySelector('input[name="TicketID"]');
+        var FromForm = Field ? Field.value : '';
+        return String(FromConfig || FromURL || FromForm || '');
+    }
+
+    function SameTicketID(Left, Right) {
+        var A = parseInt(Left, 10);
+        var B = parseInt(Right, 10);
+        return A > 0 && B > 0 && A === B;
+    }
+
     function MaybeForceActiveWork(ActiveWork) {
         if (!document.body.classList.contains('BWBFieldMode') || !ActiveWork || !ActiveWork.TicketID) {
             return;
@@ -185,10 +213,16 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         if (ActiveWork.Paused) {
             return;
         }
-        var Action = Core.Config.Get('Action') || '';
-        var TicketID = String(Core.Config.Get('TicketID') || '');
-        if (Action === 'AgentBWBWorkSession' && TicketID === String(ActiveWork.TicketID)) {
-            return;
+        var Action = Core.Config.Get('Action') || QueryParam('Action') || '';
+        var TicketID = CurrentTicketID();
+        var TargetID = String(ActiveWork.TicketID);
+        // AgentBWBWorkSession does not publish TicketID in Core.Config like TicketZoom.
+        // location.replace() of the same URL reloads the page: if we are already
+        // on the sheet, never call replace() — even when TicketID cannot be read.
+        if (Action === 'AgentBWBWorkSession') {
+            if (!TicketID || SameTicketID(TicketID, TargetID)) {
+                return;
+            }
         }
         if (Action === 'AgentBWBFieldHome') {
             // Bootstrap/SetMode stay; other Field Home views are redirected by server guard.
@@ -196,7 +230,7 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         }
         window.location.replace(
             (Core.Config.Get('Baselink') || 'index.pl?')
-            + 'Action=AgentBWBWorkSession;TicketID=' + encodeURIComponent(ActiveWork.TicketID)
+            + 'Action=AgentBWBWorkSession;TicketID=' + encodeURIComponent(TargetID)
         );
     }
 

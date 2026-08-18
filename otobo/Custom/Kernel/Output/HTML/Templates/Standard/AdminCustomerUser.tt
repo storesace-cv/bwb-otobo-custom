@@ -215,6 +215,10 @@
                         <label class="[% Data.RequiredLabelClass | html %]" for="[% Data.Name | html %]"><span class="Marker">[% Data.RequiredLabelCharacter | html %]</span> [% Translate(Data.Item) | html %]:</label>
                         <div class="Field">
                             <input type="[% IF Data.RequiredClass.match('Validate_Email') %]email[% ELSE %]text[% END %]" id="[% Data.Name | html %]" name="[% Data.Name | html %]" class="W50pc [% Data.RequiredClass | html %] [% Data.InvalidField | html %]" value="[% Data.Value | html %]"[% IF Data.ReadOnly %] readonly[% END %]/>
+                            [% IF Data.Name == 'UserEmail' %]
+                            <button type="button" class="CallForAction BWBEmailVerifyButton" data-email-field="UserEmail" aria-label="Verificar endereço de e-mail"><span>Verificar</span></button>
+                            <div class="BWBEmailVerifyStatus" role="status" aria-live="polite"></div>
+                            [% END %]
 [% RenderBlockStart("PreferencesGenericErrorMsg") %]
                             <div id="[% Data.Name | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
 [% RenderBlockEnd("PreferencesGenericErrorMsg") %]
@@ -319,6 +323,8 @@
                         <label for="[% Data.Name | html %]">[% Data.Label | html %]:</label>
                         <div class="Field">
                             <input id="[% Data.Name | html %]" type="email" name="[% Data.Name | html %]" class="W50pc Validate_Email [% Data.Invalid | html %]" value="[% Data.Value | html %]" />
+                            <button type="button" class="CallForAction BWBEmailVerifyButton" data-email-field="[% Data.Name | html %]" aria-label="Verificar endereço de e-mail"><span>Verificar</span></button>
+                            <div class="BWBEmailVerifyStatus" role="status" aria-live="polite"></div>
                             [% IF Data.First %]
                             <div class="FieldExplanation">Usado apenas para reconhecer mensagens recebidas. Todos os envios continuam a ser feitos exclusivamente para o e-mail principal.</div>
                             [% END %]

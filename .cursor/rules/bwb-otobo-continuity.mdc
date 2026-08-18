@@ -16,6 +16,8 @@ Em **cada** pedido, sem o utilizador o pedir:
 
 Não inventar APIs OTOBO. Preferir a documentação oficial e o código existente.
 
+Produção helpdesk: **Euronodes** (`docs/ARCHITECTURE.md`). Não inferir hosting pelo nome da chave SSH local (`~/.ssh/digitalocean`).
+
 ## Depois (documentar sempre)
 
 Antes de dar a tarefa por concluída, actualizar a documentação pertinente no mesmo trabalho:

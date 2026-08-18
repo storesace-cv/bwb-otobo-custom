@@ -22,8 +22,9 @@ Usar estes capítulos sempre que a tarefa mexa em filas, grupos, papéis, notifi
 ## Utilização (comportamento esperado por agentes e clientes)
 
 - Manual de utilizador 11.0: [https://doc.otobo.org/manual/user/11.0/en/content/index.html](https://doc.otobo.org/manual/user/11.0/en/content/index.html)
+- Utilização BWB/ZS (responsável e equipa no terreno): [MANUAL-ZS-ANGOLA.md](MANUAL-ZS-ANGOLA.md)
 
-Consultar para compreender fluxos nativos de ticket, artigos, portal do cliente e permissões de interface — e contrastar com as personalizações BWB em [FEATURES.md](FEATURES.md).
+Consultar o manual OTOBO para fluxos nativos de ticket, artigos, portal do cliente e permissões de interface — e contrastar com as personalizações BWB em [FEATURES.md](FEATURES.md).
 
 ## Desenvolvimento (programação sobre OTOBO)
 

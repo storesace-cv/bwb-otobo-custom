@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="PostMaster::PreFilterModule###001-BWBBounce" Required="0" Valid="1">
+        <Description Translatable="1">Marca devoluções (DSN) para follow-up sem reabrir o ticket nem as mostrar ao cliente.</Description>
+        <Navigation>Core::PostMaster</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PostMaster::Filter::BWBBounce</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="PostMaster::CheckFollowUpModule###0410-BWBAttachments" Required="0" Valid="1">
+        <Description Translatable="1">Follow-up pelo conteúdo dos anexos (inclui o .eml original de uma DSN). Activa o módulo nativo Attachments sem alterar o default 0400 desligado.</Description>
+        <Navigation>Core::Email::PostMaster</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PostMaster::FollowUpCheck::Attachments</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="PostMaster::CheckFollowUpModule###0450-BWBBounce" Required="0" Valid="1">
+        <Description Translatable="1">Associa devoluções (DSN) ao ticket do destinatário quando o Message-ID original não está no artigo.</Description>
+        <Navigation>Core::Email::PostMaster</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::PostMaster::FollowUpCheck::BWBBounce</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::EventModulePost###9810-BWBBounce" Required="0" Valid="1">
+        <Description Translatable="1">Alerta o agente que enviou o e-mail quando chega uma devolução (DSN).</Description>
+        <Navigation>Core::Event::Ticket</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::BWBBounce</Item>
+                <Item Key="Event">ArticleCreate</Item>
+                <Item Key="Transaction">1</Item>
+            </Hash>
+        </Value>
+    </Setting>
+</otobo_config>

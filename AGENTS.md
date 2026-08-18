@@ -1,6 +1,6 @@
 # Instruções para desenvolvimento assistido
 
-Este repositório personaliza **OTOBO 11.0.17** (BWB / StoresAce / ZS Angola). Não contém o núcleo OTOBO.
+Este repositório personaliza **OTOBO 11.0.17** (BWB / StoresAce / ZS Angola) em produção na **Euronodes** (`helpdesk.storesace.cv`). Não contém o núcleo OTOBO.
 
 ## Postura (sempre)
 

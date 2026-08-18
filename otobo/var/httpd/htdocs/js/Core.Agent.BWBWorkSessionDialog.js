@@ -3,12 +3,37 @@
 var Core = Core || {};
 Core.Agent = Core.Agent || {};
 
+/**
+ * @namespace
+ * @exports TargetNS as Core.Agent.BWBWorkSessionDialog
+ * @description
+ *      Folha de trabalho no zoom do ticket.
+ *
+ *      Agentes responsáveis: a folha é opcional (menu «Iniciar trabalho»).
+ *      Responder / Nota / e-mail do OTOBO ficam intactos — não é obrigatório
+ *      abrir folha para comunicar com o cliente.
+ *
+ *      Colaboradores em Field Mode: mantém o atalho INICIAR/FECHAR TRABALHO
+ *      nas acções de artigo (fluxo de terreno).
+ */
 Core.Agent.BWBWorkSessionDialog = (function (TargetNS) {
+
+    function IsFieldMode() {
+        return !!(document.body && document.body.classList.contains('BWBFieldMode'));
+    }
+
     function Place() {
-        var Source = document.querySelector('.ActionRow a[href*="Action=AgentBWBWorkSession"]');
+        var Source;
         var IsFinish;
         var Text;
 
+        // Só no Field Mode: no Agent desktop a resposta nativa (Compose/Note)
+        // tem de permanecer o caminho óbvio; a folha fica no menu do ticket.
+        if (!IsFieldMode()) {
+            return;
+        }
+
+        Source = document.querySelector('.ActionRow a[href*="Action=AgentBWBWorkSession"]');
         if (!Source) {
             return;
         }
@@ -45,7 +70,12 @@ Core.Agent.BWBWorkSessionDialog = (function (TargetNS) {
 
     TargetNS.Init = function () {
         Place();
-        new MutationObserver(Place).observe(document.body, { childList: true, subtree: true });
+        new MutationObserver(Place).observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+        });
 
         document.addEventListener('click', function (Event) {
             var Link = Event.target.closest('a[href*="Action=AgentBWBWorkSession"]');
