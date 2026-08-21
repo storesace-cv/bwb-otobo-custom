@@ -238,14 +238,12 @@ sub Finish {
             . '#map=16/'
             . $FinishLat . '/'
             . $FinishLon;
+        # staticmap.openstreetmap.de deixou de resolver DNS; Wikimedia serve PNG OSM sem API key.
         my $StaticUrl
-            = 'https://staticmap.openstreetmap.de/staticmap.php?center='
+            = 'https://maps.wikimedia.org/img/osm-intl,15,'
             . $FinishLat . ','
             . $FinishLon
-            . '&amp;zoom=15&amp;size=560x240&amp;maptype=mapnik&amp;markers='
-            . $FinishLat . ','
-            . $FinishLon
-            . ',lightblue1';
+            . ',560x240.png';
         my $CoordText = $FinishLat . ', ' . $FinishLon;
         $CoordText .= ' (±' . $FinishAcc . ' m)' if defined $FinishAcc && $LocationSource eq 'gps';
         $Body .= '<div style="display:inline-block;font-size:19px;font-weight:700;border-bottom:1px solid #1d1d1f;margin:0 0 14px 2px;">'
@@ -254,11 +252,13 @@ sub Finish {
         $Body
             .= '<div style="margin:0 6px 28px;"><a href="'
             . $MapUrl
-            . '" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none;">'
+            . '" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none;max-width:100%;">'
+            . '<span style="position:relative;display:inline-block;max-width:100%;line-height:0;">'
             . '<img src="'
             . $StaticUrl
             . '" alt="Mapa da localização" width="560" height="240" style="max-width:100%;height:auto;border-radius:12px;border:1px solid #d2d2d7;display:block;"/>'
-            . '</a><div style="margin-top:10px;font-size:14px;color:#6e6e73;">'
+            . '<span style="position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-22px 0 0 -9px;background:#0071e3;border:2px solid #ffffff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 1px 4px rgba(0,0,0,0.35);"></span>'
+            . '</span></a><div style="margin-top:10px;font-size:14px;color:#6e6e73;line-height:1.4;">'
             . $HTMLUtils->ToHTML( String => $CoordText )
             . '</div>';
         if ( $LocationNote ne '' ) {
