@@ -80,5 +80,6 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | Isolamento de acessos | `BWBAccess.pm`, `Ticket/Permission/BWBCustomerOwnerCheck.pm` |
 | Devoluções DSN | `BWBBounce.pm`, `PostMaster/Filter/BWBBounce.pm`, `PostMaster/FollowUpCheck/BWBBounce.pm`, `BWBBounceNotify.pm` |
 | E-mail | `Ticket/Event/NotificationEvent/Transport/Email.pm`, templates NotificationEvent |
-| Modelo de resposta `mod-apple-01` | HTML `Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html` + `standard_template` / `queue_standard_template` |
+| Modelo de resposta `mod-apple-01` | HTML `Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html` + `standard_template` / `queue_standard_template`; filtro Compose `FilterElementPost/BWBComposeAppleTemplate.pm` + JS `Core.Agent.BWBComposeApple.js` (não duplicar a saudação da fila) |
+| Contexto email → Claude MCP | `BWBEmailContext.pm`, wrapper `Email.pm`, `PublicBWBTicketContext.pm`, XML `BWBTicketContext.xml` |
 | Dashboard | `Output/HTML/Dashboard/BWBOpenWork.pm`, configurações `ZZZBWBDashboard*.pm` |

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="PublicFrontend::Module###PublicBWBTicketContext" Required="0" Valid="1">
+        <Description Translatable="1">API JSON read-only de contexto de ticket para o Claude Mail MCP (Bearer).</Description>
+        <Navigation>Frontend::Public::ModuleRegistration</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Modules::PublicBWBTicketContext</Item>
+                <Item Key="Description">Contexto de ticket Helpdesk (MCP)</Item>
+                <Item Key="Title">BWB Ticket Context</Item>
+                <Item Key="NavBarName"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="BWBTicketContext::BearerToken" Required="0" Valid="1">
+        <Description Translatable="1">Token Bearer para PublicBWBTicketContext. Definir só no servidor (ZZZBWBTicketContext.pm), nunca no Git.</Description>
+        <Navigation>Core::BWB</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex=""></Item>
+        </Value>
+    </Setting>
+    <Setting Name="BWBTicketContext::AllowedIPs" Required="0" Valid="1">
+        <Description Translatable="1">Lista de IPs permitidos (vazio = qualquer IP com Bearer válido). Preferir o IP do VPS mcp-mail.bwb.pt.</Description>
+        <Navigation>Core::BWB</Navigation>
+        <Value>
+            <Array>
+            </Array>
+        </Value>
+    </Setting>
+</otobo_config>

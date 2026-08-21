@@ -6,7 +6,9 @@ Kernel/System/BWBBounceNotify.pm
 Kernel/System/BWBConvertCustomer.pm
 Kernel/System/BWBCustomerCompany.pm
 Kernel/System/BWBCustomerUserEmail.pm
+Kernel/System/BWBEmailContext.pm
 Kernel/System/BWBEmailVerify.pm
+Kernel/System/Email.pm
 Kernel/System/BWBFieldMode.pm
 Kernel/System/BWBInvite.pm
 Kernel/System/BWBOperationType.pm

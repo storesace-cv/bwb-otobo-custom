@@ -1,6 +1,6 @@
 # Roadmap Helpdesk BWB / ZS Angola
 
-Actualizado em 19 de agosto de 2026. O comportamento já em produção está em [FEATURES.md](FEATURES.md). Este ficheiro distingue **entregue recentemente** de **passos seguintes**.
+Actualizado em 21 de agosto de 2026. O comportamento já em produção está em [FEATURES.md](FEATURES.md). Este ficheiro distingue **entregue recentemente** de **passos seguintes**.
 
 ## Entregue (agosto 2026)
 
@@ -9,12 +9,14 @@ Actualizado em 19 de agosto de 2026. O comportamento já em produção está em 
 - Duração contabilizada controlada na ficha do cliente.
 - Loja persistida no ticket (`bwb_ticket_store`, menu Alterar loja, tags `<OTOBO_BWB_STORE>`).
 - «Responder» nas filas `bwb-in` / `zs-postmaster` (ligação a modelos `Answer`).
-- Handoff de folha ZS ao passar o ticket ao colaborador.
+- Handoff de folha ZS ao passar o ticket a um colaborador.
 - Registo telefónico / e-mail em nome do cliente (`BWBTicketIntake`), com e-mails de declaração.
-- **Modelo de resposta `mod-apple-01`:** cartão Helpdesk escolhível em Responder (não é envelope de notificação).
+- Modelo de resposta `mod-apple-01` (cartão Helpdesk; tags encoded; largura telemóvel).
+- **Contexto Helpdesk → Claude Mail MCP:** headers `X-BWB-*` nos envios; API `PublicBWBTicketContext`; patches MCP `get_message` + tool `helpdesk_ticket_context` (VPS `mcp-mail.bwb.pt`).
 
 ## Seguinte
 
-- Relatório **Tempo dispendido**: passar a usar a loja do **ticket** (`bwb_ticket_store`) em vez da loja da ficha do utilizador. O `store_id` no ticket já está pronto.
+- Relatório **Tempo dispendido**: passar a usar a loja do **ticket** (`bwb_ticket_store`) em vez da loja da ficha do utilizador. O `store_id` do ticket já está pronto.
 - Envelope das notificações (`Default.tt`) e e-mails de «Nova ocorrência registada»: fora do âmbito do `mod-apple-01`; só se forem pedidos à parte.
 - Novas filas: ligar modelos `Answer` (`queue_standard_template`) para o zoom mostrar «Responder».
+- MCP: scopes BWB↔ZS no lookup (se o token deixar de ser global RO); backup off-host do estado mail-mcp.

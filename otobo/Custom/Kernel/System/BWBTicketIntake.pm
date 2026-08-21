@@ -463,6 +463,7 @@ sub _SendDeclarationEmails {
             UserID               => $UserID,
             HistoryType          => 'SendCustomerNotification',
             HistoryComment       => "\%\%$UserEmail",
+            BWBSource            => 'intake',
         );
         return if !$ArticleID;
     }
@@ -494,13 +495,15 @@ sub _SendDeclarationEmails {
             );
 
             my $Sent = $Kernel::OM->Get('Kernel::System::Email')->Send(
-                From     => $From,
-                ReplyTo  => $From,
-                To       => $Responsible{UserEmail},
-                Subject  => $RespSubject,
-                Charset  => 'utf-8',
-                MimeType => 'text/html',
-                Body     => $RespHTML,
+                From      => $From,
+                ReplyTo   => $From,
+                To        => $Responsible{UserEmail},
+                Subject   => $RespSubject,
+                Charset   => 'utf-8',
+                MimeType  => 'text/html',
+                Body      => $RespHTML,
+                TicketID  => $TicketID,
+                BWBSource => 'intake',
             );
             if ( !$Sent || !$Sent->{Success} ) {
                 $Kernel::OM->Get('Kernel::System::Log')->Log(

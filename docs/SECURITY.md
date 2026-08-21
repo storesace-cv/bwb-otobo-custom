@@ -15,6 +15,13 @@ Cursor pode usar a chave que já esteja configurada no computador do administrad
 
 Produção helpdesk: **Euronodes** VPS (`178.159.34.132`, `helpdesk.storesace.cv`). Não inferir o fornecedor pelo nome do ficheiro da chave SSH local.
 
+## API `PublicBWBTicketContext` (Claude Mail MCP)
+
+- Read-only; autenticação **Bearer** + allowlist de IPs (`BWBTicketContext::*` em `ZZZBWBTicketContext.pm` no servidor).
+- Token e IPs **nunca** entram no Git.
+- O VPS do MCP (`mcp-mail.bwb.pt`) é o único consumidor previsto; não expor o token a Claude.ai directamente.
+- Isolamento BWB↔ZS: nesta fase o token é de serviço global RO com logging; não alargar o âmbito sem revisão.
+
 ## Alterações de produção
 
 Sempre criar cópia de segurança, validar a alteração e confirmar que:

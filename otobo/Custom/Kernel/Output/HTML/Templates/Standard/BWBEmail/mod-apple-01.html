@@ -1,52 +1,68 @@
-<figure class="table" style="width:100%;">
-    <table class="apple-style-body" style="background-color:#f5f5f7;border-width:0px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;" cellspacing="0">
+<style type="text/css">
+.apple-style-body, .apple-style-body table, figure.table { width: 100% !important; }
+figure.table { display: block; margin: 0; }
+.apple-style-card { width: 100% !important; max-width: 580px !important; margin: 0 auto !important; }
+@media only screen and (max-width: 620px) {
+    .apple-style-card { max-width: 100% !important; }
+    .apple-style-shell { padding: 0 !important; }
+    .apple-style-brand { padding: 28px 16px 12px !important; }
+    .apple-style-copy { padding: 12px 16px 28px !important; }
+    .apple-style-foot { padding: 20px 16px !important; }
+    .apple-style-card, .apple-style-card table { border-radius: 0 !important; }
+}
+</style>
+<figure class="table" style="width:100%;margin:0;">
+    <table class="apple-style-body" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-width:0px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;" role="presentation">
         <tbody>
             <tr>
-                <td style="border-width:0px;padding:50px 20px;">
-                    <figure class="table" style="max-width:580px;width:100%;">
-                        <table style="background-color:#ffffff;border-radius:20px;border-width:0px;box-shadow:0 4px 24px rgba(0,0,0,0.03);overflow:hidden;" cellspacing="0">
+                <td class="apple-style-shell" align="center" style="border-width:0px;padding:50px 20px;">
+                    <figure class="table apple-style-card" style="width:100%;max-width:580px;margin:0 auto;">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#ffffff;border-radius:20px;border-width:0px;box-shadow:0 4px 24px rgba(0,0,0,0.03);overflow:hidden;" role="presentation">
                             <tbody>
                                 <tr>
-                                    <td style="border-width:0px;padding:44px 40px 24px;">
+                                    <td class="apple-style-brand" style="border-width:0px;padding:44px 40px 24px;">
                                         <div style="color:#1d1d1f;font-size:21px;letter-spacing:-0.4px;text-align:center;">
                                             <strong>Helpdesk</strong>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="border-width:0px;padding:20px 48px 48px;">
-                                        <h1 style="color:#1d1d1f;font-size:34px;letter-spacing:-1.2px;line-height:1.12;margin:0 0 18px;text-align:center;">
-                                            <strong>Olá, <OTOBO_CUSTOMER_REALNAME></strong>
-                                        </h1>
-                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0 0 32px;text-align:center;">
+                                    <td class="apple-style-copy" style="border-width:0px;padding:20px 40px 40px;">
+                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0 0 8px;text-align:left;">
+                                            Olá &lt;OTOBO_CUSTOMER_REALNAME&gt;,
+                                        </p>
+                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0 0 24px;text-align:left;">
+                                            Obrigado pelo seu contacto.
+                                        </p>
+                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0 0 32px;text-align:left;">
                                             Escreva aqui a resposta ao cliente.
                                         </p>
-                                        <figure class="table" style="width:100%;">
-                                            <table style="background-color:#f5f5f7;border-radius:14px;border-width:0px;margin-bottom:32px;" cellspacing="0">
+                                        <figure class="table" style="width:100%;margin:0;">
+                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-radius:14px;border-width:0px;margin-bottom:32px;" role="presentation">
                                                 <tbody>
                                                     <tr>
-                                                        <td style="border-width:0px;padding:24px 28px;">
+                                                        <td style="border-width:0px;padding:24px 20px;">
                                                             <p style="color:#86868b;font-size:11px;letter-spacing:0.8px;margin:0 0 10px;text-transform:uppercase;">
                                                                 <strong>Resumo da ocorrência</strong>
                                                             </p>
                                                             <p style="color:#1d1d1f;font-size:14px;letter-spacing:-0.1px;line-height:1.42;margin:0 0 6px;">
-                                                                <span style="color:#86868b;">Número:</span> &nbsp;<strong><OTOBO_TICKET_TicketNumber></strong>
+                                                                <span style="color:#86868b;">Número:</span> &nbsp;<strong>&lt;OTOBO_TICKET_TicketNumber&gt;</strong>
                                                             </p>
                                                             <p style="color:#1d1d1f;font-size:14px;letter-spacing:-0.1px;line-height:1.42;margin:0;">
-                                                                <span style="color:#86868b;">Estado:</span> &nbsp;<strong><OTOBO_TICKET_State></strong>
+                                                                <span style="color:#86868b;">Estado:</span> &nbsp;<strong>&lt;OTOBO_TICKET_State&gt;</strong>
                                                             </p>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </figure>
-                                        <figure class="table">
-                                            <table style="border-width:0px;margin-bottom:0;margin-top:0;" cellspacing="0">
+                                        <figure class="table" style="width:100%;margin:0;">
+                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-width:0px;margin:0;" role="presentation">
                                                 <tbody>
                                                     <tr>
                                                         <td style="background-color:#000000;border-radius:24px;border-width:0px;padding:0px;">
-                                                            <p style="text-align:center;">
-                                                                <a style="color:#ffffff;display:inline-block;font-size:13px;font-weight:400;letter-spacing:-0.1px;padding:11px 26px;text-decoration:none;" target="_blank" rel="noopener noreferrer" href="<OTOBO_CONFIG_HttpType>://<OTOBO_CONFIG_FQDN>/<OTOBO_CONFIG_ScriptAlias>customer.pl?Action=CustomerTicketZoom;TicketID=<OTOBO_TICKET_TicketID>">Abrir no portal&nbsp;</a>
+                                                            <p style="text-align:center;margin:0;">
+                                                                <a style="color:#ffffff;display:inline-block;font-size:13px;font-weight:400;letter-spacing:-0.1px;padding:11px 26px;text-decoration:none;" target="_blank" rel="noopener noreferrer" href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketID=&lt;OTOBO_TICKET_TicketID&gt;">Abrir no portal&nbsp;</a>
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -56,7 +72,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="background-color:#f5f5f7;border-bottom-width:0px;border-left-width:0px;border-right-width:0px;border-top:1px solid #e8e8ed;padding:32px 48px;text-align:center;">
+                                    <td class="apple-style-foot" style="background-color:#f5f5f7;border-bottom-width:0px;border-left-width:0px;border-right-width:0px;border-top:1px solid #e8e8ed;padding:32px 40px;text-align:center;">
                                         <p style="color:#86868b;font-size:11px;letter-spacing:-0.1px;line-height:1.5;margin:0;">
                                             Helpdesk StoresAce. Esta mensagem faz parte da conversa do ticket.
                                         </p>

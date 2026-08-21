@@ -216,6 +216,8 @@ sub Finish {
             MimeType  => 'text/html',
             Body      => $MailBody,
             ArticleID => $ArticleID,
+            TicketID  => $Active->{TicketID},
+            BWBSource => 'worksheet',
         );
         if ( !$Sent || !$Sent->{Success} ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(

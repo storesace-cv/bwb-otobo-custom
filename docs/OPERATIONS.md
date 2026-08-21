@@ -40,6 +40,14 @@ ssh bwb-otobo-prod 'mysqldump otobo standard_template queue_standard_template > 
 ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-19-mod-apple-01-answer-template.sql
 ```
 
+### Contexto ticket para Claude Mail MCP (`PublicBWBTicketContext`)
+
+1. Publicar código (deploy) e Rebuild/cache.
+2. No servidor, criar `/opt/otobo/Kernel/Config/Files/ZZZBWBTicketContext.pm` com `BWBTicketContext::BearerToken` e `BWBTicketContext::AllowedIPs` (IP do VPS `mcp-mail.bwb.pt`). `otobo:www-data` `640`. **Nunca** no Git.
+3. No MCP, `/var/www/mail-mcp/.env`: `HELPDESK_CONTEXT_URL` + `HELPDESK_CONTEXT_TOKEN` (mesmo Bearer); redeploy `deploy/install.sh`.
+4. Teste: `curl -H 'Authorization: Bearer …' 'https://helpdesk.storesace.cv/otobo/public.pl?Action=PublicBWBTicketContext;TicketNumber=…'`
+
+Handoff detalhado: repo `bwb-claude-mail-mcp` → `docs/HANDOFF-IMPLEMENTACAO-HELPDECK-CONTEXT.md`.
 Folhas ZS já no sistema em que o responsável (UserID 4) ficou dono da sessão depois de passar o ticket a um colaborador: `db/migrations/2026-08-17-zs-supervisor-session-handoff.sql` (rever o `SELECT` equivalente no servidor antes do `UPDATE`).
 
 Loja persistida no ticket (`bwb_ticket_store`, DF `BWBStore`, texto da notificação de ticket novo): aplicar **com** a publicação do código, depois `Maint::Cache::Delete`:

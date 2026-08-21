@@ -376,6 +376,8 @@ SQL
             Loop          => 1,
             Attachment    => $Param{Attachments},
             EmailSecurity => $SecurityOptions || {},
+            TicketID      => $Param{TicketID},
+            BWBSource     => 'notification',
         );
 
         if ( !$Sent->{Success} ) {
@@ -501,6 +503,8 @@ SQL
                 Loop          => 1,
                 Attachment    => $Param{Attachments},
                 EmailSecurity => $SecurityOptions || {},
+                TicketID      => $Param{TicketID},
+                BWBSource     => 'notification',
             );
 
             if ( !$Sent->{Success} ) {
@@ -535,6 +539,7 @@ SQL
             Loop                 => 1,
             Attachment           => $Param{Attachments},
             EmailSecurity        => $SecurityOptions || {},
+            BWBSource            => 'notification',
         );
 
         if ( !$ArticleID ) {
