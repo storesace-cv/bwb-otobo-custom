@@ -17,9 +17,9 @@ Produção helpdesk: **Euronodes** VPS (`178.159.34.132`, `helpdesk.storesace.cv
 
 ## API `PublicBWBTicketContext` (Claude Mail MCP)
 
-- Read-only; autenticação **Bearer** + allowlist de IPs (`BWBTicketContext::*` em `ZZZBWBTicketContext.pm` no servidor).
+- Read-only; autenticação **Bearer** lido de `/opt/otobo/var/bwb-ticket-context.token` (e allowlist em `bwb-ticket-context.allowed-ips`). Não usar SysConfig para o segredo (`ZZZAAuto` anula).
 - Token e IPs **nunca** entram no Git.
-- O VPS do MCP (`mcp-mail.bwb.pt`) é o único consumidor previsto; não expor o token a Claude.ai directamente.
+- O VPS do MCP (`mcp-mail.bwb.pt`, IP `178.159.34.165`) é o único consumidor previsto; não expor o token a Claude.ai directamente.
 - Isolamento BWB↔ZS: nesta fase o token é de serviço global RO com logging; não alargar o âmbito sem revisão.
 
 ## Alterações de produção

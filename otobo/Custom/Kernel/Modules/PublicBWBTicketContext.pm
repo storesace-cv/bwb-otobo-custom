@@ -33,14 +33,47 @@ sub Run {
         );
     };
 
+    my $Expected = $ConfigObject->Get('BWBTicketContext::BearerToken') || '';
+    if ( !$Expected ) {
+        my $TokenFile = $ConfigObject->Get('BWBTicketContext::TokenFile')
+            || ( ( $ConfigObject->Get('Home') || '/opt/otobo' ) . '/var/bwb-ticket-context.token' );
+        if ( -r $TokenFile ) {
+            if ( open my $Fh, '<', $TokenFile ) {
+                local $/;
+                $Expected = <$Fh> // '';
+                close $Fh;
+                $Expected =~ s/^\s+|\s+$//g;
+            }
+        }
+    }
+
+    my $Allowed = $ConfigObject->Get('BWBTicketContext::AllowedIPs');
+    if ( ref $Allowed ne 'ARRAY' || !@{$Allowed} ) {
+        my $IPFile = $ConfigObject->Get('BWBTicketContext::AllowedIPsFile')
+            || ( ( $ConfigObject->Get('Home') || '/opt/otobo' ) . '/var/bwb-ticket-context.allowed-ips' );
+        if ( -r $IPFile ) {
+            if ( open my $Fh, '<', $IPFile ) {
+                my @IPs;
+                while ( my $Line = <$Fh> ) {
+                    chomp $Line;
+                    $Line =~ s/#.*//;
+                    $Line =~ s/^\s+|\s+$//g;
+                    push @IPs, $Line if $Line ne '';
+                }
+                close $Fh;
+                $Allowed = \@IPs;
+            }
+        }
+    }
+    $Allowed = [] if ref $Allowed ne 'ARRAY';
+
     my $RemoteAddr = $ENV{HTTP_X_FORWARDED_FOR} || $ENV{REMOTE_ADDR} || '';
     $RemoteAddr =~ s/\s//g;
     if ( $RemoteAddr =~ /,/ ) {
         ($RemoteAddr) = split /,/, $RemoteAddr;
     }
 
-    my $Allowed = $ConfigObject->Get('BWBTicketContext::AllowedIPs') || [];
-    if ( ref $Allowed eq 'ARRAY' && @{$Allowed} ) {
+    if ( @{$Allowed} ) {
         my $OK = 0;
         for my $IP ( @{$Allowed} ) {
             next if !defined $IP || $IP eq '';
@@ -61,8 +94,10 @@ sub Run {
         }
     }
 
-    my $Expected = $ConfigObject->Get('BWBTicketContext::BearerToken') || '';
-    my $Auth     = $ENV{HTTP_AUTHORIZATION} || '';
+    my $Auth = $ENV{HTTP_AUTHORIZATION} || $ENV{REDIRECT_HTTP_AUTHORIZATION} || '';
+    if ( !$Auth ) {
+        $Auth = $RequestObject->HTTP('AUTHORIZATION') || '';
+    }
     my ($Bearer) = $Auth =~ /^Bearer\s+(\S+)/i;
     $Bearer //= $RequestObject->GetParam( Param => 'Token' ) || '';
 

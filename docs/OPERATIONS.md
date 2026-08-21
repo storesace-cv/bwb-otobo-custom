@@ -43,9 +43,12 @@ ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-19-mod-apple-01-answer-
 ### Contexto ticket para Claude Mail MCP (`PublicBWBTicketContext`)
 
 1. Publicar código (deploy) e Rebuild/cache.
-2. No servidor, criar `/opt/otobo/Kernel/Config/Files/ZZZBWBTicketContext.pm` com `BWBTicketContext::BearerToken` e `BWBTicketContext::AllowedIPs` (IP do VPS `mcp-mail.bwb.pt`). `otobo:www-data` `640`. **Nunca** no Git.
-3. No MCP, `/var/www/mail-mcp/.env`: `HELPDESK_CONTEXT_URL` + `HELPDESK_CONTEXT_TOKEN` (mesmo Bearer); redeploy `deploy/install.sh`.
-4. Teste: `curl -H 'Authorization: Bearer …' 'https://helpdesk.storesace.cv/otobo/public.pl?Action=PublicBWBTicketContext;TicketNumber=…'`
+2. No servidor, criar ficheiros **fora do SysConfig** (o `ZZZAAuto.pm` anula defaults XML):
+   - `/opt/otobo/var/bwb-ticket-context.token` — uma linha com o Bearer (`chmod 640`, `otobo:www-data`)
+   - `/opt/otobo/var/bwb-ticket-context.allowed-ips` — um IP por linha (ex. `178.159.34.165`)
+3. Apache (vhost HTTPS): passar `Authorization` ao PSGI — `RewriteCond %{HTTP:Authorization} .` + `RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]` (já aplicado em produção a 2026-08-21).
+4. No MCP, `/var/www/mail-mcp/.env`: `HELPDESK_CONTEXT_URL` + `HELPDESK_CONTEXT_TOKEN` (mesmo Bearer); redeploy `deploy/install.sh`.
+5. Teste: `curl -H 'Authorization: Bearer …' 'https://helpdesk.storesace.cv/otobo/public.pl?Action=PublicBWBTicketContext;TicketNumber=…'`
 
 Handoff detalhado: repo `bwb-claude-mail-mcp` → `docs/HANDOFF-IMPLEMENTACAO-HELPDECK-CONTEXT.md`.
 Folhas ZS já no sistema em que o responsável (UserID 4) ficou dono da sessão depois de passar o ticket a um colaborador: `db/migrations/2026-08-17-zs-supervisor-session-handoff.sql` (rever o `SELECT` equivalente no servidor antes do `UPDATE`).

@@ -12,19 +12,4 @@
             </Hash>
         </Value>
     </Setting>
-    <Setting Name="BWBTicketContext::BearerToken" Required="0" Valid="1">
-        <Description Translatable="1">Token Bearer para PublicBWBTicketContext. Definir só no servidor (ZZZBWBTicketContext.pm), nunca no Git.</Description>
-        <Navigation>Core::BWB</Navigation>
-        <Value>
-            <Item ValueType="String" ValueRegex=""></Item>
-        </Value>
-    </Setting>
-    <Setting Name="BWBTicketContext::AllowedIPs" Required="0" Valid="1">
-        <Description Translatable="1">Lista de IPs permitidos (vazio = qualquer IP com Bearer válido). Preferir o IP do VPS mcp-mail.bwb.pt.</Description>
-        <Navigation>Core::BWB</Navigation>
-        <Value>
-            <Array>
-            </Array>
-        </Value>
-    </Setting>
 </otobo_config>
