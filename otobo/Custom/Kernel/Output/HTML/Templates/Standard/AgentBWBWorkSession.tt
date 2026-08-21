@@ -49,6 +49,10 @@
      <div id="StateChoice" style="display:none"><label for="State">Estado seguinte</label><select name="State" id="State"><option value="open">Aberto</option><option value="Pendente a aguardar cliente">Pendente a aguardar cliente</option><option value="Pendente até determinada data">Pendente até determinada data</option><option value="Aguardar fornecedor">Aguardar fornecedor</option><option value="encerrado com êxito">Encerrado com êxito</option><option value="encerrado sem êxito">Encerrado sem êxito</option></select></div>
      <div class="VisibilityChoice"><strong>Visível no portal do cliente?</strong><br><label><input type="radio" name="Visibility" value="yes" required> Sim</label><label><input type="radio" name="Visibility" value="no" required> Não</label></div>
      <div class="VisibilityChoice"><strong>Enviar por e-mail ao cliente?</strong><br><label><input type="radio" name="SendEmail" value="yes"> Sim</label><label><input type="radio" name="SendEmail" value="no" checked> Não</label></div>
+     <input type="hidden" name="FinishLatitude" id="FinishLatitude" value="">
+     <input type="hidden" name="FinishLongitude" id="FinishLongitude" value="">
+     <input type="hidden" name="FinishAccuracy" id="FinishAccuracy" value="">
+     <input type="hidden" name="FinishLocationSource" id="FinishLocationSource" value="">
     </div>
     <div class="Actions">
      <button type="button" class="CallForAction CancelAction" id="BWBCancel"><span>CANCELAR</span></button>
@@ -91,7 +95,36 @@ function later(){clearTimeout(Timer);Timer=setTimeout(save,1200);} E.addEventLis
 function action(Name){sync();var D=new FormData(F);D.set('Subaction',Name);fetch(F.action,{method:'POST',body:D,credentials:'same-origin'}).then(function(){location.reload();});}
 var P=document.getElementById('BWBPause'),R=document.getElementById('BWBResume'),C=document.getElementById('BWBCancel');if(P)P.onclick=function(){action('Pause');};if(R)R.onclick=function(){action('Resume');};
 if(C)C.onclick=function(){if(!window.confirm('Pretende cancelar esta folha de trabalho? O rascunho, os anexos temporários e o tempo registado serão eliminados. O ticket não será alterado.'))return;Finishing=true;sync();var S=document.createElement('input');S.type='hidden';S.name='Subaction';S.value='Cancel';F.appendChild(S);F.submit();};
-F.addEventListener('submit',function(E){if(E.submitter&&E.submitter.id==='BWBFinish'){Finishing=true;sync();var S=document.createElement('input');S.type='hidden';S.name='Subaction';S.value='Finish';F.appendChild(S);}});
+F.addEventListener('submit',function(Ev){
+ if(!(Ev.submitter&&Ev.submitter.id==='BWBFinish'))return;
+ if(F.dataset.bwbGeoDone==='1'){Finishing=true;sync();var Sx=document.createElement('input');Sx.type='hidden';Sx.name='Subaction';Sx.value='Finish';F.appendChild(Sx);return;}
+ Ev.preventDefault();
+ Finishing=true;sync();
+ var Status=document.getElementById('BWBSaveStatus');
+ if(Status)Status.textContent='A obter localização…';
+ var Btn=document.getElementById('BWBFinish');
+ if(Btn)Btn.disabled=true;
+ function setGeo(Lat,Lon,Acc,Src){
+  var A=document.getElementById('FinishLatitude'); if(A)A.value=Lat||'';
+  var O=document.getElementById('FinishLongitude'); if(O)O.value=Lon||'';
+  var C=document.getElementById('FinishAccuracy'); if(C)C.value=Acc||'';
+  var R=document.getElementById('FinishLocationSource'); if(R)R.value=Src||'';
+ }
+ function goFinish(){
+  F.dataset.bwbGeoDone='1';
+  var S=document.createElement('input');S.type='hidden';S.name='Subaction';S.value='Finish';F.appendChild(S);
+  if(typeof F.requestSubmit==='function'){F.requestSubmit(Btn||undefined);} else {F.submit();}
+ }
+ if(!navigator.geolocation){setGeo('','','','');goFinish();return;}
+ navigator.geolocation.getCurrentPosition(
+  function(Pos){
+   setGeo(String(Pos.coords.latitude),String(Pos.coords.longitude),Pos.coords.accuracy!=null?String(Pos.coords.accuracy):'','gps');
+   goFinish();
+  },
+  function(){setGeo('','','','');goFinish();},
+  {enableHighAccuracy:true,timeout:15000,maximumAge:60000}
+ );
+});
 document.getElementById('Result').addEventListener('change',function(){var V=this.value;document.getElementById('OwnerChoice').style.display=V==='Encaminhado para outro técnico'?'block':'none';document.getElementById('DecisionChoice').style.display=V==='Sem anomalia detetada'?'block':'none';document.getElementById('PendingChoice').style.display=V==='A aguardar intervenção presencial'?'block':'none';document.getElementById('StateChoice').style.display=V==='Outro'?'block':'none';});
 window.addEventListener('beforeunload',function(){if(!Finishing)save();});
 })();

@@ -1,4 +1,10 @@
-<style type="text/css">
+-- mod-apple-01: Resumo sob Helpdesk; saudação numa linha.
+-- Fonte: otobo/Custom/Kernel/Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html
+-- Idempotente.
+
+UPDATE standard_template
+SET
+  text = '<style type="text/css">
 .apple-style-body, .apple-style-body table, figure.table { width: 100% !important; }
 figure.table { display: block; margin: 0; }
 .apple-style-card { width: 100% !important; max-width: 580px !important; margin: 0 auto !important; }
@@ -12,7 +18,7 @@ figure.table { display: block; margin: 0; }
 }
 </style>
 <figure class="table" style="width:100%;margin:0;">
-    <table class="apple-style-body" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-width:0px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;" role="presentation">
+    <table class="apple-style-body" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-width:0px;font-family:-apple-system, BlinkMacSystemFont, ''Segoe UI'', Roboto, Helvetica, Arial, sans-serif;" role="presentation">
         <tbody>
             <tr>
                 <td class="apple-style-shell" align="center" style="border-width:0px;padding:50px 20px;">
@@ -28,7 +34,7 @@ figure.table { display: block; margin: 0; }
                                 </tr>
                                 <tr>
                                     <td class="apple-style-copy" style="border-width:0px;padding:44px 40px 40px;">
-                                        <figure class="table" style="width:100%;margin:0;">
+                                        <figure class="table" style="width:100%;margin:0 0 44px;">
                                             <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-radius:14px;border-width:0px;margin:0;" role="presentation">
                                                 <tbody>
                                                     <tr>
@@ -47,26 +53,19 @@ figure.table { display: block; margin: 0; }
                                                 </tbody>
                                             </table>
                                         </figure>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
-                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0;text-align:left;">
+                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0 0 16px;text-align:left;">
                                             Olá &lt;OTOBO_CUSTOMER_REALNAME&gt;, Obrigado pelo seu contacto.
                                         </p>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
-                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0;text-align:left;">
+                                        <p style="color:#1d1d1f;font-size:16px;font-weight:400;letter-spacing:-0.2px;line-height:1.5;margin:0 0 32px;text-align:left;">
                                             Escreva aqui a resposta ao cliente.
                                         </p>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
-                                        <p style="font-size:16px;line-height:1.5;margin:0;text-align:left;">&nbsp;</p>
                                         <figure class="table" style="width:100%;margin:0;">
                                             <table width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-width:0px;margin:0;" role="presentation">
                                                 <tbody>
                                                     <tr>
-                                                        <td style="background-color:#e8e8ed;border-radius:24px;border-width:0px;padding:0px;">
+                                                        <td style="background-color:#000000;border-radius:24px;border-width:0px;padding:0px;">
                                                             <p style="text-align:center;margin:0;">
-                                                                <a style="color:#1d1d1f;display:inline-block;font-size:13px;font-weight:400;letter-spacing:-0.1px;padding:11px 26px;text-decoration:none;" target="_blank" rel="noopener noreferrer" href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketID=&lt;OTOBO_TICKET_TicketID&gt;">Abrir no portal&nbsp;</a>
+                                                                <a style="color:#ffffff;display:inline-block;font-size:13px;font-weight:400;letter-spacing:-0.1px;padding:11px 26px;text-decoration:none;" target="_blank" rel="noopener noreferrer" href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketID=&lt;OTOBO_TICKET_TicketID&gt;">Abrir no portal&nbsp;</a>
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -90,3 +89,8 @@ figure.table { display: block; margin: 0; }
         </tbody>
     </table>
 </figure>
+',
+  content_type = 'text/html; charset=utf-8',
+  change_time = UTC_TIMESTAMP(),
+  change_by = 1
+WHERE name = 'mod-apple-01';

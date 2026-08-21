@@ -60,6 +60,13 @@ ssh bwb-otobo-prod 'mysqldump otobo ticket dynamic_field dynamic_field_value not
 ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-18-ticket-store.sql
 ```
 
+Coordenadas GPS nas lojas e no fecho da folha (`bwb_store.latitude/longitude`, colunas `finish_*` em `bwb_work_session`):
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo bwb_store bwb_work_session > /root/otobo-backups/store-work-location-before.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-22-store-work-location.sql
+```
+
 Devolução DSN criada como ticket novo (ex. `2026081762000058` / id 437, 2026-08-17): fundir para o ticket original (`2026081762000049` / id 436) depois de tornar o artigo da DSN não visível ao cliente, e disparar `BWBBounceNotify` para o proprietário **e** o agente responsável. Não reabrir o ticket encerrado.
 
 Exemplo (branding Helpdesk nas notificações, 2026-08-16):

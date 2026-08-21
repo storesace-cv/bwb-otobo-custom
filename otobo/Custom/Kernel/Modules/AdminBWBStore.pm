@@ -37,7 +37,7 @@ sub Run {
         $LayoutObject->ChallengeTokenCheck();
 
         my %Data;
-        for my $Name (qw(StoreID CustomerID StoreNumber StoreName StoreStreet ValidID)) {
+        for my $Name (qw(StoreID CustomerID StoreNumber StoreName StoreStreet Latitude Longitude ValidID)) {
             $Data{$Name} = $ParamObject->GetParam( Param => $Name );
         }
         if ( !$AccessObject->CustomerAccessCheck( UserID => $Self->{UserID}, CustomerID => $Data{CustomerID} ) ) {

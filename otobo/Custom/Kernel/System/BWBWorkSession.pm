@@ -10,7 +10,8 @@ our @ObjectDependencies = qw(
     Kernel::System::DynamicField::Backend Kernel::System::Email Kernel::System::Queue
     Kernel::System::CustomerUser Kernel::System::Signature Kernel::System::Log
     Kernel::System::BWBZSSupervisorNotify Kernel::System::Main
-    Kernel::System::BWBCustomerCompany
+    Kernel::System::BWBCustomerCompany Kernel::System::BWBTicketStore
+    Kernel::System::BWBStore Kernel::System::HTMLUtils
 );
 
 sub new { my ($Type) = @_; return bless {}, $Type; }
@@ -152,6 +153,56 @@ sub Finish {
     my %TicketData = $Ticket->TicketGet( TicketID => $Active->{TicketID}, DynamicFields => 0, Silent => 1 );
     my $HelpdeskName = ( $TicketData{Queue} || '' ) =~ /^zs(?:angola)?-/i ? 'Helpdesk - ZS Angola' : 'Helpdesk - BWB';
     my $Notes = $Param{Observation} || '';
+
+    my $StoreObject = $Kernel::OM->Get('Kernel::System::BWBStore');
+    my $FinishLat = $StoreObject->_NormalizeCoord( $Param{FinishLatitude},  -90,  90 );
+    my $FinishLon = $StoreObject->_NormalizeCoord( $Param{FinishLongitude}, -180, 180 );
+    my $FinishAcc;
+    if ( defined $Param{FinishAccuracy} && $Param{FinishAccuracy} ne '' ) {
+        my $AccRaw = $Param{FinishAccuracy};
+        $AccRaw =~ s/^\s+|\s+$//g;
+        $AccRaw =~ s/,/./g;
+        if ( $AccRaw =~ /^\d+(?:\.\d+)?$/ ) {
+            $FinishAcc = sprintf( '%.2f', 0 + $AccRaw );
+        }
+    }
+    my $LocationSource = '';
+    my $LocationNote   = '';
+    if (
+        defined $FinishLat
+        && defined $FinishLon
+        && ( $Param{FinishLocationSource} || '' ) eq 'gps'
+    )
+    {
+        $LocationSource = 'gps';
+    }
+    else {
+        $FinishLat = undef;
+        $FinishLon = undef;
+        $FinishAcc = undef;
+        my $TicketStore = $Kernel::OM->Get('Kernel::System::BWBTicketStore')->Get(
+            TicketID => $Active->{TicketID},
+        );
+        my $StoreLat = $TicketStore
+            ? $StoreObject->_NormalizeCoord( $TicketStore->{Latitude},  -90,  90 )
+            : undef;
+        my $StoreLon = $TicketStore
+            ? $StoreObject->_NormalizeCoord( $TicketStore->{Longitude}, -180, 180 )
+            : undef;
+        if ( defined $StoreLat && defined $StoreLon ) {
+            $FinishLat      = $StoreLat;
+            $FinishLon      = $StoreLon;
+            $LocationSource = 'store';
+            $LocationNote
+                = 'Localização GPS indisponível; usadas as coordenadas da loja associada ao ticket.';
+        }
+        else {
+            $LocationSource = 'none';
+            $LocationNote
+                = 'Localização GPS indisponível e a loja associada não tem coordenadas registadas.';
+        }
+    }
+
     my $Font = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
     my $Body = '<div style="font-family:'.$Font.';font-size:15px;line-height:1.5;color:#1d1d1f;max-width:760px;">';
     $Body .= '<div style="font-size:22px;font-weight:700;text-transform:uppercase;padding:0 4px 2px;border-bottom:1px solid #a1a1a6;margin-bottom:16px;">Folha de trabalho</div>';
@@ -173,6 +224,58 @@ sub Finish {
     $Body .= '<tr><th style="background:#f2f2f2;text-align:right;padding:3px 8px;font-size:16px;white-space:nowrap;">Resultado:</th><td style="padding:3px 12px 3px 8px;font-weight:400;">'.$Result.'</td></tr>';
     $Body .= '<tr><th style="background:#f2f2f2;text-align:right;padding:3px 8px 7px 12px;font-size:16px;white-space:nowrap;">Estado aplicado ao ticket:</th><td style="padding:3px 12px 7px 8px;font-weight:600;">'.($StateLabel{$State} || $State).'</td></tr>';
     $Body .= '</tbody></table>';
+    if ( defined $FinishLat && defined $FinishLon ) {
+        my $HTMLUtils = $Kernel::OM->Get('Kernel::System::HTMLUtils');
+        my $MapLabel
+            = $LocationSource eq 'store'
+            ? 'Localização (coordenadas da loja)'
+            : 'Localização no fecho';
+        my $MapUrl
+            = 'https://www.openstreetmap.org/?mlat='
+            . $FinishLat
+            . '&amp;mlon='
+            . $FinishLon
+            . '#map=16/'
+            . $FinishLat . '/'
+            . $FinishLon;
+        my $StaticUrl
+            = 'https://staticmap.openstreetmap.de/staticmap.php?center='
+            . $FinishLat . ','
+            . $FinishLon
+            . '&amp;zoom=15&amp;size=560x240&amp;maptype=mapnik&amp;markers='
+            . $FinishLat . ','
+            . $FinishLon
+            . ',lightblue1';
+        my $CoordText = $FinishLat . ', ' . $FinishLon;
+        $CoordText .= ' (±' . $FinishAcc . ' m)' if defined $FinishAcc && $LocationSource eq 'gps';
+        $Body .= '<div style="display:inline-block;font-size:19px;font-weight:700;border-bottom:1px solid #1d1d1f;margin:0 0 14px 2px;">'
+            . $HTMLUtils->ToHTML( String => $MapLabel )
+            . '</div>';
+        $Body
+            .= '<div style="margin:0 6px 28px;"><a href="'
+            . $MapUrl
+            . '" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none;">'
+            . '<img src="'
+            . $StaticUrl
+            . '" alt="Mapa da localização" width="560" height="240" style="max-width:100%;height:auto;border-radius:12px;border:1px solid #d2d2d7;display:block;"/>'
+            . '</a><div style="margin-top:10px;font-size:14px;color:#6e6e73;">'
+            . $HTMLUtils->ToHTML( String => $CoordText )
+            . '</div>';
+        if ( $LocationNote ne '' ) {
+            $Body
+                .= '<div style="margin-top:8px;font-size:14px;color:#6e6e73;">'
+                . $HTMLUtils->ToHTML( String => $LocationNote )
+                . '</div>';
+        }
+        $Body .= '</div>';
+    }
+    elsif ( $LocationNote ne '' ) {
+        my $HTMLUtils = $Kernel::OM->Get('Kernel::System::HTMLUtils');
+        $Body
+            .= '<div style="margin:0 6px 28px;font-size:14px;color:#6e6e73;">'
+            . $HTMLUtils->ToHTML( String => $LocationNote )
+            . '</div>';
+    }
     $Body .= '<table class="BWBAccountedDuration" role="presentation" style="border-collapse:collapse;width:auto;max-width:100%;border-bottom:1px solid #a1a1a6;"><tbody><tr>';
     $Body .= '<th style="background:#f2f2f2;text-align:right;padding:9px 8px 9px 12px;font-size:16px;white-space:nowrap;">Duração contabilizada:</th><td style="padding:9px 12px 9px 8px;font-weight:400;">'.$Minutes.' minutos</td>';
     $Body .= '</tr></tbody></table></div>';
@@ -184,7 +287,27 @@ sub Finish {
     if ( !$Ticket->TicketAccountTime( TicketID => $Active->{TicketID}, ArticleID => $ArticleID, TimeUnit => $Minutes, UserID => $Param{UserID} ) ) { $Self->{LastError} = 'Não foi possível contabilizar o tempo no ticket.'; return; }
     my $DF = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldGet( Name => 'UltimaIntervencao' );
     if ( $DF && $DF->{ID} ) { $Kernel::OM->Get('Kernel::System::DynamicField::Backend')->ValueSet( DynamicFieldConfig => $DF, ObjectID => $Active->{TicketID}, Value => $Result, UserID => $Param{UserID} ); }
-    if ( !$DB->Do( SQL => 'UPDATE bwb_work_session SET end_time=UTC_TIMESTAMP(),duration_minutes=?,result=?,observation=?,article_id=? WHERE id=?', Bind => [ \$Minutes, \$Result, \$Notes, \$ArticleID, \$Active->{SessionID} ] ) ) { $Self->{LastError} = 'Não foi possível encerrar a sessão de trabalho.'; return; }
+    if (
+        !$DB->Do(
+            SQL => q{
+                UPDATE bwb_work_session
+                SET end_time=UTC_TIMESTAMP(), duration_minutes=?, result=?, observation=?,
+                    finish_latitude=?, finish_longitude=?, finish_accuracy_m=?,
+                    finish_location_source=?, finish_location_note=?, article_id=?
+                WHERE id=?
+            },
+            Bind => [
+                \$Minutes, \$Result, \$Notes,
+                \$FinishLat, \$FinishLon, \$FinishAcc,
+                \$LocationSource, \$LocationNote, \$ArticleID,
+                \$Active->{SessionID},
+            ],
+        )
+        )
+    {
+        $Self->{LastError} = 'Não foi possível encerrar a sessão de trabalho.';
+        return;
+    }
     if ( $Param{SendEmailToCustomer} ) {
         my %Customer = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
             User => $TicketData{CustomerUserID},

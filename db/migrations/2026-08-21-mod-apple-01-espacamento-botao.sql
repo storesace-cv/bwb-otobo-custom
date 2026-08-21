@@ -1,4 +1,9 @@
-<style type="text/css">
+-- mod-apple-01: espaçamento com &nbsp; (CKEditor) + botão cinzento claro.
+-- Fonte: otobo/Custom/Kernel/Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html
+
+UPDATE standard_template
+SET
+  text = '<style type="text/css">
 .apple-style-body, .apple-style-body table, figure.table { width: 100% !important; }
 figure.table { display: block; margin: 0; }
 .apple-style-card { width: 100% !important; max-width: 580px !important; margin: 0 auto !important; }
@@ -12,7 +17,7 @@ figure.table { display: block; margin: 0; }
 }
 </style>
 <figure class="table" style="width:100%;margin:0;">
-    <table class="apple-style-body" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-width:0px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;" role="presentation">
+    <table class="apple-style-body" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;border-width:0px;font-family:-apple-system, BlinkMacSystemFont, ''Segoe UI'', Roboto, Helvetica, Arial, sans-serif;" role="presentation">
         <tbody>
             <tr>
                 <td class="apple-style-shell" align="center" style="border-width:0px;padding:50px 20px;">
@@ -90,3 +95,8 @@ figure.table { display: block; margin: 0; }
         </tbody>
     </table>
 </figure>
+',
+  content_type = 'text/html; charset=utf-8',
+  change_time = UTC_TIMESTAMP(),
+  change_by = 1
+WHERE name = 'mod-apple-01';

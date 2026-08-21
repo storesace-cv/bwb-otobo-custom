@@ -27,7 +27,8 @@ sub Get {
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
     return if !$DBObject->Prepare(
         SQL => q{
-            SELECT ts.ticket_id, ts.store_id, s.customer_id, s.store_number, s.name, s.street
+            SELECT ts.ticket_id, ts.store_id, s.customer_id, s.store_number, s.name, s.street,
+                   s.latitude, s.longitude
             FROM bwb_ticket_store ts
             INNER JOIN bwb_store s ON s.id = ts.store_id
             WHERE ts.ticket_id = ?
@@ -45,6 +46,8 @@ sub Get {
         StoreNumber => $Row[3],
         StoreName   => $Row[4],
         StoreStreet => $Row[5] // '',
+        Latitude    => $Row[6],
+        Longitude   => $Row[7],
         Label       => $Self->_Label( $Row[3], $Row[4] ),
     };
 }

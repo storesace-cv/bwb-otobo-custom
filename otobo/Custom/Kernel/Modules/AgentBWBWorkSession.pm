@@ -149,10 +149,23 @@ sub Run {
         elsif ($SendEmail eq 'yes' && $Visibility ne 'yes') { $Data{Error}='Para enviar a folha por e-mail, torne também o registo visível no portal do cliente.'; }
         else {
             my @Attachments=$Kernel::OM->Get('Kernel::System::Web::UploadCache')->FormIDGetAllFilesData(FormID=>$Data{FormID});
-            my $Minutes=$Work->Finish(UserID=>$Self->{UserID},TicketID=>$TicketID,Result=>$Allowed,Observation=>$Body,
-                IsVisibleForCustomer=>($Visibility eq 'yes'?1:0),SendEmailToCustomer=>($SendEmail eq 'yes'?1:0),Attachment=>\@Attachments,
-                Decision=>($Request->GetParam(Param=>'Decision')||''),State=>($Request->GetParam(Param=>'State')||''),
-                NewOwnerID=>($Request->GetParam(Param=>'NewOwnerID')||0),PendingDate=>($Request->GetParam(Param=>'PendingDate')||''));
+            my $Minutes=$Work->Finish(
+                UserID=>$Self->{UserID},
+                TicketID=>$TicketID,
+                Result=>$Allowed,
+                Observation=>$Body,
+                IsVisibleForCustomer=>($Visibility eq 'yes'?1:0),
+                SendEmailToCustomer=>($SendEmail eq 'yes'?1:0),
+                Attachment=>\@Attachments,
+                Decision=>($Request->GetParam(Param=>'Decision')||''),
+                State=>($Request->GetParam(Param=>'State')||''),
+                NewOwnerID=>($Request->GetParam(Param=>'NewOwnerID')||0),
+                PendingDate=>($Request->GetParam(Param=>'PendingDate')||''),
+                FinishLatitude=>($Request->GetParam(Param=>'FinishLatitude')||''),
+                FinishLongitude=>($Request->GetParam(Param=>'FinishLongitude')||''),
+                FinishAccuracy=>($Request->GetParam(Param=>'FinishAccuracy')||''),
+                FinishLocationSource=>($Request->GetParam(Param=>'FinishLocationSource')||''),
+            );
             if ($Minutes) {
                 $Kernel::OM->Get('Kernel::System::Web::UploadCache')->FormIDRemove(FormID=>$Data{FormID});
                 my $FieldMode = $Kernel::OM->Get('Kernel::System::BWBFieldMode');
