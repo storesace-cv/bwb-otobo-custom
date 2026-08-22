@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="Loader::Module::AgentBWBWorkSession###850-BWBWorkAppointment" Required="0" Valid="1">
+        <Description Translatable="1">Diálogo nativo de marcação na folha de trabalho.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.AppointmentCalendar.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>thirdparty/momentjs-2.29.3/moment.min.js</Item>
+                        <Item>thirdparty/fullcalendar-3.10.2/fullcalendar.min.js</Item>
+                        <Item>Core.Agent.AppointmentCalendar.js</Item>
+                        <Item>Core.Agent.BWBWorkAppointment.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+</otobo_config>

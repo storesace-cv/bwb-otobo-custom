@@ -1,0 +1,31 @@
+<style>
+    .BWBScheduledWorkTable td a.AsBlock { min-height:28px; }
+    @media (max-width: 767px) {
+        .BWBScheduledWorkTable th:nth-child(4), .BWBScheduledWorkTable td:nth-child(4) { display:none; }
+    }
+</style>
+<table class="DataTable BWBScheduledWorkTable">
+    <thead>
+        <tr>
+            <th>[% Translate("Data/hora") | html %]</th>
+            <th>[% Translate("Ticket#") | html %]</th>
+            <th>[% Translate("Cliente") | html %]</th>
+            <th>[% Translate("Loja") | html %]</th>
+            <th>[% Translate("Marcação") | html %]</th>
+        </tr>
+    </thead>
+    <tbody>
+[% RenderBlockStart("BWBScheduledWorkRow") %]
+        <tr class="Row">
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]">[% Data.Start | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]">[% Data.TicketNumber | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]">[% Data.Customer | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]">[% Data.Store | html %]</a></td>
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]" title="[% Data.Title | html %]">[% Data.Appointment | html %]</a></td>
+        </tr>
+[% RenderBlockEnd("BWBScheduledWorkRow") %]
+[% RenderBlockStart("BWBScheduledWorkNone") %]
+        <tr><td colspan="5">[% Translate("Não existem agendamentos pendentes.") | html %]</td></tr>
+[% RenderBlockEnd("BWBScheduledWorkNone") %]
+    </tbody>
+</table>

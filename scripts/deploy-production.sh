@@ -17,6 +17,9 @@ rsync -av "$ROOT/otobo/Kernel/Config/Files/" "$TARGET:/opt/otobo/Kernel/Config/F
 # SysConfig XML is loaded from Kernel/Config/Files/XML (not Custom/)
 rsync -av "$ROOT/otobo/Custom/Kernel/Config/Files/XML/" "$TARGET:/opt/otobo/Kernel/Config/Files/XML/"
 rsync -av "$ROOT/otobo/var/httpd/htdocs/" "$TARGET:/opt/otobo/var/httpd/htdocs/"
+if compgen -G "$ROOT/otobo/Kernel/Language/pt_ZZZ"*.pm > /dev/null; then
+    rsync -av "$ROOT/otobo/Kernel/Language/pt_ZZZ"*.pm "$TARGET:/opt/otobo/Kernel/Language/"
+fi
 ssh "$TARGET" "install -d -o otobo -g otobo -m 750 /opt/otobo/Custom/scripts"
 rsync -av "$ROOT/scripts/runtime-web-system-modules.txt" "$TARGET:/opt/otobo/Custom/scripts/"
 
@@ -69,6 +72,10 @@ apply_config_files_permissions() {
 }
 
 apply_config_files_permissions
+if compgen -G /opt/otobo/Kernel/Language/pt_ZZZ*.pm > /dev/null; then
+    chown otobo:otobo /opt/otobo/Kernel/Language/pt_ZZZ*.pm
+    chmod 640 /opt/otobo/Kernel/Language/pt_ZZZ*.pm
+fi
 su -c '/opt/otobo/bin/otobo.Console.pl Maint::Config::Rebuild' -s /bin/bash otobo
 # Rebuild reescreve ZZZAAuto.pm como otobo:otobo; reaplicar leitura web.
 apply_config_files_permissions

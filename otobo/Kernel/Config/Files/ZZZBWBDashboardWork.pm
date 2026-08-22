@@ -16,6 +16,16 @@ sub Load {
         Permission  => 'rw',
         Title       => 'Folhas de trabalho abertas',
     };
+    $Self->{'DashboardBackend'}->{'0126-BWBScheduledWork'} = {
+        Block         => 'ContentLarge',
+        CacheTTLLocal => '0',
+        Default       => '1',
+        Description   => 'Tickets com marcação futura no calendário.',
+        Group         => '',
+        Module        => 'Kernel::Output::HTML::Dashboard::BWBScheduledWork',
+        Permission    => 'rw',
+        Title         => 'Agendamentos pendentes',
+    };
     return 1;
 }
 1;

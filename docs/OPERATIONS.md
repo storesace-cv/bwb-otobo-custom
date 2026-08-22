@@ -28,7 +28,7 @@ ssh bwb-otobo-prod 'hostname && /opt/otobo/bin/otobo.Daemon.pl status'
 1. Confirmar que a branch e o `git status` são os pretendidos.
 2. Executar `scripts/check.sh` e `scripts/verify-runtime-permissions.sh --production`.
 3. Criar uma cópia de segurança no servidor antes de substituir ficheiros.
-4. Executar `scripts/deploy-production.sh --apply` (inclui `Custom/`, `ZZZBWB*`, XML de SysConfig em `Kernel/Config/Files/XML/`, e `htdocs`).
+4. Executar `scripts/deploy-production.sh --apply` (inclui `Custom/`, `ZZZBWB*`, XML de SysConfig em `Kernel/Config/Files/XML/`, `Kernel/Language/pt_ZZZ*.pm` e `htdocs`).
 5. Confirmar o daemon, o Apache, a resposta HTTP do painel e o fluxo funcional afetado.
 
 O script nunca apaga ficheiros remotos e exige `--apply` de propósito. A matriz obrigatória está em [RUNTIME-PERMISSIONS.md](RUNTIME-PERMISSIONS.md): o código e o SysConfig compilado (`ZZZAAuto.pm` / `ZZZBWB*.pm`) carregados pelo Apache recebem leitura via grupo `www-data`; fontes XML SysConfig e segredos permanecem privados do utilizador `otobo`. Após `Maint::Config::Rebuild` o deploy reaplica permissões em `ZZZAAuto.pm` (o rebuild volta a deixar o ficheiro ilegível para o Apache). O processo termina com verificação como `www-data` e teste HTTP ao painel (incluindo detecção da mensagem «not registered in Kernel/Config.pm»). Para mudanças de base de dados, a migração deve ser revista e executada separadamente.
@@ -48,6 +48,13 @@ ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-19-mod-apple-01-answer-
    - `/opt/otobo/var/bwb-ticket-context.allowed-ips` — um IP por linha (ex. `178.159.34.165`)
 3. Apache (vhost HTTPS): passar `Authorization` ao PSGI — `RewriteCond %{HTTP:Authorization} .` + `RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]` (já aplicado em produção a 2026-08-21).
 4. No MCP, `/var/www/mail-mcp/.env`: `HELPDESK_CONTEXT_URL` + `HELPDESK_CONTEXT_TOKEN` (mesmo Bearer); redeploy `deploy/install.sh`.
+
+### Google Maps Embed (mapa da folha)
+
+1. Chave local em `.env` (`Maps_Embed_API=…`) — nunca no Git.
+2. Em produção, SysConfig **`BWB::MapsEmbedAPIKey`** (Admin → SysConfig, ou `Admin::Config::Update` após Rebuild).
+3. No Google Cloud: só **Maps Embed API**; restrição **Sites** com `https://helpdesk.storesace.cv/*` e `https://helpdesk.bwb.pt/*` se aplicável.
+4. O filtro `BWBWorkMapEmbedKey` injecta a chave no JS do AgentTicketZoom; o iframe Embed usa `referrerpolicy=strict-origin-when-cross-origin`.
 5. Teste: `curl -H 'Authorization: Bearer …' 'https://helpdesk.storesace.cv/otobo/public.pl?Action=PublicBWBTicketContext;TicketNumber=…'`
 
 Handoff detalhado: repo `bwb-claude-mail-mcp` → `docs/HANDOFF-IMPLEMENTACAO-HELPDECK-CONTEXT.md`.

@@ -13,7 +13,8 @@ Actualizado em 22 de agosto de 2026. O comportamento já em produção está em 
 - Registo telefónico / e-mail em nome do cliente (`BWBTicketIntake`), com e-mails de declaração.
 - **Modelo de resposta `mod-apple-01`:** cartão Helpdesk; resumo sob a marca; saudação numa linha; tags encoded; largura telemóvel.
 - **Contexto Helpdesk → Claude Mail MCP:** headers `X-BWB-*` nos envios; API `PublicBWBTicketContext`; patches MCP `get_message` + tool `helpdesk_ticket_context` (VPS `mcp-mail.bwb.pt`).
-- **Localização no fecho da folha:** GPS no «Terminar trabalho» com fallback às coordenadas da loja; mapa Leaflet+OSM no AgentTicketZoom (só helpdesk); lat/lon opcionais em Admin → Lojas.
+- **Localização no fecho da folha:** GPS no «Terminar trabalho» com fallback às coordenadas da loja; mapa **Google Maps Embed** no AgentTicketZoom (só helpdesk; chave `BWB::MapsEmbedAPIKey`); lat/lon opcionais em Admin → Lojas.
+- **Agendamentos pendentes:** rótulo «Pendente com Agendamento»; diálogo nativo de marcação na folha; sync calendário→estado + `Pending till`; widget dashboard «Agendamentos pendentes»; guarda contra estado manual sem marcação.
 
 ## Seguinte
 

@@ -12,6 +12,7 @@ our @ObjectDependencies = qw(
     Kernel::System::BWBZSSupervisorNotify Kernel::System::Main
     Kernel::System::BWBCustomerCompany Kernel::System::BWBTicketStore
     Kernel::System::BWBStore Kernel::System::HTMLUtils
+    Kernel::System::BWBAppointmentCheck
 );
 
 sub new { my ($Type) = @_; return bless {}, $Type; }
@@ -139,17 +140,29 @@ sub Finish {
     elsif ( $Result eq 'Outro' ) { $State = $Param{State} || do { $Self->{LastError} = 'Selecione o estado seguinte do ticket.'; return; }; }
     if (!$State) { $Self->{LastError} = 'O resultado escolhido não tem um estado associado.'; return; }
     if ( $Result eq 'Encaminhado para outro técnico' && !$Param{NewOwnerID} ) { $Self->{LastError} = 'Selecione o novo proprietário do ticket.'; return; }
-    if ( $Result eq 'A aguardar intervenção presencial' && !$Param{PendingDate} ) { $Self->{LastError} = 'Indique a data e a hora de retoma.'; return; }
+    my $CheckObject = $Kernel::OM->Get('Kernel::System::BWBAppointmentCheck');
+    if ( $CheckObject->StateRequiresAppointment($State) && !$CheckObject->HasFutureAppointment( TicketID => $Active->{TicketID} ) ) {
+        $Self->{LastError} = 'Crie uma marcação futura no calendário com este ticket antes de terminar o trabalho.';
+        return;
+    }
     my $Ticket = $Kernel::OM->Get('Kernel::System::Ticket');
     if ( $Result eq 'Encaminhado para outro técnico' ) {
         return if !$Ticket->TicketOwnerSet( TicketID => $Active->{TicketID}, NewUserID => $Param{NewOwnerID}, UserID => $Param{UserID} );
     }
     if ( !$Ticket->TicketStateSet( TicketID => $Active->{TicketID}, State => $State, UserID => $Param{UserID} ) ) { $Self->{LastError} = 'Não foi possível aplicar o estado seguinte ao ticket.'; return; }
-    if ( $Result eq 'A aguardar intervenção presencial' ) {
-        my $Pending = $Param{PendingDate}; $Pending =~ s/T/ /; $Pending .= ':00' if $Pending =~ /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
-        if ( !$Ticket->TicketPendingTimeSet( String => $Pending, TicketID => $Active->{TicketID}, UserID => $Param{UserID} ) ) { $Self->{LastError} = 'Não foi possível gravar a data de retoma.'; return; }
+    if ( $CheckObject->StateRequiresAppointment($State) ) {
+        my $Pending = $CheckObject->NextFutureStart( TicketID => $Active->{TicketID} );
+        if ( $Pending && !$Ticket->TicketPendingTimeSet( String => $Pending, TicketID => $Active->{TicketID}, UserID => $Param{UserID} ) ) {
+            $Self->{LastError} = 'Não foi possível gravar a data de retoma a partir da marcação.';
+            return;
+        }
     }
-    my %StateLabel = ( open => 'Aberto', 'encerrado com êxito' => 'Encerrado com êxito', 'encerrado sem êxito' => 'Encerrado sem êxito' );
+    my %StateLabel = (
+        open => 'Aberto',
+        'encerrado com êxito' => 'Encerrado com êxito',
+        'encerrado sem êxito' => 'Encerrado sem êxito',
+        'Pendente até determinada data' => 'Pendente com Agendamento',
+    );
     my %TicketData = $Ticket->TicketGet( TicketID => $Active->{TicketID}, DynamicFields => 0, Silent => 1 );
     my $HelpdeskName = ( $TicketData{Queue} || '' ) =~ /^zs(?:angola)?-/i ? 'Helpdesk - ZS Angola' : 'Helpdesk - BWB';
     my $Notes = $Param{Observation} || '';
@@ -227,12 +240,8 @@ sub Finish {
     if ( defined $FinishLat && defined $FinishLon ) {
         my $HTMLUtils = $Kernel::OM->Get('Kernel::System::HTMLUtils');
         my $MapUrl
-            = 'https://www.openstreetmap.org/?mlat='
-            . $FinishLat
-            . '&amp;mlon='
-            . $FinishLon
-            . '#map=17/'
-            . $FinishLat . '/'
+            = 'https://www.google.com/maps?q='
+            . $FinishLat . '%2C'
             . $FinishLon;
         my $CoordText = $FinishLat . ', ' . $FinishLon;
         $CoordText .= ' (±' . $FinishAcc . ' m)' if defined $FinishAcc && $LocationSource eq 'gps';
@@ -246,7 +255,7 @@ sub Finish {
             . '" data-bwb-coords="'
             . $HTMLUtils->ToHTML( String => $CoordText )
             . '" data-bwb-map-url="'
-            . $MapUrl
+            . $HTMLUtils->ToHTML( String => $MapUrl )
             . '"'
             . (
             defined $FinishAcc

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="AppointmentCalendar::EventModulePost###850-BWBAppointmentTicketSync" Required="0" Valid="1">
+        <Description Translatable="1">Sync BWB: marcação futura com ticket → estado Pendente com Agendamento + Pending till.</Description>
+        <Navigation>Core::Event::AppointmentCalendar</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Calendar::Event::BWBAppointmentTicketSync</Item>
+                <Item Key="Event">(AppointmentCreate|AppointmentUpdate|AppointmentDelete)</Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Ticket::EventModulePost###851-BWBStateRequiresAppointment" Required="0" Valid="1">
+        <Description Translatable="1">Impede «Pendente com Agendamento» sem marcação futura ligada ao ticket.</Description>
+        <Navigation>Core::Event::Ticket</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::BWBStateRequiresAppointment</Item>
+                <Item Key="Event">TicketStateUpdate</Item>
+                <Item Key="Transaction">1</Item>
+            </Hash>
+        </Value>
+    </Setting>
+</otobo_config>
