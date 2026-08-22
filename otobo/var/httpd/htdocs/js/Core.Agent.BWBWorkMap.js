@@ -1,6 +1,6 @@
-# BWB work sheet location map (Leaflet + OSM) on AgentTicketZoom.
-# Article HTML lives in a sandboxed iframe (script-src none, frame-src none);
-# the map is injected in the parent page next to the article.
+// BWB work sheet location map (Leaflet + OSM) on AgentTicketZoom.
+// Article HTML lives in a sandboxed iframe (script-src none, frame-src none);
+// the map is injected in the parent page next to the article.
 
 "use strict";
 
