@@ -28,37 +28,71 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
     ];
 
     function HideLegacyMap(Doc) {
-        if (!Doc) {
-            return;
+        if (!Doc || !Doc.body) {
+            return false;
         }
+
+        var Changed = false;
 
         Doc.querySelectorAll('.BWBWorkLocation').forEach(function (Loc) {
             Loc.style.display = 'none';
-            Array.from(Loc.children).forEach(function (Child) {
-                Child.style.display = 'none';
-            });
+            Loc.setAttribute('aria-hidden', 'true');
+            Changed = true;
         });
 
         Doc.querySelectorAll('img[alt="Mapa da localização"]').forEach(function (Img) {
-            var Box = Img.closest('a') || Img.parentElement || Img;
-            Box.style.display = 'none';
-            var Wrap = Box.parentElement;
-            if (Wrap) {
-                Wrap.querySelectorAll('span[style*="rotate(-45deg)"]').forEach(function (Pin) {
-                    Pin.style.display = 'none';
-                });
+            var Outer = Img.closest('div[style*="margin:0 6px 28px"]');
+            if (!Outer) {
+                var Link = Img.closest('a');
+                Outer = Link ? Link.parentElement : Img.parentElement;
+            }
+            if (Outer) {
+                var Prev = Outer.previousElementSibling;
+                if (Prev && /Localiza/.test((Prev.textContent || ''))) {
+                    Prev.parentNode.removeChild(Prev);
+                }
+                Outer.parentNode.removeChild(Outer);
+                Changed = true;
+            }
+            else {
+                Img.style.display = 'none';
+                Changed = true;
             }
         });
 
         Doc.querySelectorAll('span[style*="rotate(-45deg)"]').forEach(function (Pin) {
-            Pin.style.display = 'none';
+            if (Pin.parentNode) {
+                Pin.parentNode.removeChild(Pin);
+                Changed = true;
+            }
         });
 
-        // Títulos antigos "Localização no fecho" / "coordenadas da loja" no corpo do artigo.
         Doc.querySelectorAll('div').forEach(function (Node) {
+            if (!Node || !Node.parentNode) {
+                return;
+            }
             var Text = (Node.textContent || '').replace(/\s+/g, ' ').trim();
             if (Text === 'Localização no fecho' || Text === 'Localização (coordenadas da loja)') {
-                Node.style.display = 'none';
+                Node.parentNode.removeChild(Node);
+                Changed = true;
+            }
+        });
+
+        return Changed;
+    }
+
+    function RetouchAllIframes() {
+        $('iframe[id^="Iframe"]').each(function () {
+            var Iframe = this;
+            var Doc;
+            try {
+                Doc = Iframe.contentDocument || (Iframe.contentWindow && Iframe.contentWindow.document);
+            }
+            catch (E) {
+                return;
+            }
+            if (HideLegacyMap(Doc) && Iframe.id && typeof window.CheckIFrameHeight === 'function') {
+                window.CheckIFrameHeight(Iframe.id);
             }
         });
     }
@@ -103,7 +137,7 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         var N = Bounds.getNorth().toFixed(6);
         var E = Bounds.getEast().toFixed(6);
         var BBox = S + ',' + W + ',' + N + ',' + E;
-        return '[out:json][timeout:25];('
+        return '[out:json][timeout:15];('
             + 'node["shop"](' + BBox + ');'
             + 'way["shop"](' + BBox + ');'
             + 'node["amenity"="restaurant"](' + BBox + ');'
@@ -136,9 +170,19 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         var Query = BuildOverpassQuery(Bounds);
         var Controller = window.AbortController ? new AbortController() : null;
         if (Entry.POIAbort && Entry.POIAbort.abort) {
-            Entry.POIAbort.abort();
+            try {
+                Entry.POIAbort.abort();
+            }
+            catch (E) { /* ignore */ }
         }
         Entry.POIAbort = Controller;
+
+        var Timer = window.setTimeout(function () {
+            if (Controller) {
+                Controller.abort();
+            }
+            Entry.POIStatus.textContent = 'Tempo esgotado a carregar estabelecimentos. Pode aproximar/afastar o mapa para tentar de novo.';
+        }, 15000);
 
         fetch(OverpassURL, {
             method: 'POST',
@@ -151,6 +195,7 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             }
             return Res.json();
         }).then(function (Data) {
+            window.clearTimeout(Timer);
             Entry.POILayer.clearLayers();
             var Items = [];
             (Data.elements || []).forEach(function (El) {
@@ -202,10 +247,11 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
                 Entry.POIList.appendChild(Li);
             });
         }).catch(function (Err) {
+            window.clearTimeout(Timer);
             if (Err && Err.name === 'AbortError') {
                 return;
             }
-            Entry.POIStatus.textContent = 'Não foi possível carregar estabelecimentos (Overpass). O mapa satélite continua disponível.';
+            Entry.POIStatus.textContent = 'Não foi possível carregar estabelecimentos (Overpass). O mapa continua disponível.';
         });
     }
 
@@ -244,6 +290,7 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
     function PlaceMap(Iframe, Lat, Lon, Meta) {
         var $Iframe = $(Iframe);
         if ($Iframe.data('BWBWorkMapDone')) {
+            RetouchAllIframes();
             return;
         }
         if (typeof L === 'undefined') {
@@ -258,11 +305,6 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             Doc = null;
         }
         HideLegacyMap(Doc);
-        if (Doc && typeof window.CheckIFrameHeight === 'function' && Iframe.id) {
-            window.setTimeout(function () {
-                window.CheckIFrameHeight(Iframe.id);
-            }, 50);
-        }
 
         $Iframe.data('BWBWorkMapDone', 1);
 
@@ -306,9 +348,11 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         $Article.append($Section);
 
         var MapEl = document.getElementById(MapID);
-        var Side = Math.min(520, Math.max(280, Math.floor(($Section.width() || 520) - 28)));
+        var Side = Math.min(520, Math.max(280, Math.floor(($Section.outerWidth() || 520) - 28)));
         MapEl.style.width = Side + 'px';
         MapEl.style.height = Side + 'px';
+        MapEl.style.minHeight = Side + 'px';
+        MapEl.style.display = 'block';
 
         var Map = L.map(MapID, {
             scrollWheelZoom: false,
@@ -327,7 +371,8 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         });
 
-        Aerial.addTo(Map);
+        // OSM primeiro (fiável); vista aérea fica seleccionável e tenta-se activar a seguir.
+        Streets.addTo(Map);
         L.control.layers(
             {
                 'Vista aérea': Aerial,
@@ -337,6 +382,32 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             { position: 'topright', collapsed: true }
         ).addTo(Map);
 
+        var TileErrors = 0;
+        Aerial.on('tileerror', function () {
+            TileErrors += 1;
+        });
+        Aerial.on('load', function () {
+            TileErrors = 0;
+        });
+
+        // Preferir aérea quando o contentor já tem tamanho.
+        window.setTimeout(function () {
+            try {
+                Map.removeLayer(Streets);
+                Aerial.addTo(Map);
+            }
+            catch (E) { /* ignore */ }
+            window.setTimeout(function () {
+                if (TileErrors >= 2) {
+                    try {
+                        Map.removeLayer(Aerial);
+                        Streets.addTo(Map);
+                    }
+                    catch (E2) { /* ignore */ }
+                }
+            }, 2500);
+        }, 300);
+
         var Radius = L.circle([Lat, Lon], {
             radius: 200,
             color: '#0071e3',
@@ -345,7 +416,14 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             fillOpacity: 0.08
         }).addTo(Map);
 
-        L.marker([Lat, Lon]).addTo(Map).bindPopup('Localização no fecho');
+        L.circleMarker([Lat, Lon], {
+            radius: 8,
+            color: '#ffffff',
+            weight: 2,
+            fillColor: '#0071e3',
+            fillOpacity: 1
+        }).addTo(Map).bindPopup('Localização no fecho');
+
         Map.fitBounds(Radius.getBounds(), { padding: [16, 16], maxZoom: 18 });
 
         var POILayer = L.layerGroup().addTo(Map);
@@ -355,7 +433,8 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             POIStatus: $Section.find('.BWBWorkMapPOIStatus')[0],
             POIList: $Section.find('.BWBWorkMapPOIList')[0],
             POITimer: null,
-            POIAbort: null
+            POIAbort: null,
+            POIReady: false
         };
 
         function SchedulePOIs() {
@@ -364,15 +443,26 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             }
             Entry.POITimer = window.setTimeout(function () {
                 LoadPOIs(Entry);
-            }, 400);
+            }, 700);
         }
 
         Map.on('moveend', SchedulePOIs);
-        window.setTimeout(function () {
-            Map.invalidateSize();
+
+        function RefreshMap() {
+            Map.invalidateSize(true);
             Map.fitBounds(Radius.getBounds(), { padding: [16, 16], maxZoom: 18 });
-            SchedulePOIs();
-        }, 200);
+            if (!Entry.POIReady) {
+                Entry.POIReady = true;
+                SchedulePOIs();
+            }
+        }
+
+        window.setTimeout(RefreshMap, 100);
+        window.setTimeout(RefreshMap, 400);
+        window.setTimeout(function () {
+            RetouchAllIframes();
+            RefreshMap();
+        }, 800);
     }
 
     function MetaFromLocation(Loc) {
@@ -396,6 +486,8 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         if (!Doc || !Doc.querySelector) {
             return;
         }
+
+        HideLegacyMap(Doc);
 
         var Loc = Doc.querySelector('.BWBWorkLocation[data-bwb-lat][data-bwb-lon]');
         if (!Loc) {
@@ -465,17 +557,21 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             return;
         }
 
+        RetouchAllIframes();
         ScanAllIframes();
         LoadFromSession();
 
         $(document).on('load', 'iframe[id^="Iframe"]', function () {
+            HideLegacyMap(this.contentDocument);
             ScanIframe(this);
+            RetouchAllIframes();
         });
 
         window.setInterval(function () {
+            RetouchAllIframes();
             ScanAllIframes();
             ApplyFromSession(TargetNS._LastLocations);
-        }, 2500);
+        }, 1500);
     };
 
     Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');

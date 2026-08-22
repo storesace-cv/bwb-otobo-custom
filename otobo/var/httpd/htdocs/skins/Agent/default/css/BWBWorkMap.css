@@ -73,6 +73,7 @@
     color: #6e6e73;
 }
 
+/* Altura explícita — height:auto + height:100% no Leaflet = mapa preto */
 .BWBWorkMap {
     width: 520px;
     height: 520px;
@@ -80,14 +81,14 @@
     border: 1px solid #d2d2d7;
     border-radius: 10px;
     overflow: hidden;
-    background: #1d1d1f;
-    aspect-ratio: 1 / 1;
+    background: #e8e8ed;
+    box-sizing: border-box;
 }
 
 .BWBWorkMap .leaflet-container {
     font: inherit;
-    height: 100%;
-    width: 100%;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .BWBWorkMapPOIBlock {
@@ -139,7 +140,7 @@
 @media (max-width: 600px) {
     .BWBWorkMap {
         width: 100%;
-        height: auto;
-        min-height: 280px;
+        height: 320px;
+        min-height: 320px;
     }
 }
