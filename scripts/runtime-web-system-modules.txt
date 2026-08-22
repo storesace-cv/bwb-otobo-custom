@@ -21,10 +21,12 @@ Kernel/System/BWBWorkSession.pm
 Kernel/System/BWBWorkSheet.pm
 Kernel/System/BWBZSSupervisorNotify.pm
 Kernel/System/BWBAppointmentCheck.pm
+Kernel/System/BWBAppointmentCancel.pm
 Kernel/System/Calendar/Event/BWBAppointmentTicketSync.pm
 Kernel/System/Ticket/Event/BWBBounce.pm
 Kernel/System/Ticket/Event/BWBTicketStore.pm
 Kernel/System/Ticket/Event/BWBStateRequiresAppointment.pm
+Kernel/System/Ticket/Event/BWBTicketCloseCancelAppointments.pm
 Kernel/System/Ticket/Event/BWBZSSupervisor.pm
 Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 Kernel/System/Ticket/Permission/BWBCustomerOwnerCheck.pm

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otobo_config version="2.0" init="Application">
+    <Setting Name="BWB::MapsEmbedAPIKey" Required="0" Valid="1">
+        <Description Translatable="1">Chave Google Maps Embed API (só iframe no AgentTicketZoom). Nunca versionar o valor. Restringir a Sites + Maps Embed API no Google Cloud.</Description>
+        <Navigation>BWB::Core</Navigation>
+        <Value>
+            <Item ValueType="Password" ValueRegex=""></Item>
+        </Value>
+    </Setting>
     <Setting Name="Frontend::Module###AgentBWBWorkMap" Required="0" Valid="1">
-        <Description Translatable="1">JSON das coordenadas de fecho das folhas de trabalho (mapa OSM no zoom).</Description>
+        <Description Translatable="1">JSON das coordenadas de fecho das folhas de trabalho (mapa Google Embed no zoom).</Description>
         <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
         <Value>
             <Hash>
@@ -13,22 +20,34 @@
             </Hash>
         </Value>
     </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###BWBWorkMapEmbedKey" Required="0" Valid="1">
+        <Description Translatable="1">Injeta a chave Maps Embed no Core.Config do AgentTicketZoom.</Description>
+        <Navigation>Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::FilterElementPost::BWBWorkMapEmbedKey</Item>
+                <Item Key="Templates">
+                    <Hash>
+                        <Item Key="AgentTicketZoom">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
     <Setting Name="Loader::Agent::CommonJS###964-BWBWorkMap" Required="0" Valid="1">
-        <Description Translatable="1">Leaflet + mapa OSM da localização no fecho da folha (AgentTicketZoom).</Description>
+        <Description Translatable="1">Mapa Google Embed da localização no fecho da folha (AgentTicketZoom).</Description>
         <Navigation>Frontend::Base::Loader</Navigation>
         <Value>
             <Array>
-                <Item>thirdparty/leaflet-1.9.4/leaflet.js</Item>
                 <Item>Core.Agent.BWBWorkMap.js</Item>
             </Array>
         </Value>
     </Setting>
     <Setting Name="Loader::Agent::CommonCSS###964-BWBWorkMap" Required="0" Valid="1">
-        <Description Translatable="1">Estilos Leaflet e contentor do mapa da folha de trabalho.</Description>
+        <Description Translatable="1">Estilos do contentor do mapa da folha de trabalho.</Description>
         <Navigation>Frontend::Base::Loader</Navigation>
         <Value>
             <Array>
-                <Item>BWBLeaflet.css</Item>
                 <Item>BWBWorkMap.css</Item>
             </Array>
         </Value>

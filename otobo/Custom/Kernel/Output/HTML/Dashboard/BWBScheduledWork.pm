@@ -46,6 +46,7 @@ sub Run {
             INNER JOIN ticket_state ts ON ts.id = t.ticket_state_id
             INNER JOIN ticket_state_type tst ON tst.id = ts.type_id
             WHERE ca.start_time > UTC_TIMESTAMP()
+              AND ca.title NOT LIKE '[CANCELADO]%'
               AND tst.id NOT IN (3, 6, 7)
             ORDER BY ca.start_time ASC
             LIMIT 200

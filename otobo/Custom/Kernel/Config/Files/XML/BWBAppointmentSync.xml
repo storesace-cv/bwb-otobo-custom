@@ -21,4 +21,15 @@
             </Hash>
         </Value>
     </Setting>
+    <Setting Name="Ticket::EventModulePost###852-BWBTicketCloseCancelAppointments" Required="0" Valid="1">
+        <Description Translatable="1">Cancela marcações futuras quando o ticket é encerrado antes da data agendada.</Description>
+        <Navigation>Core::Event::Ticket</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Event::BWBTicketCloseCancelAppointments</Item>
+                <Item Key="Event">TicketStateUpdate</Item>
+                <Item Key="Transaction">1</Item>
+            </Hash>
+        </Value>
+    </Setting>
 </otobo_config>

@@ -8,6 +8,7 @@
 - Exportações de base de dados, anexos, registos ou cópias de correio.
 - Tokens de convite ou reposição de palavra-passe.
 - Credenciais pCloud / SMTP de backup (`/root/.config/bwb-helpdesk-backup.env`, `~/.config/rclone/rclone.conf` no servidor).
+- Chave **Google Maps Embed** (`Maps_Embed_API` no `.env` local; SysConfig `BWB::MapsEmbedAPIKey` em produção). Restringir no Cloud a Sites do helpdesk + só Maps Embed API.
 
 ## Acesso ao servidor
 

@@ -34,7 +34,9 @@ sub Run {
     return 1 if !$AppointmentID;
 
     my $CheckObject = $Kernel::OM->Get('Kernel::System::BWBAppointmentCheck');
-    my @TicketIDs   = $CheckObject->LinkedTicketIDs( AppointmentID => $AppointmentID );
+    return 1 if $CheckObject->{SkipSync};
+
+    my @TicketIDs = $CheckObject->LinkedTicketIDs( AppointmentID => $AppointmentID );
     return 1 if !@TicketIDs;
 
     if ( ( $Param{Event} || '' ) eq 'AppointmentDelete' ) {
@@ -52,6 +54,7 @@ sub Run {
         UserID        => $Param{UserID},
     );
     return 1 if !%Appointment;
+    return 1 if $CheckObject->IsCancelledTitle( $Appointment{Title} );
 
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
     return 1 if !$DBObject->Prepare(
