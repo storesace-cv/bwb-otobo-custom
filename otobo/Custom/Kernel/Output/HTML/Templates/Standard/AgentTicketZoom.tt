@@ -73,7 +73,7 @@
 .BWBClosedTicketStamp {
     position: fixed;
     inset: 25% 12% 8% 8%;
-    z-index: 90;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;

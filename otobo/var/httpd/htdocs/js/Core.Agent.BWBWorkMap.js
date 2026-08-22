@@ -1,5 +1,5 @@
 // BWB work sheet location map (Leaflet) on AgentTicketZoom only.
-// Separate section below the article — not inside the sandboxed iframe, not in email.
+// Secção 1: folha (iframe) + carimbo FECHADO. Secção 2: mapa (fora do e-mail).
 
 "use strict";
 
@@ -31,12 +31,35 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         if (!Doc) {
             return;
         }
+
+        Doc.querySelectorAll('.BWBWorkLocation').forEach(function (Loc) {
+            Loc.style.display = 'none';
+            Array.from(Loc.children).forEach(function (Child) {
+                Child.style.display = 'none';
+            });
+        });
+
         Doc.querySelectorAll('img[alt="Mapa da localização"]').forEach(function (Img) {
             var Box = Img.closest('a') || Img.parentElement || Img;
             Box.style.display = 'none';
+            var Wrap = Box.parentElement;
+            if (Wrap) {
+                Wrap.querySelectorAll('span[style*="rotate(-45deg)"]').forEach(function (Pin) {
+                    Pin.style.display = 'none';
+                });
+            }
         });
+
         Doc.querySelectorAll('span[style*="rotate(-45deg)"]').forEach(function (Pin) {
             Pin.style.display = 'none';
+        });
+
+        // Títulos antigos "Localização no fecho" / "coordenadas da loja" no corpo do artigo.
+        Doc.querySelectorAll('div').forEach(function (Node) {
+            var Text = (Node.textContent || '').replace(/\s+/g, ' ').trim();
+            if (Text === 'Localização no fecho' || Text === 'Localização (coordenadas da loja)') {
+                Node.style.display = 'none';
+            }
         });
     }
 
@@ -186,6 +209,38 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         });
     }
 
+    function EnsureSheetSection($Iframe) {
+        var $Wrapper = $Iframe.closest('.ArticleMailContentHTMLWrapper');
+        if (!$Wrapper.length) {
+            return $Iframe.parent();
+        }
+        var $Sheet = $Wrapper.closest('.BWBWorkSheetSection');
+        if ($Sheet.length) {
+            return $Sheet;
+        }
+        $Sheet = $('<div class="BWBWorkSheetSection"></div>');
+        $Wrapper.before($Sheet);
+        $Sheet.append($Wrapper);
+
+        var $Stamp = $('.BWBClosedTicketStamp').first();
+        if ($Stamp.length) {
+            $Stamp.addClass('BWBClosedTicketStamp--sheet');
+            $Sheet.append($Stamp);
+        }
+        return $Sheet;
+    }
+
+    function FormatCoords(Lat, Lon, Meta) {
+        var Text = Number(Lat).toFixed(7) + ', ' + Number(Lon).toFixed(7);
+        if (Meta && Meta.Coords) {
+            return Meta.Coords;
+        }
+        if (Meta && Meta.Source === 'gps' && Meta.Accuracy) {
+            Text += ' (±' + Meta.Accuracy + ' m)';
+        }
+        return Text;
+    }
+
     function PlaceMap(Iframe, Lat, Lon, Meta) {
         var $Iframe = $(Iframe);
         if ($Iframe.data('BWBWorkMapDone')) {
@@ -203,6 +258,11 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             Doc = null;
         }
         HideLegacyMap(Doc);
+        if (Doc && typeof window.CheckIFrameHeight === 'function' && Iframe.id) {
+            window.setTimeout(function () {
+                window.CheckIFrameHeight(Iframe.id);
+            }, 50);
+        }
 
         $Iframe.data('BWBWorkMapDone', 1);
 
@@ -210,14 +270,19 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         if (!$Article.length) {
             $Article = $Iframe.parent();
         }
+        EnsureSheetSection($Iframe);
 
         var MapID = 'BWBWorkMap-' + (Iframe.id || String(Math.random()).slice(2));
+        var CoordText = FormatCoords(Lat, Lon, Meta || {});
+        var MapUrl = (Meta && Meta.MapUrl)
+            ? Meta.MapUrl
+            : ('https://www.openstreetmap.org/?mlat=' + Lat + '&mlon=' + Lon + '#map=17/' + Lat + '/' + Lon);
         var SourceNote = '';
-        if (Meta && Meta.Source === 'store') {
-            SourceNote = 'Coordenadas da loja do ticket (GPS indisponível no fecho).';
+        if (Meta && Meta.Note) {
+            SourceNote = Meta.Note;
         }
-        else if (Meta && Meta.Source === 'gps' && Meta.Accuracy) {
-            SourceNote = 'GPS no fecho (±' + Meta.Accuracy + ' m).';
+        else if (Meta && Meta.Source === 'store') {
+            SourceNote = 'Coordenadas da loja do ticket (GPS indisponível no fecho).';
         }
 
         var $Section = $(
@@ -226,8 +291,12 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             + '<strong>Mapa da localização</strong>'
             + '<span class="BWBWorkMapSectionHint">Vista aérea · só no helpdesk</span>'
             + '</div>'
+            + '<p class="BWBWorkMapCoords">'
+            + $('<div/>').text(CoordText).html()
+            + ' · <a href="' + MapUrl.replace(/"/g, '&quot;') + '" target="_blank" rel="noopener noreferrer">Abrir no OpenStreetMap</a>'
+            + '</p>'
             + (SourceNote ? '<p class="BWBWorkMapSectionNote">' + $('<div/>').text(SourceNote).html() + '</p>' : '')
-            + '<div id="' + MapID + '" class="BWBWorkMap" role="img" aria-label="Mapa aéreo da localização no fecho"></div>'
+            + '<div id="' + MapID + '" class="BWBWorkMap" role="img" aria-label="Mapa aéreo da localização no fecho (~200 m)"></div>'
             + '<div class="BWBWorkMapPOIBlock">'
             + '<div class="BWBWorkMapPOIStatus">A carregar estabelecimentos…</div>'
             + '<ul class="BWBWorkMapPOIList"></ul>'
@@ -236,10 +305,15 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         );
         $Article.append($Section);
 
+        var MapEl = document.getElementById(MapID);
+        var Side = Math.min(520, Math.max(280, Math.floor(($Section.width() || 520) - 28)));
+        MapEl.style.width = Side + 'px';
+        MapEl.style.height = Side + 'px';
+
         var Map = L.map(MapID, {
             scrollWheelZoom: false,
             attributionControl: true
-        }).setView([Lat, Lon], 17);
+        });
 
         var Aerial = L.tileLayer(
             'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -263,7 +337,16 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             { position: 'topright', collapsed: true }
         ).addTo(Map);
 
-        L.marker([Lat, Lon]).addTo(Map).bindPopup('Localização no fecho').openPopup();
+        var Radius = L.circle([Lat, Lon], {
+            radius: 200,
+            color: '#0071e3',
+            weight: 1,
+            fillColor: '#0071e3',
+            fillOpacity: 0.08
+        }).addTo(Map);
+
+        L.marker([Lat, Lon]).addTo(Map).bindPopup('Localização no fecho');
+        Map.fitBounds(Radius.getBounds(), { padding: [16, 16], maxZoom: 18 });
 
         var POILayer = L.layerGroup().addTo(Map);
         var Entry = {
@@ -287,8 +370,19 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         Map.on('moveend', SchedulePOIs);
         window.setTimeout(function () {
             Map.invalidateSize();
+            Map.fitBounds(Radius.getBounds(), { padding: [16, 16], maxZoom: 18 });
             SchedulePOIs();
         }, 200);
+    }
+
+    function MetaFromLocation(Loc) {
+        return {
+            Source: Loc.getAttribute('data-bwb-source') || '',
+            Accuracy: Loc.getAttribute('data-bwb-acc') || '',
+            Coords: Loc.getAttribute('data-bwb-coords') || '',
+            MapUrl: (Loc.getAttribute('data-bwb-map-url') || '').replace(/&amp;/g, '&'),
+            Note: Loc.getAttribute('data-bwb-note') || ''
+        };
     }
 
     function ScanIframe(Iframe) {
@@ -314,10 +408,7 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             return;
         }
 
-        PlaceMap(Iframe, Lat, Lon, {
-            Source: Loc.getAttribute('data-bwb-source') || '',
-            Accuracy: Loc.getAttribute('data-bwb-acc') || ''
-        });
+        PlaceMap(Iframe, Lat, Lon, MetaFromLocation(Loc));
     }
 
     function ScanAllIframes() {
