@@ -1,6 +1,13 @@
 .BWBWorkMapWrap {
-    margin: 8px 6px 20px;
     max-width: 760px;
+}
+
+.BWBWorkMapWrap.BWBWorkMapOverlay {
+    position: absolute;
+    z-index: 6;
+    margin: 0;
+    box-sizing: border-box;
+    pointer-events: auto;
 }
 
 .BWBWorkMap {
@@ -14,4 +21,6 @@
 
 .BWBWorkMap .leaflet-container {
     font: inherit;
+    height: 100%;
+    width: 100%;
 }
