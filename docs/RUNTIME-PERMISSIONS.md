@@ -16,6 +16,8 @@ Este documento é obrigatório para qualquer alteração ao OTOBO personalizado.
 
 `www-data` recebe apenas leitura e travessia dos componentes necessários. Nunca recebe escrita no código OTOBO.
 
+O JS `Core.Agent.BWBWorkMap.js`, Leaflet em `js/thirdparty/leaflet-1.9.4/` e CSS `BWBLeaflet.css` / `BWBWorkMap.css` seguem a matriz `htdocs`. O módulo `AgentBWBWorkMap.pm` e o XML `BWBWorkMap.xml` / `ZZZBWBWorkMap.pm` seguem Modules e SysConfig compilado.
+
 ### Atenção: `Maint::Config::Rebuild`
 
 O rebuild reescreve `ZZZAAuto.pm` tipicamente como `otobo:otobo` `660`. O deploy **tem** de reaplicar `otobo:www-data` `640` **depois** do rebuild. Caso contrário o portal Agent/Cliente deixa de registar módulos (`AgentTicketZoom`, dashboard, etc.).
