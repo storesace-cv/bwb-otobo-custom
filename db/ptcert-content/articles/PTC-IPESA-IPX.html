@@ -1,0 +1,17 @@
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-ipesa-ipx-01-af5fc8d79721.png@@" width="1600" height="463" alt="Ilustração do procedimento"></figure>
+<h2>Configurações</h2>
+<p>Para ligar o PT-CERT à balança IPESA IPX temos de efetuar as seguintes configurações:</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-ipesa-ipx-02-afa92b4b1aaf.png@@" width="798" height="596" alt="Ilustração do procedimento"></figure>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-ipesa-ipx-03-861cc293791c.jpg@@" width="1146" height="861" alt="Ilustração do procedimento"></figure>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-ipesa-ipx-04-edff7384cdda.png@@" width="758" height="473" alt="Ilustração do procedimento"></figure>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-ipesa-ipx-05-560512440b77.png@@" width="795" height="594" alt="Ilustração do procedimento"></figure>
+<p>No campo “balanca_ipesa_ipx) IP da balança” deveremos ter tantos ips (separados por ,) quantas secções definidas no campo “geral) Dados extra para os produtos” / seccao. De notar que o nome do campo extra é “seccao*” (com o asterisco) uma vez que é isso que fará com que o mesmo seja multi-select.</p>
+<p>O processo que recolhe os tickets de todas as balanças efetua um hardreset aos tickets uma vez por dia (depois de recolher os tickets do dia e de perceber que ainda não foi efetuado o hardreset).</p>
+<p>Caso ativemos os parametro “balanca_ipesa_ipx) usa leitura de talões por QRcode” o sincronizador de tickets vai ser desligado uma vez que toda a informação dos tickets vai ser lida a partir do QRcode.</p>
+<p>O dado extra “Lote” é opcional. Pode estar, ou não, criado. Se o criarmos e o preenchermos em algum produto que vá para a balança, o valor que estiver definido nesse campo será também enviado.</p>
+<p>Na balança IPESA temos de configurar o formato do código de barras para ser:</p>
+<p>28BEEEEJJJJJ</p>
+<p>B - secção</p>
+<p>E - nº do ticket</p>
+<p>J - total do ticket</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-ipesa-ipx-06-03571279a4bd.jpg@@" width="1478" height="838" alt="Ilustração do procedimento"></figure>

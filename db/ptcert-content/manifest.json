@@ -1,0 +1,1635 @@
+{
+  "categories": {
+    "operacao": [
+      "Operação e vendas",
+      "Operação diária, vendas, mesas, clientes e fecho de caixa."
+    ],
+    "configuracao": [
+      "Configuração e administração",
+      "Configuração funcional, utilizadores, produtos e parâmetros do PTcert."
+    ],
+    "fiscal": [
+      "Fiscalidade e documentos",
+      "Documentos fiscais, séries, SAF-T, Tax-Free, SDR e integrações documentais."
+    ],
+    "inventario": [
+      "Inventário e stock",
+      "Inventário, stock, taras, embalagens e etiquetas."
+    ],
+    "equipamentos": [
+      "Equipamentos e periféricos",
+      "Balanças, TPA, gavetas, impressão e outros periféricos."
+    ],
+    "sistemas": [
+      "Instalação, cópias e recuperação",
+      "Instalação, cópias de segurança, recuperação e manutenção de sistemas."
+    ],
+    "apps": [
+      "Aplicações e integrações",
+      "Aplicações móveis, dashboard, licenças e integrações externas."
+    ],
+    "comunicacoes": [
+      "Comunicações e ficheiros",
+      "Acesso remoto, transferência de ficheiros e envio de documentos."
+    ]
+  },
+  "articles": [
+    {
+      "number": "PTC-LOGIN",
+      "name": "login",
+      "title": "Iniciar sessão no PTcert",
+      "category": "operacao",
+      "keywords": "login acesso código utilizador password",
+      "summary": "<p>Entrar no PTcert com ou sem código de acesso.</p>",
+      "use_when": "<p>Utilize quando um operador precisa de iniciar sessão ou esclarecer o método de autenticação.</p>",
+      "body": "articles/PTC-LOGIN.html",
+      "assets": [
+        {
+          "filename": "PTCERT-login-01-8cad6a23205a.png",
+          "path": "media/PTCERT-login-01-8cad6a23205a.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-login-01-8cad6a23205a.png@@"
+        },
+        {
+          "filename": "PTCERT-login-02-a0beee426b79.png",
+          "path": "media/PTCERT-login-02-a0beee426b79.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-login-02-a0beee426b79.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-UTILIZADORES",
+      "name": "utilizadores",
+      "title": "Gerir utilizadores",
+      "category": "configuracao",
+      "keywords": "utilizadores operadores acesso código permissões",
+      "summary": "<p>Criar e manter utilizadores do PTcert.</p>",
+      "use_when": "<p>Utilize para criar operadores, alterar dados ou configurar o respetivo acesso.</p>",
+      "body": "articles/PTC-UTILIZADORES.html",
+      "assets": [
+        {
+          "filename": "PTCERT-utilizadores-01-8cad6a23205a.png",
+          "path": "media/PTCERT-utilizadores-01-8cad6a23205a.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-utilizadores-01-8cad6a23205a.png@@"
+        },
+        {
+          "filename": "PTCERT-utilizadores-02-698442dd47d8.png",
+          "path": "media/PTCERT-utilizadores-02-698442dd47d8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-utilizadores-02-698442dd47d8.png@@"
+        },
+        {
+          "filename": "PTCERT-utilizadores-03-2fb6493875d8.png",
+          "path": "media/PTCERT-utilizadores-03-2fb6493875d8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-utilizadores-03-2fb6493875d8.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-GRUPOS",
+      "name": "grupos-departamentos",
+      "title": "Gerir grupos e departamentos",
+      "category": "configuracao",
+      "keywords": "grupos departamentos permissões utilizadores",
+      "summary": "<p>Configurar grupos e departamentos utilizados no PTcert.</p>",
+      "use_when": "<p>Utilize quando é necessário organizar utilizadores ou parametrizar permissões por grupo.</p>",
+      "body": "articles/PTC-GRUPOS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-grupos-departamentos-01-f26d941791d4.jpg",
+          "path": "media/PTCERT-grupos-departamentos-01-f26d941791d4.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-grupos-departamentos-01-f26d941791d4.jpg@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-FAMILIAS",
+      "name": "familias-subfamilias",
+      "title": "Gerir famílias e subfamílias",
+      "category": "configuracao",
+      "keywords": "famílias subfamílias produtos artigos",
+      "summary": "<p>Organizar os produtos por famílias e subfamílias.</p>",
+      "use_when": "<p>Utilize ao criar ou reorganizar a estrutura de produtos.</p>",
+      "body": "articles/PTC-FAMILIAS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-familias-subfamilias-01-be510807c6a0.png",
+          "path": "media/PTCERT-familias-subfamilias-01-be510807c6a0.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-familias-subfamilias-01-be510807c6a0.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-PRODUTOS",
+      "name": "produtos-precos-iva",
+      "title": "Gerir produtos, preços e IVA",
+      "category": "configuracao",
+      "keywords": "produtos preço iva peso complementos cozinha excel",
+      "summary": "<p>Criar e configurar produtos, preços, impostos e opções de venda.</p>",
+      "use_when": "<p>Utilize para parametrizar artigos e comportamentos associados no ponto de venda.</p>",
+      "body": "articles/PTC-PRODUTOS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-produtos-precos-iva-01-d3341588ee1f.png",
+          "path": "media/PTCERT-produtos-precos-iva-01-d3341588ee1f.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-produtos-precos-iva-01-d3341588ee1f.png@@"
+        },
+        {
+          "filename": "PTCERT-produtos-precos-iva-02-2ffaaa87ca4c.png",
+          "path": "media/PTCERT-produtos-precos-iva-02-2ffaaa87ca4c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-produtos-precos-iva-02-2ffaaa87ca4c.png@@"
+        },
+        {
+          "filename": "PTCERT-produtos-precos-iva-03-6666575bb517.png",
+          "path": "media/PTCERT-produtos-precos-iva-03-6666575bb517.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-produtos-precos-iva-03-6666575bb517.png@@"
+        },
+        {
+          "filename": "PTCERT-produtos-precos-iva-04-8dd2283afd09.png",
+          "path": "media/PTCERT-produtos-precos-iva-04-8dd2283afd09.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-produtos-precos-iva-04-8dd2283afd09.png@@"
+        },
+        {
+          "filename": "PTCERT-produtos-precos-iva-05-0f8d90a31bca.png",
+          "path": "media/PTCERT-produtos-precos-iva-05-0f8d90a31bca.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-produtos-precos-iva-05-0f8d90a31bca.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-VENDA",
+      "name": "efetuar-venda",
+      "title": "Efetuar uma venda",
+      "category": "operacao",
+      "keywords": "venda cliente identificado consumidor final",
+      "summary": "<p>Registar uma venda com ou sem cliente identificado.</p>",
+      "use_when": "<p>Utilize como procedimento base de faturação no ponto de venda.</p>",
+      "body": "articles/PTC-VENDA.html",
+      "assets": [
+        {
+          "filename": "PTCERT-efetuar-venda-01-f26d941791d4.jpg",
+          "path": "media/PTCERT-efetuar-venda-01-f26d941791d4.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-efetuar-venda-01-f26d941791d4.jpg@@"
+        },
+        {
+          "filename": "PTCERT-efetuar-venda-02-11c7b16d2600.png",
+          "path": "media/PTCERT-efetuar-venda-02-11c7b16d2600.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-efetuar-venda-02-11c7b16d2600.png@@"
+        },
+        {
+          "filename": "PTCERT-efetuar-venda-03-63ac57b27f51.jpg",
+          "path": "media/PTCERT-efetuar-venda-03-63ac57b27f51.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-efetuar-venda-03-63ac57b27f51.jpg@@"
+        },
+        {
+          "filename": "PTCERT-efetuar-venda-04-5c84d3bf98db.jpg",
+          "path": "media/PTCERT-efetuar-venda-04-5c84d3bf98db.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-efetuar-venda-04-5c84d3bf98db.jpg@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-CONSULTA-MESA",
+      "name": "consulta-mesa",
+      "title": "Imprimir uma consulta de mesa",
+      "category": "operacao",
+      "keywords": "consulta mesa imprimir cliente",
+      "summary": "<p>Emitir uma consulta da mesa antes da faturação.</p>",
+      "use_when": "<p>Utilize quando o cliente pede a consulta ou quando é necessário conferir os consumos.</p>",
+      "body": "articles/PTC-CONSULTA-MESA.html",
+      "assets": [
+        {
+          "filename": "PTCERT-consulta-mesa-01-f26d941791d4.jpg",
+          "path": "media/PTCERT-consulta-mesa-01-f26d941791d4.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-consulta-mesa-01-f26d941791d4.jpg@@"
+        },
+        {
+          "filename": "PTCERT-consulta-mesa-02-9bfa5577f915.png",
+          "path": "media/PTCERT-consulta-mesa-02-9bfa5577f915.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-consulta-mesa-02-9bfa5577f915.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-APUROS",
+      "name": "apuros-fecho-dia",
+      "title": "Efetuar apuros e fecho do dia",
+      "category": "operacao",
+      "keywords": "apuro caixa X Z fecho dia contador dinheiro",
+      "summary": "<p>Executar os apuros de caixa e o fecho diário.</p>",
+      "use_when": "<p>Utilize no controlo de caixa, conferência de valores e encerramento do dia.</p>",
+      "body": "articles/PTC-APUROS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-apuros-fecho-dia-01-f26d941791d4.jpg",
+          "path": "media/PTCERT-apuros-fecho-dia-01-f26d941791d4.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-apuros-fecho-dia-01-f26d941791d4.jpg@@"
+        },
+        {
+          "filename": "PTCERT-apuros-fecho-dia-02-94129e5a5194.png",
+          "path": "media/PTCERT-apuros-fecho-dia-02-94129e5a5194.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-apuros-fecho-dia-02-94129e5a5194.png@@"
+        },
+        {
+          "filename": "PTCERT-apuros-fecho-dia-03-2236507f627c.png",
+          "path": "media/PTCERT-apuros-fecho-dia-03-2236507f627c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-apuros-fecho-dia-03-2236507f627c.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-OPERACOES",
+      "name": "operacoes-mesa-conta",
+      "title": "Operações de mesa e conta",
+      "category": "operacao",
+      "keywords": "mesa conta divisão anulação transferência pagamento separado backup",
+      "summary": "<p>Executar operações frequentes sobre mesas, contas e documentos.</p>",
+      "use_when": "<p>Utilize para dividir contas, transferir mesas, pesquisar produtos, anular ou separar pagamentos.</p>",
+      "body": "articles/PTC-OPERACOES.html",
+      "assets": [
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-01-f26d941791d4.jpg",
+          "path": "media/PTCERT-operacoes-mesa-conta-01-f26d941791d4.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-01-f26d941791d4.jpg@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-02-d3256a772647.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-02-d3256a772647.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-02-d3256a772647.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-03-735026843f45.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-03-735026843f45.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-03-735026843f45.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-04-baea41111535.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-04-baea41111535.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-04-baea41111535.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-05-e47bef66bf01.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-05-e47bef66bf01.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-05-e47bef66bf01.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-06-11c7b16d2600.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-06-11c7b16d2600.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-06-11c7b16d2600.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-07-33b12ee5c4ed.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-07-33b12ee5c4ed.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-07-33b12ee5c4ed.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-08-c4fe26bc85f0.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-08-c4fe26bc85f0.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-08-c4fe26bc85f0.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-09-1a7471ebac43.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-09-1a7471ebac43.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-09-1a7471ebac43.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-10-2ffaaa87ca4c.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-10-2ffaaa87ca4c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-10-2ffaaa87ca4c.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-11-34c4eb285a0d.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-11-34c4eb285a0d.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-11-34c4eb285a0d.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-12-e2687a85b8b8.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-12-e2687a85b8b8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-12-e2687a85b8b8.png@@"
+        },
+        {
+          "filename": "PTCERT-operacoes-mesa-conta-13-8a956a98f806.png",
+          "path": "media/PTCERT-operacoes-mesa-conta-13-8a956a98f806.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-operacoes-mesa-conta-13-8a956a98f806.png@@"
+        }
+      ],
+      "source": "2-PT-CERT - User Manual.docx"
+    },
+    {
+      "number": "PTC-LICENCAS-APP",
+      "name": "app-licencas",
+      "title": "Aplicação de ativação e renovação de licenças",
+      "category": "apps",
+      "keywords": "app licenças ativar renovar android iphone desktop",
+      "summary": "<p>Instalar e configurar a aplicação de licenças PTcert.</p>",
+      "use_when": "<p>Utilize para ativar ou renovar licenças num computador ou dispositivo móvel.</p>",
+      "body": "articles/PTC-LICENCAS-APP.html",
+      "assets": [
+        {
+          "filename": "PTCERT-app-licencas-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-app-licencas-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-02-80befb853a8c.png",
+          "path": "media/PTCERT-app-licencas-02-80befb853a8c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-02-80befb853a8c.png@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-03-a87947d20172.jpg",
+          "path": "media/PTCERT-app-licencas-03-a87947d20172.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-03-a87947d20172.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-04-0a2a6e80302d.jpg",
+          "path": "media/PTCERT-app-licencas-04-0a2a6e80302d.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-04-0a2a6e80302d.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-05-441a87d570a7.jpg",
+          "path": "media/PTCERT-app-licencas-05-441a87d570a7.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-05-441a87d570a7.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-06-eb721debbb91.jpg",
+          "path": "media/PTCERT-app-licencas-06-eb721debbb91.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-06-eb721debbb91.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-07-aba70448e9d8.png",
+          "path": "media/PTCERT-app-licencas-07-aba70448e9d8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-07-aba70448e9d8.png@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-08-f23f147983be.png",
+          "path": "media/PTCERT-app-licencas-08-f23f147983be.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-08-f23f147983be.png@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-09-c15b547ad3b0.png",
+          "path": "media/PTCERT-app-licencas-09-c15b547ad3b0.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-09-c15b547ad3b0.png@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-10-6f5eda2e40d5.png",
+          "path": "media/PTCERT-app-licencas-10-6f5eda2e40d5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-10-6f5eda2e40d5.png@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-11-5f5a4f7cbad2.jpg",
+          "path": "media/PTCERT-app-licencas-11-5f5a4f7cbad2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-11-5f5a4f7cbad2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-licencas-12-5e7f5d5a31cd.jpg",
+          "path": "media/PTCERT-app-licencas-12-5e7f5d5a31cd.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-licencas-12-5e7f5d5a31cd.jpg@@"
+        }
+      ],
+      "source": "APP LICENÇAS.docx"
+    },
+    {
+      "number": "PTC-AVENCAS",
+      "name": "avencas-parqueamento",
+      "title": "Configurar avenças e parqueamento",
+      "category": "operacao",
+      "keywords": "avenças parqueamento cliente faturar talão áreas",
+      "summary": "<p>Configurar e operar avenças e registos de parqueamento.</p>",
+      "use_when": "<p>Utilize em instalações que gerem clientes avençados ou estacionamento.</p>",
+      "body": "articles/PTC-AVENCAS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-avencas-parqueamento-01-af5fc8d79721.png",
+          "path": "media/PTCERT-avencas-parqueamento-01-af5fc8d79721.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-01-af5fc8d79721.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-02-aea3ead367dd.png",
+          "path": "media/PTCERT-avencas-parqueamento-02-aea3ead367dd.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-02-aea3ead367dd.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-03-d4e21107369d.png",
+          "path": "media/PTCERT-avencas-parqueamento-03-d4e21107369d.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-03-d4e21107369d.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-04-5695746bbd59.png",
+          "path": "media/PTCERT-avencas-parqueamento-04-5695746bbd59.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-04-5695746bbd59.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-05-e0b72bc34f43.png",
+          "path": "media/PTCERT-avencas-parqueamento-05-e0b72bc34f43.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-05-e0b72bc34f43.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-06-ad57fbf0d2fa.png",
+          "path": "media/PTCERT-avencas-parqueamento-06-ad57fbf0d2fa.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-06-ad57fbf0d2fa.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-07-1c44c7057098.png",
+          "path": "media/PTCERT-avencas-parqueamento-07-1c44c7057098.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-07-1c44c7057098.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-08-6e387cfdfe85.png",
+          "path": "media/PTCERT-avencas-parqueamento-08-6e387cfdfe85.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-08-6e387cfdfe85.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-09-d62a7ff14b5f.png",
+          "path": "media/PTCERT-avencas-parqueamento-09-d62a7ff14b5f.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-09-d62a7ff14b5f.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-10-fbfac96a0a3e.png",
+          "path": "media/PTCERT-avencas-parqueamento-10-fbfac96a0a3e.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-10-fbfac96a0a3e.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-11-df2d29efb03c.png",
+          "path": "media/PTCERT-avencas-parqueamento-11-df2d29efb03c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-11-df2d29efb03c.png@@"
+        },
+        {
+          "filename": "PTCERT-avencas-parqueamento-12-51e983512bc6.png",
+          "path": "media/PTCERT-avencas-parqueamento-12-51e983512bc6.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-avencas-parqueamento-12-51e983512bc6.png@@"
+        }
+      ],
+      "source": "AVENÇAS e Parqueamento.docx"
+    },
+    {
+      "number": "PTC-BALANCA-EPELSA",
+      "name": "balanca-epelsa-xs",
+      "title": "Configurar a balança EPELSA XS",
+      "category": "equipamentos",
+      "keywords": "balança epelsa xs configuração peso",
+      "summary": "<p>Configurar e utilizar uma balança EPELSA XS com o PTcert.</p>",
+      "use_when": "<p>Utilize na instalação ou diagnóstico desta balança.</p>",
+      "body": "articles/PTC-BALANCA-EPELSA.html",
+      "assets": [
+        {
+          "filename": "PTCERT-balanca-epelsa-xs-01-d4b23af4cf1c.jpg",
+          "path": "media/PTCERT-balanca-epelsa-xs-01-d4b23af4cf1c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-balanca-epelsa-xs-01-d4b23af4cf1c.jpg@@"
+        },
+        {
+          "filename": "PTCERT-balanca-epelsa-xs-02-257800310109.jpg",
+          "path": "media/PTCERT-balanca-epelsa-xs-02-257800310109.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-balanca-epelsa-xs-02-257800310109.jpg@@"
+        },
+        {
+          "filename": "PTCERT-balanca-epelsa-xs-03-a6072bae20d6.jpg",
+          "path": "media/PTCERT-balanca-epelsa-xs-03-a6072bae20d6.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-balanca-epelsa-xs-03-a6072bae20d6.jpg@@"
+        },
+        {
+          "filename": "PTCERT-balanca-epelsa-xs-04-cd2da63996d6.jpg",
+          "path": "media/PTCERT-balanca-epelsa-xs-04-cd2da63996d6.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-balanca-epelsa-xs-04-cd2da63996d6.jpg@@"
+        },
+        {
+          "filename": "PTCERT-balanca-epelsa-xs-05-8aefd2f83733.jpg",
+          "path": "media/PTCERT-balanca-epelsa-xs-05-8aefd2f83733.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-balanca-epelsa-xs-05-8aefd2f83733.jpg@@"
+        }
+      ],
+      "source": "Balança EPELSA XS Manual.docx"
+    },
+    {
+      "number": "PTC-CARTOES-MESAS",
+      "name": "cartoes-vs-mesas",
+      "title": "Escolher entre cartões e mesas",
+      "category": "operacao",
+      "keywords": "cartões mesas consumo configuração",
+      "summary": "<p>Compreender e configurar os modos de operação por cartões ou mesas.</p>",
+      "use_when": "<p>Utilize ao definir o fluxo de atendimento do estabelecimento.</p>",
+      "body": "articles/PTC-CARTOES-MESAS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-cartoes-vs-mesas-01-3e41b1de613f.jpg",
+          "path": "media/PTCERT-cartoes-vs-mesas-01-3e41b1de613f.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-cartoes-vs-mesas-01-3e41b1de613f.jpg@@"
+        },
+        {
+          "filename": "PTCERT-cartoes-vs-mesas-02-96b2d1070c9f.jpg",
+          "path": "media/PTCERT-cartoes-vs-mesas-02-96b2d1070c9f.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-cartoes-vs-mesas-02-96b2d1070c9f.jpg@@"
+        },
+        {
+          "filename": "PTCERT-cartoes-vs-mesas-03-25e782505b59.jpg",
+          "path": "media/PTCERT-cartoes-vs-mesas-03-25e782505b59.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-cartoes-vs-mesas-03-25e782505b59.jpg@@"
+        },
+        {
+          "filename": "PTCERT-cartoes-vs-mesas-04-d48c93032cff.jpg",
+          "path": "media/PTCERT-cartoes-vs-mesas-04-d48c93032cff.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-cartoes-vs-mesas-04-d48c93032cff.jpg@@"
+        },
+        {
+          "filename": "PTCERT-cartoes-vs-mesas-05-47af32d13d71.jpg",
+          "path": "media/PTCERT-cartoes-vs-mesas-05-47af32d13d71.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-cartoes-vs-mesas-05-47af32d13d71.jpg@@"
+        },
+        {
+          "filename": "PTCERT-cartoes-vs-mesas-06-8eabca2d7242.jpg",
+          "path": "media/PTCERT-cartoes-vs-mesas-06-8eabca2d7242.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-cartoes-vs-mesas-06-8eabca2d7242.jpg@@"
+        }
+      ],
+      "source": "Cartões vs Mesas.docx"
+    },
+    {
+      "number": "PTC-ETIQUETA-PRECO-KG",
+      "name": "etiquetas-preco-kg",
+      "title": "Colocar preço por quilograma nas etiquetas",
+      "category": "inventario",
+      "keywords": "etiquetas preço kg quilograma prateleira",
+      "summary": "<p>Apresentar corretamente o preço por quilograma nas etiquetas de prateleira.</p>",
+      "use_when": "<p>Utilize na configuração de etiquetas para produtos vendidos por peso.</p>",
+      "body": "articles/PTC-ETIQUETA-PRECO-KG.html",
+      "assets": [
+        {
+          "filename": "PTCERT-etiquetas-preco-kg-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-etiquetas-preco-kg-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-etiquetas-preco-kg-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-etiquetas-preco-kg-02-0edddbf26e1c.png",
+          "path": "media/PTCERT-etiquetas-preco-kg-02-0edddbf26e1c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-etiquetas-preco-kg-02-0edddbf26e1c.png@@"
+        },
+        {
+          "filename": "PTCERT-etiquetas-preco-kg-03-5367a20143a0.png",
+          "path": "media/PTCERT-etiquetas-preco-kg-03-5367a20143a0.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-etiquetas-preco-kg-03-5367a20143a0.png@@"
+        },
+        {
+          "filename": "PTCERT-etiquetas-preco-kg-04-77601c8f5b96.png",
+          "path": "media/PTCERT-etiquetas-preco-kg-04-77601c8f5b96.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-etiquetas-preco-kg-04-77601c8f5b96.png@@"
+        },
+        {
+          "filename": "PTCERT-etiquetas-preco-kg-05-d831ae4ba06b.png",
+          "path": "media/PTCERT-etiquetas-preco-kg-05-d831ae4ba06b.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-etiquetas-preco-kg-05-d831ae4ba06b.png@@"
+        }
+      ],
+      "source": "Colocar Preço_Kg nas Etiquetas.docx"
+    },
+    {
+      "number": "PTC-NOMACHINE-ANDROID",
+      "name": "nomachine-android",
+      "title": "Instalar o NoMachine no Android",
+      "category": "comunicacoes",
+      "keywords": "nomachine android remoto acesso instalação",
+      "summary": "<p>Instalar e preparar o NoMachine num dispositivo Android.</p>",
+      "use_when": "<p>Utilize para configurar acesso remoto a partir de Android.</p>",
+      "body": "articles/PTC-NOMACHINE-ANDROID.html",
+      "assets": [
+        {
+          "filename": "PTCERT-nomachine-android-01-15decfbc9964.jpg",
+          "path": "media/PTCERT-nomachine-android-01-15decfbc9964.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-01-15decfbc9964.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-02-4a178964ea10.jpg",
+          "path": "media/PTCERT-nomachine-android-02-4a178964ea10.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-02-4a178964ea10.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-03-23664a52ad21.jpg",
+          "path": "media/PTCERT-nomachine-android-03-23664a52ad21.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-03-23664a52ad21.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-04-7cb44e68b924.jpg",
+          "path": "media/PTCERT-nomachine-android-04-7cb44e68b924.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-04-7cb44e68b924.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-05-746537848c53.jpg",
+          "path": "media/PTCERT-nomachine-android-05-746537848c53.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-05-746537848c53.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-06-1b50dfb4a918.jpg",
+          "path": "media/PTCERT-nomachine-android-06-1b50dfb4a918.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-06-1b50dfb4a918.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-07-8798a5fecff2.jpg",
+          "path": "media/PTCERT-nomachine-android-07-8798a5fecff2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-07-8798a5fecff2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-08-9a8e934fc06c.jpg",
+          "path": "media/PTCERT-nomachine-android-08-9a8e934fc06c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-08-9a8e934fc06c.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-09-d53d0347ff18.jpg",
+          "path": "media/PTCERT-nomachine-android-09-d53d0347ff18.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-09-d53d0347ff18.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-10-9f0440da9c36.jpg",
+          "path": "media/PTCERT-nomachine-android-10-9f0440da9c36.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-10-9f0440da9c36.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-11-4f2fd68b6d53.jpg",
+          "path": "media/PTCERT-nomachine-android-11-4f2fd68b6d53.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-11-4f2fd68b6d53.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-12-16e9b4ad87a8.png",
+          "path": "media/PTCERT-nomachine-android-12-16e9b4ad87a8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-12-16e9b4ad87a8.png@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-13-037c4da21260.jpg",
+          "path": "media/PTCERT-nomachine-android-13-037c4da21260.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-13-037c4da21260.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-14-f93299c73e01.jpg",
+          "path": "media/PTCERT-nomachine-android-14-f93299c73e01.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-14-f93299c73e01.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-15-c41da4d8490f.jpg",
+          "path": "media/PTCERT-nomachine-android-15-c41da4d8490f.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-15-c41da4d8490f.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-16-7ed2bf2d45c9.jpg",
+          "path": "media/PTCERT-nomachine-android-16-7ed2bf2d45c9.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-16-7ed2bf2d45c9.jpg@@"
+        },
+        {
+          "filename": "PTCERT-nomachine-android-17-eac69b6e0673.jpg",
+          "path": "media/PTCERT-nomachine-android-17-eac69b6e0673.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-nomachine-android-17-eac69b6e0673.jpg@@"
+        }
+      ],
+      "source": "Comandos NoMachine Instalacao no Android.docx"
+    },
+    {
+      "number": "PTC-ATCUD",
+      "name": "atcud-series",
+      "title": "Configurar ATCUD e comunicação de séries",
+      "category": "fiscal",
+      "keywords": "atcud séries comunicação documentos fiscal",
+      "summary": "<p>Configurar a comunicação de séries e o respetivo ATCUD.</p>",
+      "use_when": "<p>Utilize na preparação fiscal das séries documentais.</p>",
+      "body": "articles/PTC-ATCUD.html",
+      "assets": [
+        {
+          "filename": "PTCERT-atcud-series-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-atcud-series-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-atcud-series-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-atcud-series-02-bff4db0cfd4a.jpg",
+          "path": "media/PTCERT-atcud-series-02-bff4db0cfd4a.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-atcud-series-02-bff4db0cfd4a.jpg@@"
+        },
+        {
+          "filename": "PTCERT-atcud-series-03-73e56b812688.jpg",
+          "path": "media/PTCERT-atcud-series-03-73e56b812688.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-atcud-series-03-73e56b812688.jpg@@"
+        },
+        {
+          "filename": "PTCERT-atcud-series-04-485e50f650f6.png",
+          "path": "media/PTCERT-atcud-series-04-485e50f650f6.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-atcud-series-04-485e50f650f6.png@@"
+        },
+        {
+          "filename": "PTCERT-atcud-series-05-92cec6961094.jpg",
+          "path": "media/PTCERT-atcud-series-05-92cec6961094.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-atcud-series-05-92cec6961094.jpg@@"
+        },
+        {
+          "filename": "PTCERT-atcud-series-06-39ff538bf0ee.jpg",
+          "path": "media/PTCERT-atcud-series-06-39ff538bf0ee.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-atcud-series-06-39ff538bf0ee.jpg@@"
+        }
+      ],
+      "source": "Comunicação de Séries.docx"
+    },
+    {
+      "number": "PTC-TAX-FREE",
+      "name": "tax-free",
+      "title": "Configurar e utilizar Tax-Free",
+      "category": "fiscal",
+      "keywords": "tax free configuração venda turista",
+      "summary": "<p>Configurar e utilizar o processo Tax-Free no PTcert.</p>",
+      "use_when": "<p>Utilize em vendas elegíveis para reembolso de imposto.</p>",
+      "body": "articles/PTC-TAX-FREE.html",
+      "assets": [
+        {
+          "filename": "PTCERT-tax-free-01-de94ee47e5b0.png",
+          "path": "media/PTCERT-tax-free-01-de94ee47e5b0.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-tax-free-01-de94ee47e5b0.png@@"
+        },
+        {
+          "filename": "PTCERT-tax-free-02-6d4ab4c2b126.jpg",
+          "path": "media/PTCERT-tax-free-02-6d4ab4c2b126.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-tax-free-02-6d4ab4c2b126.jpg@@"
+        },
+        {
+          "filename": "PTCERT-tax-free-03-73b6871c4950.jpg",
+          "path": "media/PTCERT-tax-free-03-73b6871c4950.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-tax-free-03-73b6871c4950.jpg@@"
+        }
+      ],
+      "source": "Configuração de Tax-Free.docx"
+    },
+    {
+      "number": "PTC-PEN-TECNICA",
+      "name": "pen-tecnica",
+      "title": "Criar a PEN técnica",
+      "category": "sistemas",
+      "keywords": "pen técnica instalação suporte boot",
+      "summary": "<p>Preparar a PEN técnica usada em instalação e suporte.</p>",
+      "use_when": "<p>Utilize antes de intervenções técnicas que exijam arranque ou ferramentas externas.</p>",
+      "body": "articles/PTC-PEN-TECNICA.html",
+      "assets": [
+        {
+          "filename": "PTCERT-pen-tecnica-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-pen-tecnica-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-02-57dd8c52c340.png",
+          "path": "media/PTCERT-pen-tecnica-02-57dd8c52c340.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-02-57dd8c52c340.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-03-cd0f6244c9e7.png",
+          "path": "media/PTCERT-pen-tecnica-03-cd0f6244c9e7.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-03-cd0f6244c9e7.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-04-f0b8ac23818c.png",
+          "path": "media/PTCERT-pen-tecnica-04-f0b8ac23818c.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-04-f0b8ac23818c.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-05-16ad90046719.png",
+          "path": "media/PTCERT-pen-tecnica-05-16ad90046719.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-05-16ad90046719.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-06-fb7d786360fa.png",
+          "path": "media/PTCERT-pen-tecnica-06-fb7d786360fa.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-06-fb7d786360fa.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-07-2ab805d5d60b.png",
+          "path": "media/PTCERT-pen-tecnica-07-2ab805d5d60b.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-07-2ab805d5d60b.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-08-e2ae018e725a.png",
+          "path": "media/PTCERT-pen-tecnica-08-e2ae018e725a.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-08-e2ae018e725a.png@@"
+        },
+        {
+          "filename": "PTCERT-pen-tecnica-09-0c5d3b6d43f8.png",
+          "path": "media/PTCERT-pen-tecnica-09-0c5d3b6d43f8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-pen-tecnica-09-0c5d3b6d43f8.png@@"
+        }
+      ],
+      "source": "Criação Pen Técnica.docx"
+    },
+    {
+      "number": "PTC-LOGOTIPO-SCREENSAVER",
+      "name": "logotipo-screensaver",
+      "title": "Definir logótipo e proteção de ecrã",
+      "category": "configuracao",
+      "keywords": "logótipo screensaver proteção ecrã imagem",
+      "summary": "<p>Configurar a identidade visual e a proteção de ecrã do POS.</p>",
+      "use_when": "<p>Utilize para personalizar a imagem apresentada no terminal.</p>",
+      "body": "articles/PTC-LOGOTIPO-SCREENSAVER.html",
+      "assets": [],
+      "source": "Definir Logotipo _ ScreenSaver.docx"
+    },
+    {
+      "number": "PTC-DOCS-EMAIL",
+      "name": "documentos-externos-email",
+      "title": "Enviar documentos externos por email",
+      "category": "comunicacoes",
+      "keywords": "email documentos externos envio configuração",
+      "summary": "<p>Preparar o envio por email de documentos externos.</p>",
+      "use_when": "<p>Utilize quando documentos gerados fora do fluxo habitual têm de ser enviados pelo sistema.</p>",
+      "body": "articles/PTC-DOCS-EMAIL.html",
+      "assets": [],
+      "source": "Envio de documentos externos por email.docx"
+    },
+    {
+      "number": "PTC-GAVETAS",
+      "name": "gavetas-funcionario",
+      "title": "Atribuir gavetas por funcionário",
+      "category": "equipamentos",
+      "keywords": "gaveta funcionário operador caixa",
+      "summary": "<p>Configurar gavetas de dinheiro por funcionário.</p>",
+      "use_when": "<p>Utilize quando diferentes operadores devem trabalhar com gavetas específicas.</p>",
+      "body": "articles/PTC-GAVETAS.html",
+      "assets": [],
+      "source": "Gavetas por funcionário.docx"
+    },
+    {
+      "number": "PTC-HARDLOCKS",
+      "name": "drivers-hardlock-tib",
+      "title": "Instalar drivers Hardlock em imagens TIB antigas",
+      "category": "sistemas",
+      "keywords": "hardlock drivers tp-link mt7601u tib acronis",
+      "summary": "<p>Instalar drivers necessários em imagens TIB antigas.</p>",
+      "use_when": "<p>Utilize ao recuperar equipamentos antigos com problemas de drivers ou hardlocks.</p>",
+      "body": "articles/PTC-HARDLOCKS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-drivers-hardlock-tib-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-drivers-hardlock-tib-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-drivers-hardlock-tib-01-7bd6a7a07ba5.png@@"
+        }
+      ],
+      "source": "Guia Drivers Hardlocks .TIBs Antigas.docx"
+    },
+    {
+      "number": "PTC-INVENTARIO",
+      "name": "inventario",
+      "title": "Realizar um inventário",
+      "category": "inventario",
+      "keywords": "inventário stock contagem diferenças",
+      "summary": "<p>Executar o processo de inventário no PTcert.</p>",
+      "use_when": "<p>Utilize para contagem, conferência e regularização de existências.</p>",
+      "body": "articles/PTC-INVENTARIO.html",
+      "assets": [
+        {
+          "filename": "PTCERT-inventario-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-inventario-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-inventario-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-inventario-02-ffd1bab049d6.jpg",
+          "path": "media/PTCERT-inventario-02-ffd1bab049d6.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-inventario-02-ffd1bab049d6.jpg@@"
+        },
+        {
+          "filename": "PTCERT-inventario-03-4aeb7ba8a332.jpg",
+          "path": "media/PTCERT-inventario-03-4aeb7ba8a332.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-inventario-03-4aeb7ba8a332.jpg@@"
+        },
+        {
+          "filename": "PTCERT-inventario-04-84e5ed189d43.jpg",
+          "path": "media/PTCERT-inventario-04-84e5ed189d43.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-inventario-04-84e5ed189d43.jpg@@"
+        },
+        {
+          "filename": "PTCERT-inventario-05-0541a0ee4bb2.jpg",
+          "path": "media/PTCERT-inventario-05-0541a0ee4bb2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-inventario-05-0541a0ee4bb2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-inventario-06-efeecbd7c9f1.jpg",
+          "path": "media/PTCERT-inventario-06-efeecbd7c9f1.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-inventario-06-efeecbd7c9f1.jpg@@"
+        }
+      ],
+      "source": "Guia Inventário.docx"
+    },
+    {
+      "number": "PTC-INSTALACAO-ACRONIS",
+      "name": "instalacao-acronis",
+      "title": "Instalar o PTcert com Acronis e PEN técnica",
+      "category": "sistemas",
+      "keywords": "instalação acronis pen técnica imagem tib",
+      "summary": "<p>Instalar ou repor um sistema PTcert usando Acronis.</p>",
+      "use_when": "<p>Utilize na preparação ou recuperação completa de um equipamento.</p>",
+      "body": "articles/PTC-INSTALACAO-ACRONIS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-instalacao-acronis-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-instalacao-acronis-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-02-c5c9e7241470.jpg",
+          "path": "media/PTCERT-instalacao-acronis-02-c5c9e7241470.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-02-c5c9e7241470.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-03-02069c3517d8.jpg",
+          "path": "media/PTCERT-instalacao-acronis-03-02069c3517d8.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-03-02069c3517d8.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-04-c79a81151f48.jpg",
+          "path": "media/PTCERT-instalacao-acronis-04-c79a81151f48.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-04-c79a81151f48.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-05-65f7ef273531.jpg",
+          "path": "media/PTCERT-instalacao-acronis-05-65f7ef273531.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-05-65f7ef273531.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-06-db18e50b0b15.jpg",
+          "path": "media/PTCERT-instalacao-acronis-06-db18e50b0b15.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-06-db18e50b0b15.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-07-97d57f4f6bfd.jpg",
+          "path": "media/PTCERT-instalacao-acronis-07-97d57f4f6bfd.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-07-97d57f4f6bfd.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-08-ab36dbef3f37.jpg",
+          "path": "media/PTCERT-instalacao-acronis-08-ab36dbef3f37.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-08-ab36dbef3f37.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-09-f6566f9ec8b2.jpg",
+          "path": "media/PTCERT-instalacao-acronis-09-f6566f9ec8b2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-09-f6566f9ec8b2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-10-4c0ea046e1f2.jpg",
+          "path": "media/PTCERT-instalacao-acronis-10-4c0ea046e1f2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-10-4c0ea046e1f2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-11-4f013a4b8340.jpg",
+          "path": "media/PTCERT-instalacao-acronis-11-4f013a4b8340.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-11-4f013a4b8340.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-12-eb405aab0c6b.jpg",
+          "path": "media/PTCERT-instalacao-acronis-12-eb405aab0c6b.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-12-eb405aab0c6b.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-13-d0ada44e8437.jpg",
+          "path": "media/PTCERT-instalacao-acronis-13-d0ada44e8437.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-13-d0ada44e8437.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-14-1907e186531b.jpg",
+          "path": "media/PTCERT-instalacao-acronis-14-1907e186531b.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-14-1907e186531b.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-15-e544d4b0520a.jpg",
+          "path": "media/PTCERT-instalacao-acronis-15-e544d4b0520a.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-15-e544d4b0520a.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-16-f3bb534b1c75.jpg",
+          "path": "media/PTCERT-instalacao-acronis-16-f3bb534b1c75.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-16-f3bb534b1c75.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-17-04de74c4130a.jpg",
+          "path": "media/PTCERT-instalacao-acronis-17-04de74c4130a.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-17-04de74c4130a.jpg@@"
+        },
+        {
+          "filename": "PTCERT-instalacao-acronis-18-5fd751880155.jpg",
+          "path": "media/PTCERT-instalacao-acronis-18-5fd751880155.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-instalacao-acronis-18-5fd751880155.jpg@@"
+        }
+      ],
+      "source": "Manual de Instalação Acronis.docx"
+    },
+    {
+      "number": "PTC-REFLASH-DIBAL",
+      "name": "reflash-balancas-dibal",
+      "title": "Reflashar balanças Dibal",
+      "category": "equipamentos",
+      "keywords": "balança dibal reflash firmware",
+      "summary": "<p>Executar o reflash de balanças Dibal.</p>",
+      "use_when": "<p>Utilize quando uma balança Dibal necessita de reposição de firmware.</p>",
+      "body": "articles/PTC-REFLASH-DIBAL.html",
+      "assets": [
+        {
+          "filename": "PTCERT-reflash-balancas-dibal-01-c6fa84c72e55.png",
+          "path": "media/PTCERT-reflash-balancas-dibal-01-c6fa84c72e55.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-reflash-balancas-dibal-01-c6fa84c72e55.png@@"
+        },
+        {
+          "filename": "PTCERT-reflash-balancas-dibal-02-9e2242f2212d.jpg",
+          "path": "media/PTCERT-reflash-balancas-dibal-02-9e2242f2212d.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-reflash-balancas-dibal-02-9e2242f2212d.jpg@@"
+        },
+        {
+          "filename": "PTCERT-reflash-balancas-dibal-03-bf25134379f2.jpg",
+          "path": "media/PTCERT-reflash-balancas-dibal-03-bf25134379f2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-reflash-balancas-dibal-03-bf25134379f2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-reflash-balancas-dibal-04-46e1f71b9a1d.jpg",
+          "path": "media/PTCERT-reflash-balancas-dibal-04-46e1f71b9a1d.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-reflash-balancas-dibal-04-46e1f71b9a1d.jpg@@"
+        },
+        {
+          "filename": "PTCERT-reflash-balancas-dibal-05-83188154bf33.png",
+          "path": "media/PTCERT-reflash-balancas-dibal-05-83188154bf33.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-reflash-balancas-dibal-05-83188154bf33.png@@"
+        }
+      ],
+      "source": "Procedimento para Reflashar Balanças Dibal.docx"
+    },
+    {
+      "number": "PTC-DASHBOARD-APP",
+      "name": "app-dashboard",
+      "title": "Instalar e configurar a aplicação Dashboard",
+      "category": "apps",
+      "keywords": "dashboard app android iphone desktop instalação",
+      "summary": "<p>Instalar e configurar a aplicação Dashboard do PTcert.</p>",
+      "use_when": "<p>Utilize para disponibilizar indicadores em computador ou dispositivo móvel.</p>",
+      "body": "articles/PTC-DASHBOARD-APP.html",
+      "assets": [
+        {
+          "filename": "PTCERT-app-dashboard-01-e736e535dc80.png",
+          "path": "media/PTCERT-app-dashboard-01-e736e535dc80.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-01-e736e535dc80.png@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-02-9b08c9cebcb3.jpg",
+          "path": "media/PTCERT-app-dashboard-02-9b08c9cebcb3.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-02-9b08c9cebcb3.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-03-ee72c2bdbd75.jpg",
+          "path": "media/PTCERT-app-dashboard-03-ee72c2bdbd75.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-03-ee72c2bdbd75.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-04-e428f3e9f4a1.jpg",
+          "path": "media/PTCERT-app-dashboard-04-e428f3e9f4a1.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-04-e428f3e9f4a1.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-05-2859dba7e554.jpg",
+          "path": "media/PTCERT-app-dashboard-05-2859dba7e554.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-05-2859dba7e554.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-06-eb721debbb91.jpg",
+          "path": "media/PTCERT-app-dashboard-06-eb721debbb91.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-06-eb721debbb91.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-07-aba70448e9d8.png",
+          "path": "media/PTCERT-app-dashboard-07-aba70448e9d8.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-07-aba70448e9d8.png@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-08-f23f147983be.png",
+          "path": "media/PTCERT-app-dashboard-08-f23f147983be.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-08-f23f147983be.png@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-09-c15b547ad3b0.png",
+          "path": "media/PTCERT-app-dashboard-09-c15b547ad3b0.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-09-c15b547ad3b0.png@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-10-6f5eda2e40d5.png",
+          "path": "media/PTCERT-app-dashboard-10-6f5eda2e40d5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-10-6f5eda2e40d5.png@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-11-fe2758cd7340.jpg",
+          "path": "media/PTCERT-app-dashboard-11-fe2758cd7340.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-11-fe2758cd7340.jpg@@"
+        },
+        {
+          "filename": "PTCERT-app-dashboard-12-b0db180025bf.jpg",
+          "path": "media/PTCERT-app-dashboard-12-b0db180025bf.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-app-dashboard-12-b0db180025bf.jpg@@"
+        }
+      ],
+      "source": "PT-CERT - APP DASHBOARD.docx"
+    },
+    {
+      "number": "PTC-DASHBOARD-CONFIG",
+      "name": "dashboard-configuracao",
+      "title": "Configurar o acesso ao Dashboard",
+      "category": "apps",
+      "keywords": "dashboard site licenças password configuração",
+      "summary": "<p>Configurar o site e a autenticação usados pelo Dashboard.</p>",
+      "use_when": "<p>Utilize depois de instalar a aplicação ou quando o acesso falha.</p>",
+      "body": "articles/PTC-DASHBOARD-CONFIG.html",
+      "assets": [
+        {
+          "filename": "PTCERT-dashboard-configuracao-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-dashboard-configuracao-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-dashboard-configuracao-01-7bd6a7a07ba5.png@@"
+        }
+      ],
+      "source": "PT-CERT - Configurações para usar o Dashboard.docx"
+    },
+    {
+      "number": "PTC-INTEGRACAO-FATURAS",
+      "name": "integracao-faturas-externas",
+      "title": "Integrar faturas de software externo",
+      "category": "apps",
+      "keywords": "integração faturas contas software externo ficheiro cabeçalho linhas rodapé",
+      "summary": "<p>Criar faturas e contas no PTcert através de ficheiros de software externo.</p>",
+      "use_when": "<p>Utilize no desenvolvimento ou configuração de integrações documentais.</p>",
+      "body": "articles/PTC-INTEGRACAO-FATURAS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-integracao-faturas-externas-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-integracao-faturas-externas-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-integracao-faturas-externas-01-7bd6a7a07ba5.png@@"
+        }
+      ],
+      "source": "PT-CERT - Criação de faturas _ contas através de softwares externos.docx"
+    },
+    {
+      "number": "PTC-IPESA-IPX",
+      "name": "ipesa-ipx",
+      "title": "Configurar a balança IPESA IPX",
+      "category": "equipamentos",
+      "keywords": "ipesa ipx balança configuração",
+      "summary": "<p>Configurar uma balança IPESA IPX para utilização com o PTcert.</p>",
+      "use_when": "<p>Utilize durante a instalação ou correção da comunicação com a balança.</p>",
+      "body": "articles/PTC-IPESA-IPX.html",
+      "assets": [
+        {
+          "filename": "PTCERT-ipesa-ipx-01-af5fc8d79721.png",
+          "path": "media/PTCERT-ipesa-ipx-01-af5fc8d79721.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-ipesa-ipx-01-af5fc8d79721.png@@"
+        },
+        {
+          "filename": "PTCERT-ipesa-ipx-02-afa92b4b1aaf.png",
+          "path": "media/PTCERT-ipesa-ipx-02-afa92b4b1aaf.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-ipesa-ipx-02-afa92b4b1aaf.png@@"
+        },
+        {
+          "filename": "PTCERT-ipesa-ipx-03-861cc293791c.jpg",
+          "path": "media/PTCERT-ipesa-ipx-03-861cc293791c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-ipesa-ipx-03-861cc293791c.jpg@@"
+        },
+        {
+          "filename": "PTCERT-ipesa-ipx-04-edff7384cdda.png",
+          "path": "media/PTCERT-ipesa-ipx-04-edff7384cdda.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-ipesa-ipx-04-edff7384cdda.png@@"
+        },
+        {
+          "filename": "PTCERT-ipesa-ipx-05-560512440b77.png",
+          "path": "media/PTCERT-ipesa-ipx-05-560512440b77.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-ipesa-ipx-05-560512440b77.png@@"
+        },
+        {
+          "filename": "PTCERT-ipesa-ipx-06-03571279a4bd.jpg",
+          "path": "media/PTCERT-ipesa-ipx-06-03571279a4bd.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-ipesa-ipx-06-03571279a4bd.jpg@@"
+        }
+      ],
+      "source": "PT-CERT - IPESA IPX - CONFIGURAÇÕES - V3.docx"
+    },
+    {
+      "number": "PTC-SDR",
+      "name": "regime-sdr",
+      "title": "Configurar o regime SDR",
+      "category": "fiscal",
+      "keywords": "sdr depósito reembolso embalagens artigo zona venda",
+      "summary": "<p>Configurar o Sistema de Depósito e Reembolso no PTcert.</p>",
+      "use_when": "<p>Utilize em estabelecimentos abrangidos pelo regime SDR.</p>",
+      "body": "articles/PTC-SDR.html",
+      "assets": [
+        {
+          "filename": "PTCERT-regime-sdr-01-de93036c3580.jpg",
+          "path": "media/PTCERT-regime-sdr-01-de93036c3580.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-regime-sdr-01-de93036c3580.jpg@@"
+        },
+        {
+          "filename": "PTCERT-regime-sdr-02-632d8a0249ca.jpg",
+          "path": "media/PTCERT-regime-sdr-02-632d8a0249ca.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-regime-sdr-02-632d8a0249ca.jpg@@"
+        }
+      ],
+      "source": "PT-CERT_Regime_SDR.docx"
+    },
+    {
+      "number": "PTC-RECUPERACAO-EFI",
+      "name": "recuperacao-disco-efi",
+      "title": "Recuperar o disco de máquinas POS EFI",
+      "category": "sistemas",
+      "keywords": "recuperação disco efi clonezilla arranque pen",
+      "summary": "<p>Recuperar e reparar o arranque de máquinas POS EFI.</p>",
+      "use_when": "<p>Utilize quando uma máquina EFI deixa de arrancar ou necessita de reposição.</p>",
+      "body": "articles/PTC-RECUPERACAO-EFI.html",
+      "assets": [
+        {
+          "filename": "PTCERT-recuperacao-disco-efi-01-ea3bc9fb8506.jpg",
+          "path": "media/PTCERT-recuperacao-disco-efi-01-ea3bc9fb8506.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-01-ea3bc9fb8506.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-efi-02-c18794d00534.jpg",
+          "path": "media/PTCERT-recuperacao-disco-efi-02-c18794d00534.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-02-c18794d00534.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-efi-03-dc0eff70f8c2.jpg",
+          "path": "media/PTCERT-recuperacao-disco-efi-03-dc0eff70f8c2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-03-dc0eff70f8c2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-efi-04-c272610798d5.jpg",
+          "path": "media/PTCERT-recuperacao-disco-efi-04-c272610798d5.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-04-c272610798d5.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-efi-05-b7c594acd65c.jpg",
+          "path": "media/PTCERT-recuperacao-disco-efi-05-b7c594acd65c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-05-b7c594acd65c.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-efi-06-7b3ff9cbd33c.jpg",
+          "path": "media/PTCERT-recuperacao-disco-efi-06-7b3ff9cbd33c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-06-7b3ff9cbd33c.jpg@@"
+        }
+      ],
+      "source": "Recuperação disco EFI.docx"
+    },
+    {
+      "number": "PTC-RECUPERACAO-POS",
+      "name": "recuperacao-disco-pos",
+      "title": "Recuperar o disco de máquinas POS",
+      "category": "sistemas",
+      "keywords": "recuperação disco pos clonezilla arranque pen",
+      "summary": "<p>Recuperar e reparar o arranque de máquinas POS sem EFI.</p>",
+      "use_when": "<p>Utilize quando um POS convencional deixa de arrancar ou necessita de reposição.</p>",
+      "body": "articles/PTC-RECUPERACAO-POS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-recuperacao-disco-pos-01-3c2f8c3c038c.jpg",
+          "path": "media/PTCERT-recuperacao-disco-pos-01-3c2f8c3c038c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-pos-01-3c2f8c3c038c.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-pos-02-c18794d00534.jpg",
+          "path": "media/PTCERT-recuperacao-disco-pos-02-c18794d00534.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-pos-02-c18794d00534.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-pos-03-dc0eff70f8c2.jpg",
+          "path": "media/PTCERT-recuperacao-disco-pos-03-dc0eff70f8c2.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-pos-03-dc0eff70f8c2.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-pos-04-a7aaf28149bc.jpg",
+          "path": "media/PTCERT-recuperacao-disco-pos-04-a7aaf28149bc.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-pos-04-a7aaf28149bc.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-pos-05-81eabe71e7f1.jpg",
+          "path": "media/PTCERT-recuperacao-disco-pos-05-81eabe71e7f1.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-pos-05-81eabe71e7f1.jpg@@"
+        },
+        {
+          "filename": "PTCERT-recuperacao-disco-pos-06-7b3ff9cbd33c.jpg",
+          "path": "media/PTCERT-recuperacao-disco-pos-06-7b3ff9cbd33c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-recuperacao-disco-pos-06-7b3ff9cbd33c.jpg@@"
+        }
+      ],
+      "source": "Recuperação disco.docx"
+    },
+    {
+      "number": "PTC-SAFT-DIARIO",
+      "name": "saft-diario-pasta",
+      "title": "Gerar diariamente o SAF-T para uma pasta",
+      "category": "fiscal",
+      "keywords": "saft diário pasta geração automática",
+      "summary": "<p>Configurar a geração diária do SAF-T para uma pasta.</p>",
+      "use_when": "<p>Utilize para automatizar a disponibilização periódica do ficheiro SAF-T.</p>",
+      "body": "articles/PTC-SAFT-DIARIO.html",
+      "assets": [],
+      "source": "SAFT - Geração diária para uma pasta.docx"
+    },
+    {
+      "number": "PTC-CARTOES-PREPAGOS",
+      "name": "cartoes-prepagos",
+      "title": "Configurar cartões pré-pagos",
+      "category": "operacao",
+      "keywords": "cartões pré-pagos saldo carregamento consumo",
+      "summary": "<p>Configurar e utilizar a gestão de cartões pré-pagos.</p>",
+      "use_when": "<p>Utilize em operações baseadas em carregamento e consumo de saldo.</p>",
+      "body": "articles/PTC-CARTOES-PREPAGOS.html",
+      "assets": [],
+      "source": "Sistema para gestão de cartões pré-pagos.docx"
+    },
+    {
+      "number": "PTC-TARAS",
+      "name": "taras-embalagens",
+      "title": "Configurar taras e embalagens",
+      "category": "inventario",
+      "keywords": "taras embalagens peso balança produtos",
+      "summary": "<p>Configurar taras e embalagens associadas aos produtos.</p>",
+      "use_when": "<p>Utilize em artigos vendidos por peso com embalagem descontável.</p>",
+      "body": "articles/PTC-TARAS.html",
+      "assets": [],
+      "source": "Taras e embalagens.docx"
+    },
+    {
+      "number": "PTC-DOCUMENTOS",
+      "name": "documentos-venda-consultas",
+      "title": "Documentos de venda, consultas e pedidos",
+      "category": "fiscal",
+      "keywords": "documentos venda reimpressão consulta mesa pedido anulação",
+      "summary": "<p>Consultar os documentos disponíveis e as respetivas utilizações.</p>",
+      "use_when": "<p>Utilize para escolher o documento correto numa operação de venda ou controlo.</p>",
+      "body": "articles/PTC-DOCUMENTOS.html",
+      "assets": [],
+      "source": "Template de Documentos.docx"
+    },
+    {
+      "number": "PTC-TIPOS-DOCUMENTO",
+      "name": "tipos-documentos-operacoes",
+      "title": "Tipos de documentos e operações",
+      "category": "fiscal",
+      "keywords": "tipos documento cliente operação fiscal",
+      "summary": "<p>Distinguir tipos de documento e tipos de operação.</p>",
+      "use_when": "<p>Utilize ao parametrizar ou selecionar documentos para clientes.</p>",
+      "body": "articles/PTC-TIPOS-DOCUMENTO.html",
+      "assets": [],
+      "source": "Tipos de documentos e de operações.docx"
+    },
+    {
+      "number": "PTC-TPA-USB",
+      "name": "tpa-newnote-usb",
+      "title": "Ativar USB no TPA NewNote",
+      "category": "equipamentos",
+      "keywords": "tpa newnote usb ativar",
+      "summary": "<p>Ativar a ligação USB num TPA NewNote.</p>",
+      "use_when": "<p>Utilize quando o terminal necessita de comunicar por USB.</p>",
+      "body": "articles/PTC-TPA-USB.html",
+      "assets": [
+        {
+          "filename": "PTCERT-tpa-newnote-usb-01-af5fc8d79721.png",
+          "path": "media/PTCERT-tpa-newnote-usb-01-af5fc8d79721.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-tpa-newnote-usb-01-af5fc8d79721.png@@"
+        }
+      ],
+      "source": "TPA NEWNOTE - ATIVAR USB.docx"
+    },
+    {
+      "number": "PTC-FICHEIROS-POS",
+      "name": "transferir-ficheiros-pos",
+      "title": "Transferir ficheiros de e para o POS",
+      "category": "comunicacoes",
+      "keywords": "ficheiros pos vpn transferência acesso remoto",
+      "summary": "<p>Transferir ficheiros entre o computador de suporte e o POS.</p>",
+      "use_when": "<p>Utilize em intervenções remotas que exijam copiar ficheiros para ou a partir do terminal.</p>",
+      "body": "articles/PTC-FICHEIROS-POS.html",
+      "assets": [
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-01-7bd6a7a07ba5.png",
+          "path": "media/PTCERT-transferir-ficheiros-pos-01-7bd6a7a07ba5.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-01-7bd6a7a07ba5.png@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-02-157211c335fa.jpg",
+          "path": "media/PTCERT-transferir-ficheiros-pos-02-157211c335fa.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-02-157211c335fa.jpg@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-03-fb0026fbade8.jpg",
+          "path": "media/PTCERT-transferir-ficheiros-pos-03-fb0026fbade8.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-03-fb0026fbade8.jpg@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-04-7d671296c535.jpg",
+          "path": "media/PTCERT-transferir-ficheiros-pos-04-7d671296c535.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-04-7d671296c535.jpg@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-05-4e2c2865afff.png",
+          "path": "media/PTCERT-transferir-ficheiros-pos-05-4e2c2865afff.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-05-4e2c2865afff.png@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-06-798a7e179210.png",
+          "path": "media/PTCERT-transferir-ficheiros-pos-06-798a7e179210.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-06-798a7e179210.png@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-07-c7a3d2dceee6.png",
+          "path": "media/PTCERT-transferir-ficheiros-pos-07-c7a3d2dceee6.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-07-c7a3d2dceee6.png@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-08-309fd9c64db1.png",
+          "path": "media/PTCERT-transferir-ficheiros-pos-08-309fd9c64db1.png",
+          "content_type": "image/png",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-08-309fd9c64db1.png@@"
+        },
+        {
+          "filename": "PTCERT-transferir-ficheiros-pos-09-ae30decf110c.jpg",
+          "path": "media/PTCERT-transferir-ficheiros-pos-09-ae30decf110c.jpg",
+          "content_type": "image/jpeg",
+          "token": "@@PTCERT_IMAGE:PTCERT-transferir-ficheiros-pos-09-ae30decf110c.jpg@@"
+        }
+      ],
+      "source": "Transferir ficheiros de e para o POS.docx"
+    }
+  ]
+}

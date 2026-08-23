@@ -84,6 +84,26 @@ ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/ba
 
 Reversão: `DELETE FROM faq_item WHERE f_number IN ('HD-GPS-FOLHA','HD-TICKETS-CALENDARIO');` (comentário no topo da migração).
 
+### Base de conhecimento PTcert
+
+Gerar novamente os 39 artigos e as imagens a partir dos documentos Word, validar e produzir o SQL fora do Git:
+
+```sh
+python3 scripts/build-ptcert-faq.py '/caminho/para/documentacao'
+python3 scripts/apply-ptcert-faq.py --write /tmp/ptcert-faq.sql
+scripts/check.sh
+```
+
+Antes de aplicar, rever `db/ptcert-content/manifest.json`, confirmar que todos os artigos são internos (`state_id=2`) e criar uma cópia de segurança conjunta das quatro tabelas afectadas:
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo faq_category faq_category_group faq_item faq_attachment > /root/otobo-backups/faq-before-ptcert.sql'
+ssh bwb-otobo-prod 'mysql --binary-mode=1 otobo' < /tmp/ptcert-faq.sql
+ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
+```
+
+A migração cria ou actualiza por `f_number`, recria apenas anexos com prefixo `PTCERT-` do artigo correspondente e preserva os restantes artigos/anexos. Reversão: repor o dump; em alternativa, remover artigos `PTC-%`, os anexos associados e a árvore `Documentação interna::PTcert` numa transacção revista.
+
 Devolução DSN criada como ticket novo (ex. `2026081762000058` / id 437, 2026-08-17): fundir para o ticket original (`2026081762000049` / id 436) depois de tornar o artigo da DSN não visível ao cliente, e disparar `BWBBounceNotify` para o proprietário **e** o agente responsável. Não reabrir o ticket encerrado.
 
 Exemplo (branding Helpdesk nas notificações, 2026-08-16):

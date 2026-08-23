@@ -1,0 +1,75 @@
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-drivers-hardlock-tib-01-7bd6a7a07ba5.png@@" width="700" height="203" alt="Ilustração do procedimento"></figure>
+<h2>Guia Instalação Drivers Hardlock TP-LINK e MT7601Usta em .TIBs antigas</h2>
+<p>Este documento serve como guia de instalação dos drivers <strong>TP-LINK</strong> e <strong>MT7601Usta</strong>.</p>
+<p>Existem duas maneiras de efetuarmos a instalação.</p>
+<p>Uma consiste em ter internet na máquina e descarregar diretamente os drivers, a outra consiste em instalar em modo offline através dos ficheiros numa pen.</p>
+<p><strong>COM INTERNET</strong></p>
+<p>É necessário então termos um teclado ligado ao POS de forma a abrir uma linha de comandos através do atalho ALT+1.</p>
+<p>Para descarregarmos os drivers:</p>
+<p><strong>TP-Link:</strong></p>
+<p><strong>w</strong><strong>get</strong><strong> http://software.ptcert.com/downloads/hardlock_tplink.zip</strong></p>
+<p><strong>MT7601Usta:</strong></p>
+<p><strong>w</strong><strong>get</strong><strong> http://software.ptcert.com/downloads/hardlock_mt7601.zip</strong></p>
+<p>Posteriormente necessitamos de descompactar o ficheiro, correspondente aos drivers que queremos instalar:</p>
+<p><strong>Para os TP-Link:</strong></p>
+<p><strong>unzip hardlock_tplink.zip</strong></p>
+<p><strong>Para os MT7601:</strong></p>
+<p><strong>unzip hardlock_mt7601.zip</strong></p>
+<p>Após descompactar, de forma a correr o script de instalação, teremos de entrar no diretório onde o mesmo se encontra.</p>
+<p>Para aceder aos ficheiros que acabamos de descomprimir, temos de utilizar o comando <strong>“cd”.</strong></p>
+<p><strong>Para os TP-LINK:</strong></p>
+<p><strong>cd hardlock_tplink/</strong></p>
+<p><strong>Para os MT7601:</strong></p>
+<p><strong>cd mt7601usta-master/</strong></p>
+<p>Agora que entramos no diretório onde se encontra o script de instalação.</p>
+<p>Para o correr temos de efectuar o seguinte comando (tanto para os TP-Link como para os MT7601):</p>
+<p><strong>./install.sh</strong></p>
+<p>Deixamos este processo terminar, pelo que quando terminar recomendamos retirar e voltar a colocar o hardlock e reiniciar o software terminando assim a instalação dos mesmos. De forma a confirmar se a máquina já detecta o hardlock, acedemos ao <strong>INFO MÁQUINA </strong>através do login na conta de <u><em>técnico/administrador/gerente</em></u>, <strong>DIVERSOS &gt; UTILITÁRIOS.</strong></p>
+<p><strong>SEM INTERNET</strong></p>
+<p>Para instalarmos através da pen é necessário descomprimir os ficheiros anteriormente mencionados para uma pen <strong>(para a raíz da mesma)</strong> para os descarregar é só aceder aos links que estão nos comandos.</p>
+<p>Introduzir então a PEN no POS, com um teclado abrimos uma linha de comandos através do atalho<strong> ALT+1</strong>.</p>
+<p>Para acedermos à pen é necessário descobrir o caminho correcto, executamos o comando:</p>
+<p><strong>cd /media/</strong></p>
+<p>Neste directório encontram-se todos os dispositivos de armazenamento amovíveis, para descobrir o directório onde a pen está montada fazemos o seguinte comando <strong>“ls”</strong>:</p>
+<p><strong>ls </strong></p>
+<p>Irá apresentar todos os diretórios disponíveis.</p>
+<p>Se só tivermos uma pen, por norma apenas aparece o directório <u><em>“usbhd-sdb1”</em></u>, se tivermos mais podemos ter vários desde <u><em>“usbhd-sda1”</em></u>, <u><em>“usbhd-sdc1”</em></u> etc., podemos ir entrando nos directórios para descobrir a pen, fazendo o comando “ls” para ver os ficheiros e o comando    <strong>“cd ..”</strong> para navegarmos para recuarmos no diretório.</p>
+<p>No caso de termos só uma pen acedemos então ao dispositivo:</p>
+<p><strong>cd usbhd-sdb1/</strong></p>
+<p>Para confirmarmos que estamos no diretório correto, utilizamos o comando <strong>“ls”</strong> e devemos de ver todos os ficheiros que estão na raiz da pen.</p>
+<p>Acedemos então à pasta correspondente dos hardlocks:</p>
+<p><strong>Para os TP-LINK:</strong></p>
+<p><strong>cd hardlock_tplink/</strong></p>
+<p><strong>Para os MT7601:</strong></p>
+<p><strong>cd mt7601usta-master/</strong></p>
+<p>E corremos o script de instalação através do comando:</p>
+<p><strong>./install</strong></p>
+<p>Após terminar, reforçamos novamente:</p>
+<p>Deixamos este processo terminar, pelo que quando terminar recomendamos retirar e voltar a colocar o hardlock e reiniciar o software terminando assim a instalação dos mesmos. De forma a confirmar se a máquina já detecta o hardlock, acedemos ao <strong>INFO MÁQUINA </strong>através do login na conta de <u><em>técnico/administrador/gerente</em></u>, <strong>DIVERSOS &gt; UTILITÁRIOS.</strong></p>
+<p><strong>Terminamos assim a instalação dos drivers.</strong></p>
+<p><strong>Na página a seguir temos um resumo dos comandos a executar ordenadamente.</strong></p>
+<p><strong>COM INTERNET:</strong></p>
+<p>wget <a href="http://software.ptcert.com/downloads/hardlock_tplink.zip">http://software.ptcert.com/downloads/hardlock_tplink.zip</a></p>
+<p><strong>Para os hardlocks TP-Link</strong></p>
+<p>wget <a href="http://software.ptcert.com/downloads/hardlock_mt7601.zip">http://software.ptcert.com/downloads/hardlock_mt7601.zip</a></p>
+<p><strong>Para os hardlocks MT7601</strong></p>
+<p><strong>unzip hardlock_mt7601.zip</strong></p>
+<p><strong>Para os MT7601</strong></p>
+<p><strong>unzip hardlock_tplink.zip</strong></p>
+<p><strong>Para os TP-Link</strong></p>
+<p><strong>ACEDER DIRETÓRIOS:</strong></p>
+<p><strong>cd mt7601usta-master/</strong></p>
+<p><strong>Para os MT7601</strong></p>
+<p><strong>cd hardlock_tplink/</strong></p>
+<p><strong>Para os TP-Link</strong></p>
+<p><strong>./install.sh</strong></p>
+<p><strong>SEM INTERNET</strong></p>
+<p><strong>cd /media/</strong></p>
+<p><strong>ls</strong></p>
+<p><strong>cd usbhd-sdb1/</strong></p>
+<p><strong>O diretório pré-definido para a pen, caso não funcione consultar a informação anteriormente mencionada.</strong></p>
+<p><strong>cd mt7601usta-master/</strong></p>
+<p><strong>Para os MT7601</strong></p>
+<p><strong>cd hardlock_tplink/</strong></p>
+<p><strong>Para os TP-Link</strong></p>
+<p><strong>./install.sh</strong></p>

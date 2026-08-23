@@ -1,0 +1,29 @@
+<h2>Recuperação de disco</h2>
+<h2>Máquinas POS EFI</h2>
+<h2>Arrancar a máquina através da PEN</h2>
+<p>Depois de inserir a PEN, aceder à BIOS e definir que queremos arrancar a máquina através da PEN (as opções da BIOS poderão ser diferentes de máquina para máquina).</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-01-ea3bc9fb8506.jpg@@" width="1600" height="702" alt="Ilustração do procedimento"></figure>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-02-c18794d00534.jpg@@" width="1600" height="294" alt="Ilustração do procedimento"></figure>
+<p>Depois de arrancar pela PEN, aparecerá este menu. A primeira opção deverá ser escolhida.</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-03-dc0eff70f8c2.jpg@@" width="1600" height="856" alt="Ilustração do procedimento"></figure>
+<h2>Escolhas no arranque do clonezilla</h2>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-04-c272610798d5.jpg@@" width="1600" height="1205" alt="Ilustração do procedimento"></figure>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-05-b7c594acd65c.jpg@@" width="1600" height="636" alt="Ilustração do procedimento"></figure>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-recuperacao-disco-efi-06-7b3ff9cbd33c.jpg@@" width="1600" height="662" alt="Ilustração do procedimento"></figure>
+<h2>Verificação do disco</h2>
+<p>sudo su</p>
+<p>fsck.vfat -f -p /dev/mmcblkp0p1</p>
+<p>fsck.ext4 -f -p /dev/mmcblkp0p2</p>
+<p>(Para fazer a verificação aos bad sectors do disco, adicionar a opção -c. A verificação será bastante mais demorada)</p>
+<h2>Reparação do arranque da máquina</h2>
+<p>sudo su</p>
+<p>mount /dev/mmcblkp0p2 /mnt</p>
+<p>mount /dev/mmcblkp0p1 /mnt/boot</p>
+<p>mount --bind /proc /mnt/proc</p>
+<p>mount --bind /dev /mnt/dev</p>
+<p>mount --bind /sys /mnt/sys</p>
+<p>chroot /mnt</p>
+<p>grub-install --efi-directory=/boot/grub/x86_64-efi</p>
+<p>exit</p>
+<p>reboot</p>
+<p>(Para escrever estes comandos, os caracteres “-” e “/” devem ser escritos usando as teclas do teclado numérico.)</p>

@@ -1,0 +1,52 @@
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-integracao-faturas-externas-01-7bd6a7a07ba5.png@@" width="700" height="203" alt="Ilustração do procedimento"></figure>
+<p>Criação de faturas / contas através de softwares externos</p>
+<h2>Formato do ficheiro</h2>
+<p>1#V1#V2#507281420#ULOAN IT, LDA#0#0##1#1</p>
+<p>V3#1002#2#12.50#13#1#</p>
+<p>V3#1001#1#25#13#0#</p>
+<p>50#DINHEIRO</p>
+<p>extra_data#ipesa_terminal#10</p>
+<h2>Descrição dos campos</h2>
+<h3>Cabeçalhos</h3>
+<p>0 - Número da conta / mesa (colocar 0 se for uma área sem mesas)</p>
+<p>1 - nome do funcionário que abriu a conta</p>
+<p>2 - nome do funcionário que fechou a conta (se estivermos a faturar)</p>
+<p>3 - NIF do cliente</p>
+<p>4 - nome do cliente</p>
+<p>5 - morada do cliente</p>
+<p>6 - código postal do cliente</p>
+<p>7 - localidade do cliente</p>
+<p>8 - desconto total (valor absoluto ou %)</p>
+<p>9 - número da área da conta / mesa (começa em 0)</p>
+<p>10 - observações globais ao documento (usar o caractere § como separador de linha)</p>
+<p>11 - 1 ou 0 para emitir a fatura ou deixar pendente numa conta / mesa</p>
+<p>12 - 1 ou 0 para imprimir ou não o documento no POS</p>
+<p>13 - posto / terminal</p>
+<p>14 - formato de impressão 48 ou 32 colunas (0, 32, 48)</p>
+<p>15 - nome para dar a conta (caso não se feche a conta)</p>
+<h3>Detalhes / Linhas de produtos</h3>
+<p>0 - nome do funcionário que registou o produto</p>
+<p>1 - id produto (handy_plu ou id) (pode ficar nulo, se ficar, produto será criado por nome)</p>
+<p>2 - nome do produto</p>
+<p>3 - quantidade</p>
+<p>4 - preço unitário (se enviarmos -1, será usado o valor do primeiro preço do produto)</p>
+<p>5 - taxa de iva (sem %. Se enviarmos -1, será usado o valor da primeira taxa do produto)</p>
+<p>6 - motivo de isenção de iva (pode ser nulo, necessário caso iva 0, eg, M16_Isento Artigo 14. do RITI (ou similar))</p>
+<p>7 - desconto (pode, ou não, ter %)</p>
+<p>8 - observações à linha (usar o caractere ; como separador de linha)</p>
+<p>9 - nome da família do produto (opcional)</p>
+<p>10 - nome da subfamília do produto (opcional)</p>
+<p>Se não enviarmos um PLU de produto, o sistema vai importar os produtos por nome criando os produtos que não existirem com esse nome. Caso usemos o PLU, ele será validado e só serão importadas linhas com códigos que existam (id ou código do comando).</p>
+<h3>Rodapés / pagamentos</h3>
+<p>0 - total pago</p>
+<p>1 - método de pagamento usado (nome)</p>
+<h3>Dados extra</h3>
+<p>0 - extra_data (esta string é sempre fixa)</p>
+<p>1 - nome da chave a gravar dos dados extra</p>
+<p>2 - valor da chave</p>
+<h2>Fazer com que o POS o integre</h2>
+<p>Criar o ficheiro (ex, ficheiro.txt) e depois copiar para:</p>
+<p>cp ficheiro.txt /opt/pos/server/data/tmp/<strong>check_import#1#1.txt</strong></p>
+<p>Quando o PT-CERT detectar este ficheiro vai criar uma conta ou fazer uma fatura em função do que foi passado nos cabeçalhos.</p>
+<p>O primeiro “1” que está no nome do ficheiro deve ser alguma coisa única. Serve apenas para conseguirmos ter duas “fontes” que estejam a criar documentos e que um não escreva no ficheiro do outro.</p>
+<p>O segundo “1” significa que queremos que o pedido seja efetuado. Se passarmos um 0, o pedido não é efetuado quando a conta é criada.</p>

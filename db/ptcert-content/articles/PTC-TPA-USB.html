@@ -1,0 +1,7 @@
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-tpa-newnote-usb-01-af5fc8d79721.png@@" width="1600" height="463" alt="Ilustração do procedimento"></figure>
+<h2>Ativar USB com</h2>
+<h2>TPA NewNote</h2>
+<h2>Descrição</h2>
+<p>Em algumas máquinas, quando se liga o TPA da NewNote USB os devices ttyUSB0, ttyUSB1 e ttyUSB2 não aparecem por default. Para aparecerem, basta executar este comando:</p>
+<p>echo &quot;usbserial&quot; &gt;&gt; /etc/modules ; echo &quot;options usbserial vendor=0x1e0e product=0x9031&quot; | sudo tee /etc/modprobe.d/tpa.conf ; reboot</p>
+<p>A máquina fará reboot e os devices já vão aparecer.</p>

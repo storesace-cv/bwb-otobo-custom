@@ -117,6 +117,7 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Subcategorias: Painel, Clientes, **Calendário**, **Tickets**, Ajuda, Relatórios, Operação, Administração.
 - Artigos novos (2026-08-22): **HD-GPS-FOLHA** (*Localização GPS ao terminar a folha de trabalho*, categoria Tickets) e **HD-TICKETS-CALENDARIO** (*Tickets e calendário — agendamentos*, categoria Calendário). Texto orientado ao utilizador (sem jargão de desenvolvimento).
 - Conteúdo versionado: `db/faq-content/*.html`; migração gerada por `scripts/apply-faq-manuals.py` → `db/migrations/2026-08-22-faq-manuais-gps-calendario.sql`.
+- Base PTcert: categoria **Documentação interna → PTcert**, com oito subcategorias funcionais e 39 artigos internos (`PTC-*`). O conteúdo é reconstruído a partir dos DOCX de origem por `scripts/build-ptcert-faq.py`; o resultado em `db/ptcert-content/` inclui HTML editorialmente segmentado, manifesto e imagens optimizadas. `scripts/apply-ptcert-faq.py` gera uma migração SQL transaccional e idempotente para `faq_category`, `faq_category_group`, `faq_item` e `faq_attachment`. As imagens ficam inline no ponto correcto do artigo através de `AgentFAQZoom;Subaction=DownloadAttachment`.
 - Leitura: grupo `bwb_helpdesk_manual_readers` (agentes helpdesk BWB/ZS com acesso à Ajuda).
 
 ## Registo telefónico / e-mail em nome do cliente

@@ -1,0 +1,54 @@
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-atcud-series-01-7bd6a7a07ba5.png@@" width="700" height="203" alt="Ilustração do procedimento"></figure>
+<h2>Guia ATCUD</h2>
+<p>Indice</p>
+<p>1 - Dados necessários para efetuar a comunicação</p>
+<p>2 - Como efetuar a comunicação</p>
+<p>3 - Erros conhecidos e como os contornar</p>
+<p>4 - Configurar utilizador e Consultar códigos na AT</p>
+<p><strong>1</strong> - Este documento serve de guia na comunicação das séries ATCUD.</p>
+<p>Para iniciarmos este processo é necessário existir um utilizador na <strong>AT</strong> com as opções <strong>WSE</strong> e <strong>CGS</strong> ativas.</p>
+<p>(WebService e Comunicação e Gestão de Séries)</p>
+<p><strong>O utilizador ou conta da AT, não deverá ter nenhuma sessão ativa quando estivermos a efetuar esta operação.</strong></p>
+<p>É também possível, efetuar esta comunicação através da conta principal da AT.</p>
+<p>A licença PT-CERT deverá ter o devido upgrade efetuado (exceto nas RENTAL12 que são as anuais, onde existe este upgrades incluídos) e o ficheiro da licença descarregado na máquina/pen de licença.</p>
+<p>A máquina tem de estar também devidamente <strong>atualizada </strong>com a última release do software.</p>
+<p>O cliente necessita também de acesso à internet, caso contrário este processo fica sem efeito sendo necessário a comunicação manual das séries através do portal da AT (pesquisando <strong>“Séries”</strong> no motor de busca e selecionando o resultado <strong>“Comunicação de Séries”</strong>).</p>
+<p><strong>2</strong> - Após todos os passos anteriores estarem confirmados, necessitamos de colocar os dados na máquina.</p>
+<p>Para isso necessitamos de pesquisar no CONFIGURAR MÁQUINA as keywords “<strong>NA AT</strong>” (login na conta de Técnico &gt; Diversos &gt; Plugins &gt; Configurar Máquina):</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-atcud-series-02-bff4db0cfd4a.jpg@@" width="1273" height="957" alt="Ilustração do procedimento"></figure>
+<p>Preenchemos após isso, o <strong>LOGIN NA AT </strong>(contribuinte ou o utilizador que por norma é o NIF/1 ou NIF/2 ex.: 512345678 consoante o número de utilizador criado) e a <strong>PASSWORD NA AT.</strong></p>
+<p>Após esse passo, necessitamos de confirmar o(s) número(s) de série a comunicar.</p>
+<p>Ao carregar na flag:</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-atcud-series-03-73e56b812688.jpg@@" width="1277" height="961" alt="Ilustração do procedimento"></figure>
+<p>Irá aparecer as séries utilizadas atualmente na máquina, juntamente com a série “<strong>D</strong>” (documentos de demonstração) e série “<strong>M</strong>” (documentos manuais).</p>
+<p>Reforçamos que pode ser necessário ambas as séries estarem declaradas (M e D), pois no caso de algum erro de registo, ou algum constrangimento com a máquina, existir a possibilidade de identificar através desses documentos ou de lançar manualmente documentos que após uma reinstalação possam não constar nos registos de vendas.</p>
+<p><strong>SE O CLIENTE TIVER MAIS QUE UM ESTABELECIMENTO COM PT-CERT NÃO ESQUECER DE ALTERAR A SÉRIE DOS DOCUMENTOS EM ALGUMA DAS MÁQUINAS, PESQUISANDO “SÉRIE” NO CONFIGURAR MÁQUINA DE FORMA A NÃO HAVER SOBREPOSIÇÃO DE SAFTs - UTILIZAR A FLAG:</strong></p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-atcud-series-04-485e50f650f6.png@@" width="859" height="35" alt="Ilustração do procedimento"></figure>
+<p>Podemos visualizar então os documentos de série:</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-atcud-series-05-92cec6961094.jpg@@" width="1192" height="727" alt="Ilustração do procedimento"></figure>
+<p>Não necessitamos de efectuar quaisquer alterações à flag anterior, seguimos então para o passo final que será a ativação da flag (passamos de 0 para 1 ou preenchemos com 1):</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-atcud-series-06-39ff538bf0ee.jpg@@" width="1277" height="956" alt="Ilustração do procedimento"></figure>
+<p>Após ativarmos o auto-regista confirmamos no configurar máquina e o software irá reiniciar uma vez, depois <strong>necessitamos de aguardar </strong>enquanto o mesmo comunica as séries. Após terminar a comunicação o PT-CERT irá <strong>reiniciar novamente.</strong></p>
+<p>O PT-CERT irá comunicar as séries terminando assim este processo.</p>
+<p>Se existir algum erro, o PT-CERT irá informar que<strong> EXISTIU ERROS NA DECLARAÇÃO DA SÉRIE “XYZ</strong>” e irá apresentar esses erros.</p>
+<p>No passo seguinte iremos ver como proceder no caso de haver esses erros.</p>
+<p>3 - Os erros conhecidos até à data são os seguintes:</p>
+<p><strong>Não foi possível registar a Série. Erro de Autenticação/Autorização - Pedido de Cliente.</strong></p>
+<p>No caso de apresentar qualquer outro erro (que não esteja aqui explanado), ou este, em todos os documentos de série, é necessário confirmar se o respectivo utilizador tem o <strong>WSE </strong>e <strong>CGS </strong>ativos.</p>
+<p>Se acontecer este erro em alguns documentos, o software ao reiniciar despoleta esse(s) mesmo(s) erro(s) e temos de confirmar a opção que irá aparecer após esses erros (questiona se pretendemos declarar novamente). O PT-CERT irá então limpar o resultado obtido e voltar a comunicar. Por vezes é necessário repetir isto algumas vezes derivado aos timeouts do servidor da AT, algo que de momento é incontornável.</p>
+<p><strong>Não foi possível registar a Série. A Série XYZ indicada para o tipo de documento Fatura Simplificada já foi registada.</strong></p>
+<p>Neste caso a única solução é colocar os códigos de validação manualmente, sendo que esses mesmos foram declarados mas não conseguimos obter o resultado (no passo a seguir iremos ver como os podemos consultar).</p>
+<p>4 - Segue os passos para criação de um utilizador na AT e como consultar os códigos de validação:</p>
+<p><strong>Como criar um utilizador:</strong></p>
+<p>Efetuar login na AT</p>
+<p>Menu</p>
+<p>A minha área</p>
+<p>Posição integrada</p>
+<p>Autenticação de contribuintes - Gestão de utilizadores</p>
+<p>Criar um novo utilizador</p>
+<p>Após essa configuração ativar as opções <strong>WSE </strong>e <strong>CGS</strong></p>
+<p><strong>Como consultar as séries declaradas ATCUD:</strong></p>
+<p>Ir ao pesquisar e procurar “<strong>série</strong>”</p>
+<p>Comunicação de Séries Documentais</p>
+<p>Comunicar as minhas séries (carregar no botão em baixo)</p>
+<p>Depois carregar em “<strong>Consultar Séries</strong>”</p>

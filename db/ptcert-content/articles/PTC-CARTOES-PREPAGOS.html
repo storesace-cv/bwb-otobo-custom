@@ -1,0 +1,17 @@
+<p>Este sistema foi implementado para um evento equestre em que os membros efetuavam um pagamento no inicio do evento, era-lhes dado um cartão, e durante o evento poderiam ir consumindo enquanto tivessem saldo. Depois de terminar o saldo, poderíamos efetuar mais um (ou vários) carregamentos para poderem continuar a consumir.</p>
+<p>O sistema assume os seguintes pressupostos:</p>
+<p>quando um cliente faz um carregamento é impresso um documento do tipo Consumo uma vez que esse documento não tem qualquer valor fiscar (ivas) e permite que o cliente fique com uma prova de que pagou</p>
+<p>durante o evento ou no final, os cartões serão fechados e nesse momento é que os documentos são integrados para efeitos de SAF-T</p>
+<p>O relatório X permite ver a realidade atual (valor faturado mais o valor que está em aberto nos cartões). O sistema respeita o facto de podermos escolher data diferentes e vermos os valores reais dessas datas uma vez que os produtos que estão dentro dos cartões passaram a ter a data para se conseguir fazer isto</p>
+<p>O relatório Z dá o que foi faturado (não incluindo o que ainda está em aberto nos cartões)</p>
+<p>Para se implementar tudo isto, foram usadas as seguintes flags:</p>
+<p>prepago) Desconta produtos registados, nos produtos em automático (1)</p>
+<p>prepago) Valor default para cartões pre pagos (nulo)</p>
+<p>prepago) Não permite abrir cartões que ainda não estejam carregados (nulo)</p>
+<p>consumos) Afetam vendas (0)</p>
+<p>geral) Operações diversas no ecran de registo (24_Adicionar valor a produto automático)</p>
+<p>Criou-se um produto a pedir preço chamado &quot;Carregamento&quot;. Colocou-se o id desse produto como produto em automático na aréa de cartões.</p>
+<p>A área de cartões foi criada com 1000 mesas uma vez que foram impressos 1000 cartões.</p>
+<p>Quando um cartão é aberto, o sistema pede o valor para Carregamento (produto em automático).</p>
+<p>Quando se abrir esse cartão novamente e se inserirem produtos, o valor dos produtos vai ser descontado no valor do produto Carregamento até esse produto ainda tiver valor para consumir.</p>
+<p>Depois disso, aparecerá uma mensagem de erro e o cliente terá de efetuar novo carregamento (usando as operações diversas do ecrã de registo).</p>

@@ -1,0 +1,19 @@
+<p><a href="https://www.traveltaxfree.com/">https://www.traveltaxfree.com/</a></p>
+<p>Ir ao configurar máquina e definir as opções &quot;taxfree) Classe de Produtos da AT&quot; e &quot;impressaoexterna) Usar impressoras externas&quot;</p>
+<p>No Configurar máquina deve procurar por diversas e adicionar na opção Geral)Operações Diversas no ecran de registo e adicionar a tag 18_TaxFree</p>
+<p>Reboot do pos</p>
+<p>Abrir um terminal e executa</p>
+<p>wget <a href="http://software.ptcert.com/downloads/taxfree_printer_install.sh">http://software.ptcert.com/downloads/taxfree_printer_install.sh</a></p>
+<p>bash taxfree_printer_install.sh</p>
+<p>Rr a Diversos / Plugins / Impressoras externas</p>
+<p>Adicionar uma impressora e escolher a impressora TM88 USB que estiver ligada na máquina</p>
+<p>No Driver escolher &quot;ficheiro PPD&quot; e selecionar o ficheiro tm-ba-thermal-rastertotmt.ppd que está em /root</p>
+<p>Ir a Diversos / Plugins / Email (para abrir um browser de internet) e aceder ao site TAXFREE do cliente. Depois adicionar aos favoritos</p>
+<p>Sempre que o cliente emitir no site um talão taxfree terá de o gravar em formato ticket e a pasta onde gravar deverá ser /home/pos/Download (que é a default que aparece)</p>
+<h2>Usar o Tax-Free</h2>
+<p>Deverá efetuar um registo normal e depois carregar no sitio indicado na imagem:</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-tax-free-01-de94ee47e5b0.png@@" width="718" height="529" alt="Ilustração do procedimento"></figure>
+<p>Após isso irá abrir um quadro onde deverão ser preenchidos todos os campos:</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-tax-free-02-6d4ab4c2b126.jpg@@" width="800" height="600" alt="Ilustração do procedimento"></figure>
+<p>Por fim fazer o pagamento normalmente (Dinheiro ou cartão):</p>
+<figure class="image"><img src="@@PTCERT_IMAGE:PTCERT-tax-free-03-73b6871c4950.jpg@@" width="800" height="600" alt="Ilustração do procedimento"></figure>

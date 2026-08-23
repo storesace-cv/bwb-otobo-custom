@@ -1,0 +1,17 @@
+<h2>Para instalar</h2>
+<p>Obter o script de envio:</p>
+<p>cd /root</p>
+<p>wget -O externaldocs_by_email <a href="http://software.ptcert.com/downloads/externaldocs_by_email">http://software.ptcert.com/downloads/externaldocs_by_email</a></p>
+<p>chmod 755 externaldocs_by_email</p>
+<p>Inserir as seguintes linhas no cron:</p>
+<p>00 08 * * * /root/externaldocs_by_email</p>
+<p>00 13 * * * /root/externaldocs_by_email</p>
+<p>00 18 * * * /root/externaldocs_by_email</p>
+<p>Executar:</p>
+<p>/root/externaldocs_by_email</p>
+<h2>Configurações necessárias</h2>
+<p>Criar os documentos externos necessários:</p>
+<p>EXTERNAL_DOC=888,CONSUMO INTERNO</p>
+<p>EXTERNAL_DOC=777,SERVICO CONTRATADO</p>
+<p>Definir quem vai receber os emails com o parâmetro:</p>
+<p>INTERNET_SEND_DAILY_Z=mmanso@gmail.com</p>
