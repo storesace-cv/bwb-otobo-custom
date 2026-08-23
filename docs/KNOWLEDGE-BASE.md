@@ -34,6 +34,7 @@ Depois disso, identificar no código os módulos Perl, templates TT, JavaScript 
 | Comportamento genérico OTOBO (tickets, filas, notificações, ACL, console, Custom/) | Manuais oficiais 11.0 em [REFERENCES.md](REFERENCES.md) |
 | Separação BWB ↔ ZS Angola, lojas, folhas de trabalho, convites, IMAP ZS | Este repositório (`docs/` + `otobo/Custom/`) |
 | Utilização no terreno / responsável ZS Angola | [MANUAL-ZS-ANGOLA.md](MANUAL-ZS-ANGOLA.md) |
+| Manuais internos Ajuda (FAQ agente) | `db/faq-content/` + migração `2026-08-22-faq-manuais-gps-calendario.sql` — ver [FEATURES.md](FEATURES.md) § Ajuda |
 | Esquema de tabelas BWB | `db/current-schema.sql` e `db/migrations/` |
 | Credenciais, Nginx, Postfix, MariaDB, Config.pm integral | Servidor de produção apenas — **fora do Git** |
 | Versão em produção | OTOBO **11.0.17** em `/opt/otobo` (`RELEASE`) |

@@ -1,0 +1,91 @@
+<h2>O que vê na interface</h2>
+<table>
+<thead><tr><th>O que vê</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td><strong>Pendente com Agendamento</strong></td><td>O ticket aguarda uma acção numa data futura.</td></tr>
+<tr><td><strong>Agendar no calendário</strong></td><td>Botão na folha de trabalho para criar a marcação.</td></tr>
+<tr><td><strong>Marcação registada</strong></td><td>Já existe marcação futura ligada a este ticket.</td></tr>
+<tr><td><strong>Agendamentos pendentes</strong></td><td>Lista no painel com o que tem agendado.</td></tr>
+<tr><td><strong>[CANCELADO]</strong> no calendário</td><td>A marcação foi anulada (por exemplo, ticket fechado antes da data).</td></tr>
+</tbody>
+</table>
+<p>A <strong>data oficial</strong> é sempre a <strong>marcação no calendário</strong> com o ticket associado — não basta escrever a data numa nota.</p>
+<h2>Três formas de agendar</h2>
+<h3>1. Pela folha de trabalho (ideal no terreno)</h3>
+<p>Quando <strong>termina</strong> uma intervenção mas o ticket <strong>fica para outra altura</strong>:</p>
+<ol>
+<li>Abra a <strong>folha de trabalho</strong> do ticket.</li>
+<li>Em <strong>Resultado</strong>, escolha <strong>«A aguardar intervenção presencial»</strong> ou <strong>«Outro»</strong> e depois <strong>«Pendente com Agendamento»</strong>.</li>
+<li>Carregue em <strong>Agendar no calendário</strong> — abre o ecrã habitual de marcação, <strong>com o ticket já associado</strong>.</li>
+<li>Indique data, hora, título e o calendário (<strong>BWB</strong> ou <strong>ZS Angola</strong>) e <strong>grave</strong>.</li>
+<li>Confirme <strong>«Marcação registada»</strong> (com data e hora).</li>
+<li>Só então carregue <strong>Terminar trabalho</strong>.</li>
+</ol>
+<p><strong>Sem marcação futura, não consegue fechar a folha</strong> nestes resultados.</p>
+<h3>2. Pelo calendário</h3>
+<ol>
+<li>Menu <strong>Calendário</strong>.</li>
+<li><strong>Nova marcação</strong> (ou clique na hora desejada).</li>
+<li>Associe o <strong>ticket</strong> (número ou pesquisa).</li>
+<li>Preencha data, hora e grave.</li>
+</ol>
+<p>Se o ticket <strong>ainda não estiver fechado</strong>, passa automaticamente a <strong>Pendente com Agendamento</strong>, com a data de retoma igual ao início da marcação.</p>
+<h3>3. Pelo ticket</h3>
+<ol>
+<li>Abra o ticket.</li>
+<li>Use <strong>«Novo compromisso»</strong> (ou opção equivalente no menu do ticket).</li>
+<li>Crie a marcação como acima.</li>
+</ol>
+<h2>O que o sistema faz por si</h2>
+<table>
+<thead><tr><th>Fez isto…</th><th>…acontece isto</th></tr></thead>
+<tbody>
+<tr><td>Criou marcação <strong>futura</strong> com o ticket</td><td>Ticket → <strong>Pendente com Agendamento</strong>; data de retoma = início da marcação</td></tr>
+<tr><td><strong>Alterou</strong> a hora da marcação</td><td>A data de retoma do ticket <strong>actualiza</strong></td></tr>
+<tr><td><strong>Apagou</strong> a marcação</td><td>O ticket <strong>mantém o estado</strong>; deixa de aparecer na lista de agendamentos</td></tr>
+<tr><td><strong>Fechou</strong> o ticket antes da data</td><td>Marcações futuras ficam <strong>[CANCELADO]</strong> no calendário, com motivo na descrição; saem da lista de pendentes</td></tr>
+</tbody>
+</table>
+<p>Marcações canceladas <strong>continuam visíveis no calendário</strong> (histórico), mas <strong>já não contam</strong> como trabalho por fazer.</p>
+<h2>Onde consultar os seus agendamentos</h2>
+<p>No <strong>Painel de controlo</strong>, widget <strong>«Agendamentos pendentes»</strong>: data e hora, ticket, cliente, loja e título da marcação. Carregue numa linha para abrir o ticket. Vê apenas tickets a que tem acesso (a sua equipa ou fila).</p>
+<h2>Qual calendário usar</h2>
+<ul>
+<li>Tickets <strong>BWB</strong> → calendário <strong>BWB</strong>.</li>
+<li>Tickets <strong>ZS Angola</strong> → calendário <strong>ZS Angola</strong>.</li>
+</ul>
+<p>Se não vir o calendário certo, peça ajuda à administração (permissões).</p>
+<h2>Exemplo — visita presencial</h2>
+<ol>
+<li>Intervenção no cliente; abre <strong>folha de trabalho</strong>.</li>
+<li>Resultado: <strong>«A aguardar intervenção presencial»</strong>.</li>
+<li><strong>Agendar no calendário</strong> → próxima visita (ex.: terça, 09:00).</li>
+<li><strong>Terminar trabalho</strong>.</li>
+<li>No dia marcado, abre o ticket pelo <strong>painel</strong> ou pelo <strong>calendário</strong> e continua.</li>
+</ol>
+<h2>Exemplo — combinou data por telefone</h2>
+<ol>
+<li>Acordo com o cliente registado no ticket (e-mail ou nota).</li>
+<li>Cria <strong>marcação no calendário</strong> ligada ao ticket.</li>
+<li>Ticket fica <strong>Pendente com Agendamento</strong> sem precisar de folha.</li>
+<li>No dia, trata o ticket normalmente.</li>
+</ol>
+<h2>Erros comuns</h2>
+<table>
+<thead><tr><th>Situação</th><th>O que fazer</th></tr></thead>
+<tbody>
+<tr><td>«Ainda sem marcação futura» na folha</td><td>Carregue <strong>Agendar no calendário</strong>, grave, e só depois <strong>Terminar trabalho</strong>.</td></tr>
+<tr><td>Quis mudar o estado à mão e o sistema não deixou</td><td><strong>Crie a marcação primeiro</strong> (folha, calendário ou Novo compromisso).</td></tr>
+<tr><td>Só escreveu a data nas notas</td><td><strong>Insuficiente</strong> — crie marcação no calendário com o ticket ligado.</td></tr>
+<tr><td>Apagou a marcação e o ticket ficou «pendente»</td><td><strong>Altere o estado</strong> do ticket se já não fizer sentido.</td></tr>
+<tr><td>Fechou o ticket e a marcação ficou [CANCELADO]</td><td><strong>Normal</strong> — não precisa de apagar nada manualmente.</td></tr>
+</tbody>
+</table>
+<h2>O cliente vê isto?</h2>
+<p>A marcação interna do calendário <strong>não</strong> aparece automaticamente no portal do cliente. Para informar o cliente, use <strong>e-mail</strong> ou <strong>nota visível no portal</strong>, como habitualmente.</p>
+<h2>Perguntas frequentes</h2>
+<p><strong>Preciso sempre de folha de trabalho para agendar?</strong><br>Não. Pode agendar só pelo calendário ou pelo ticket. A folha <strong>obriga</strong> marcação apenas nos resultados «intervenção presencial» / «Pendente com Agendamento».</p>
+<p><strong>Mudei a hora no calendário. Preciso de alterar o ticket?</strong><br>Não. A data de retoma <strong>acompanha</strong> a marcação.</p>
+<p><strong>O responsável vê agendamentos da equipa?</strong><br>Sim, no painel, dentro dos tickets a que tem acesso (como nas folhas abertas).</p>
+<h2>Resumo</h2>
+<p>Marque no <strong>calendário</strong> com o <strong>ticket associado</strong>. O ticket fica <strong>Pendente com Agendamento</strong>, aparece em <strong>Agendamentos pendentes</strong>, e se <strong>fechar o ticket</strong> antes da data a marcação fica <strong>cancelada</strong> no calendário com o motivo registado.</p>

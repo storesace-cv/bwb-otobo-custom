@@ -74,6 +74,16 @@ ssh bwb-otobo-prod 'mysqldump otobo bwb_store bwb_work_session > /root/otobo-bac
 ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-22-store-work-location.sql
 ```
 
+Manuais Ajuda (GPS na folha + tickets/calendário) — conteúdo em `db/faq-content/`; SQL gerado por `python3 scripts/apply-faq-manuals.py`:
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo faq_item > /root/otobo-backups/faq-item-before-manuais-gps-calendario.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-22-faq-manuais-gps-calendario.sql
+ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
+```
+
+Reversão: `DELETE FROM faq_item WHERE f_number IN ('HD-GPS-FOLHA','HD-TICKETS-CALENDARIO');` (comentário no topo da migração).
+
 Devolução DSN criada como ticket novo (ex. `2026081762000058` / id 437, 2026-08-17): fundir para o ticket original (`2026081762000049` / id 436) depois de tornar o artigo da DSN não visível ao cliente, e disparar `BWBBounceNotify` para o proprietário **e** o agente responsável. Não reabrir o ticket encerrado.
 
 Exemplo (branding Helpdesk nas notificações, 2026-08-16):

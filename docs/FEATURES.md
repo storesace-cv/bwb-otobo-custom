@@ -111,6 +111,14 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
   - «Fechar ocorrência» só se o estado for `Pendente a aguardar cliente` (rótulo PT: «A aguardar resposta do cliente»), preferencialmente no artigo «Folha de trabalho»; acção `CustomerBWBTicketClose` (ChallengeToken + `TicketCustomerPermission`, estado → `encerrado com êxito`, artigo cliente de confirmação).
   - Templates Custom: `CustomerTicketZoom.tt` (atributos `data-bwb-*`); CSS `BWBCustomerTicketZoom.css`.
 
+## Ajuda (manuais internos FAQ)
+
+- Menu **Ajuda** (FAQ OTOBO, rótulo via `ZZZBWBAjuda.pm`): manuais de utilização em português, estado **internal (agent)**, categoria **Documentação interna → Helpdesk**.
+- Subcategorias: Painel, Clientes, **Calendário**, **Tickets**, Ajuda, Relatórios, Operação, Administração.
+- Artigos novos (2026-08-22): **HD-GPS-FOLHA** (*Localização GPS ao terminar a folha de trabalho*, categoria Tickets) e **HD-TICKETS-CALENDARIO** (*Tickets e calendário — agendamentos*, categoria Calendário). Texto orientado ao utilizador (sem jargão de desenvolvimento).
+- Conteúdo versionado: `db/faq-content/*.html`; migração gerada por `scripts/apply-faq-manuals.py` → `db/migrations/2026-08-22-faq-manuais-gps-calendario.sql`.
+- Leitura: grupo `bwb_helpdesk_manual_readers` (agentes helpdesk BWB/ZS com acesso à Ajuda).
+
 ## Registo telefónico / e-mail em nome do cliente
 
 - **Novo Registo Telefónico** (`AgentTicketPhone`) e **Novo Registo por E-mail** (`AgentTicketEmail`) usam o mesmo contrato do Field: **Cliente → Utilizador de cliente → pedido**, com artigo inicial `SenderType=customer` em nome do utilizador escolhido. O operador fica em `create_by` (auditoria); o ticket pertence ao cliente.

@@ -1,0 +1,46 @@
+<h2>Para que serve</h2>
+<p>Ao <strong>terminar uma folha de trabalho</strong>, o helpdesk regista <strong>onde estava</strong> nesse momento. Isto ajuda a confirmar intervenções no terreno (loja, cliente, etc.).</p>
+<p>A localização <strong>nunca impede</strong> fechar a folha: se o GPS falhar, o sistema usa alternativas ou fecha na mesma, com uma nota interna.</p>
+<h2>Quando é pedida</h2>
+<p>Só ao carregar em <strong>Terminar trabalho</strong>, depois de preencher resultado, visibilidade no portal, envio de e-mail (se aplicável) e outros campos do resultado (por exemplo agendamento).</p>
+<p><strong>Não</strong> é pedida ao iniciar, pausar ou guardar rascunho.</p>
+<h2>O que acontece ao carregar «Terminar trabalho»</h2>
+<ol>
+<li>O botão mostra <strong>«A obter localização…»</strong> e fica temporariamente inactivo.</li>
+<li>O <strong>navegador</strong> pode pedir permissão — convém escolher <strong>Permitir</strong>.</li>
+<li>O sistema tenta obter o GPS (até cerca de 15 segundos).</li>
+<li>De seguida a folha <strong>fecha normalmente</strong>, com ou sem GPS.</li>
+</ol>
+<h2>Três cenários possíveis</h2>
+<table>
+<thead><tr><th>Situação</th><th>O que fica registado</th><th>O que vê depois no ticket</th></tr></thead>
+<tbody>
+<tr><td><strong>GPS OK</strong></td><td>Coordenadas do telemóvel ou computador, com precisão aproximada</td><td>Mapa com a posição real no fecho</td></tr>
+<tr><td><strong>GPS indisponível</strong>, mas a loja do ticket tem coordenadas</td><td>Coordenadas <strong>da loja</strong> (alternativa automática)</td><td>Mapa na loja e nota interna a indicar que o GPS falhou</td></tr>
+<tr><td><strong>GPS indisponível</strong> e loja sem coordenadas</td><td>Sem mapa; nota interna no registo</td><td>Folha fechada; <strong>sem</strong> secção de mapa</td></tr>
+</tbody>
+</table>
+<h2>Onde ver o mapa</h2>
+<ul>
+<li>Só na interface de <strong>agente</strong>, no detalhe do ticket, <strong>abaixo da folha de trabalho</strong> fechada.</li>
+<li>Aparece a secção <strong>«Mapa da localização»</strong> (Google Maps, vista satélite), com coordenadas e ligação <strong>«Abrir no Google Maps»</strong>.</li>
+<li>O <strong>cliente não vê o mapa</strong> no portal nem no e-mail da folha — é informação interna do helpdesk.</li>
+</ul>
+<h2>Boas práticas no terreno</h2>
+<ol>
+<li>Permitir localização no browser (Chrome, Safari, etc.) para o site do helpdesk.</li>
+<li>No telemóvel, activar GPS/localização do sistema operativo.</li>
+<li>Terminar a folha <strong>no local da intervenção</strong>, não horas depois noutro sítio.</li>
+<li>Confirmar que o ticket tem a <strong>loja correcta</strong> (menu «Alterar loja» no ticket) — serve de alternativa se o GPS falhar.</li>
+<li>Se a loja não tiver coordenadas, peça à administração para as registar (útil em armazéns ou caves onde o GPS falha).</li>
+</ol>
+<h2>Field Mode (técnico no telemóvel)</h2>
+<p>O comportamento é o <strong>mesmo</strong>: ao tocar <strong>Terminar trabalho</strong>, o telemóvel pede localização. Use Safari ou Chrome com permissões activas; em iPhone/iPad confirme que o site do helpdesk pode usar «Localização».</p>
+<h2>Perguntas frequentes</h2>
+<p><strong>Tenho de aceitar o GPS para fechar a folha?</strong><br>Não. Recusar ou falhar o GPS <strong>não impede</strong> terminar o trabalho.</p>
+<p><strong>Demora muito?</strong><br>Normalmente poucos segundos; no máximo cerca de 15 segundos de espera.</p>
+<p><strong>Porque aparece a loja e não o sítio onde estou?</strong><br>O GPS falhou ou foi recusado; o sistema usou as coordenadas da loja associada ao ticket.</p>
+<p><strong>Porque não vejo mapa nenhum?</strong><br>Não houve GPS <strong>e</strong> a loja não tem coordenadas registadas.</p>
+<p><strong>O mapa não carrega?</strong><br>Reporte à administração; as coordenadas podem ainda aparecer em texto.</p>
+<h2>Resumo</h2>
+<p>Ao <strong>terminar</strong> a folha, o helpdesk regista a sua posição (GPS ou, em alternativa, a loja do ticket) e mostra um <strong>mapa só aos agentes</strong> no ticket — <strong>nunca</strong> impede concluir o trabalho.</p>
