@@ -86,23 +86,30 @@ Reversão: `DELETE FROM faq_item WHERE f_number IN ('HD-GPS-FOLHA','HD-TICKETS-C
 
 ### Base de conhecimento PTcert
 
-Gerar novamente os 39 artigos e as imagens a partir dos documentos Word, validar e produzir o SQL fora do Git:
+**Operacional** (39 artigos + anexos) — gerar a partir dos DOCX, SQL fora do Git:
 
 ```sh
 python3 scripts/build-ptcert-faq.py '/caminho/para/documentacao'
 python3 scripts/apply-ptcert-faq.py --write /tmp/ptcert-faq.sql
 scripts/check.sh
-```
-
-Antes de aplicar, rever `db/ptcert-content/manifest.json`, confirmar que todos os artigos são internos (`state_id=2`) e criar uma cópia de segurança conjunta das quatro tabelas afectadas:
-
-```sh
 ssh bwb-otobo-prod 'mysqldump otobo faq_category faq_category_group faq_item faq_attachment > /root/otobo-backups/faq-before-ptcert.sql'
 ssh bwb-otobo-prod 'mysql --binary-mode=1 otobo' < /tmp/ptcert-faq.sql
-ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
+ssh bwb-otobo-prod 'su -c "/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
 ```
 
-A migração cria ou actualiza por `f_number`, recria apenas anexos com prefixo `PTCERT-` do artigo correspondente e preserva os restantes artigos/anexos. Reversão: repor o dump; em alternativa, remover artigos `PTC-%`, os anexos associados e a árvore `Documentação interna::PTcert` numa transacção revista.
+**Técnico** (9 artigos `PTC-TEC-*` / `PTC-WSL2-*`) — repo **`bwb-otobo-custom-ptcert`**, migração idempotente que **não** toca nos 39 operacionais nem na categoria antiga id **12**:
+
+```sh
+# no repo bwb-otobo-custom-ptcert
+python3 scripts/apply-ptcert-technical-kb.py --write /tmp/ptcert-technical-kb.sql
+ssh bwb-otobo-prod 'mysqldump otobo faq_category faq_category_group faq_item faq_attachment > /root/otobo-backups/faq-before-ptcert-technical-$(date -u +%Y%m%dT%H%M%SZ).sql'
+ssh bwb-otobo-prod 'mysql --binary-mode=1 otobo' < /tmp/ptcert-technical-kb.sql
+ssh bwb-otobo-prod 'su -c "/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
+```
+
+Backup de referência (importação técnica 2026-08-24): `/root/otobo-backups/faq-before-ptcert-technical-20260824T215039Z.sql` (SHA-256 `598c60fbdac7a29336ced5bf3b1dd7a3a4d9f8b407d7eb5ac1b477152281850f`).
+
+Antes de qualquer escrita: inspeccionar a BD viva (categorias por pai/nome, artigos por `f_number`); confirmar `state_id=2`, aprovação, validade e grupos; validar ausência de duplicados. Árvore activa: **Documentação interna → PTcert** (id **29**), subcategorias **38** / **39**. Reversão operacional: repor dump; não apagar nem consolidar id **12** sem análise explícita.
 
 Devolução DSN criada como ticket novo (ex. `2026081762000058` / id 437, 2026-08-17): fundir para o ticket original (`2026081762000049` / id 436) depois de tornar o artigo da DSN não visível ao cliente, e disparar `BWBBounceNotify` para o proprietário **e** o agente responsável. Não reabrir o ticket encerrado.
 
