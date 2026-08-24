@@ -1,0 +1,39 @@
+.BWBAssist textarea#BWBAssistQuery {
+    width: 100%;
+    min-height: 6rem;
+    box-sizing: border-box;
+}
+
+.BWBAssistSummary {
+    white-space: pre-wrap;
+    font-family: inherit;
+    margin: 0;
+    line-height: 1.45;
+}
+
+.BWBAssistList li {
+    margin-bottom: 0.75rem;
+}
+
+.BWBAssistMeta {
+    display: block;
+    opacity: 0.75;
+    font-size: 0.9em;
+}
+
+.BWBAssistExcerpt {
+    margin: 0.25rem 0 0;
+    opacity: 0.9;
+}
+
+.BWBAssistWarning {
+    color: #8a4b08;
+}
+
+.BWBAssistSuggestWidget {
+    margin-bottom: 1rem;
+}
+
+.BWBAssistSuggestResult {
+    margin-top: 0.75rem;
+}

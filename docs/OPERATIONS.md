@@ -49,6 +49,56 @@ ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-19-mod-apple-01-answer-
 3. Apache (vhost HTTPS): passar `Authorization` ao PSGI — `RewriteCond %{HTTP:Authorization} .` + `RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]` (já aplicado em produção a 2026-08-21).
 4. No MCP, `/var/www/mail-mcp/.env`: `HELPDESK_CONTEXT_URL` + `HELPDESK_CONTEXT_TOKEN` (mesmo Bearer); redeploy `deploy/install.sh`.
 
+### Assistente Ajuda / BWB Assist (`178.159.34.165`)
+
+Inventário (2026-08-24): VPS `165` com **3,8 GiB RAM** — **não** instalar Ollama 7B até upgrade (≥8 GiB livres). Modo actual: BM25 + síntese extractiva.
+
+1. No host `bwb-claude-mail-mcp`, publicar o serviço:
+
+```sh
+rsync -a --delete \
+  --exclude .venv --exclude .env --exclude __pycache__ --exclude .git \
+  services/bwb-assist/ bwb-claude-mail-mcp:/tmp/bwb-assist-src/
+ssh bwb-claude-mail-mcp 'bash /tmp/bwb-assist-src/deploy/install.sh'
+```
+
+2. Guardar o Bearer gerado. Em OTOBO (`132`):
+
+```sh
+ssh bwb-otobo-prod 'install -m 640 -o otobo -g www-data /dev/null /opt/otobo/var/bwb-assist.token'
+# escrever o mesmo Bearer; URL do Assist:
+echo 'http://178.159.34.165:18101' | ssh bwb-otobo-prod 'tee /opt/otobo/var/bwb-assist.url >/dev/null && chown otobo:www-data /opt/otobo/var/bwb-assist.url && chmod 640 /opt/otobo/var/bwb-assist.url'
+```
+
+3. Índice RO (OTOBO → consumido por `165`):
+
+```sh
+ssh bwb-otobo-prod 'openssl rand -hex 32 | tee /opt/otobo/var/bwb-assist-index.token >/dev/null
+echo 178.159.34.165 > /opt/otobo/var/bwb-assist-index.allowed-ips
+chown otobo:www-data /opt/otobo/var/bwb-assist-index.token /opt/otobo/var/bwb-assist-index.allowed-ips
+chmod 640 /opt/otobo/var/bwb-assist-index.token /opt/otobo/var/bwb-assist-index.allowed-ips'
+```
+
+Em `165` `/var/www/bwb-assist/.env`: `OTOBO_ASSIST_INDEX_URL` + `OTOBO_ASSIST_INDEX_TOKEN` (mesmo Bearer do índice).
+
+4. Após deploy OTOBO + Rebuild: sync FAQ (e opcionalmente tickets):
+
+```sh
+ssh bwb-claude-mail-mcp 'TOKEN=$(grep ^BWB_ASSIST_BEARER= /var/www/bwb-assist/.env | cut -d= -f2-)
+curl -sS -X POST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"kinds\":[\"faq\",\"ticket\"]}" \
+  http://127.0.0.1:18100/v1/index/sync-from-otobo'
+```
+
+Reindex periódico (opcional, cron em `165`):
+
+```sh
+# /etc/cron.d/bwb-assist-reindex — diário 05:15 UTC
+15 5 * * * root TOKEN=$(grep ^BWB_ASSIST_BEARER= /var/www/bwb-assist/.env | cut -d= -f2-); curl -sS -X POST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"kinds":["faq","ticket"]}' http://127.0.0.1:18100/v1/index/sync-from-otobo >/dev/null
+```
+
+5. Teste: Agent → Ajuda → Assistente; health `curl http://127.0.0.1:18100/health` em `165`.
+
 ### Google Maps Embed (mapa da folha)
 
 1. Chave local em `.env` (`Maps_Embed_API=…`) — nunca no Git.

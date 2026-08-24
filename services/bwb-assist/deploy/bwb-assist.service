@@ -1,0 +1,19 @@
+[Unit]
+Description=BWB Assist API (FAQ/RAG synthesis)
+After=network.target
+
+[Service]
+Type=simple
+User=bwbassist
+Group=bwbassist
+WorkingDirectory=/var/www/bwb-assist
+EnvironmentFile=-/var/www/bwb-assist/.env
+ExecStart=/var/www/bwb-assist/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 18100
+Restart=on-failure
+RestartSec=3
+MemoryMax=512M
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

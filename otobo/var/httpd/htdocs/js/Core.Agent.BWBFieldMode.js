@@ -17,7 +17,8 @@ Core.Agent.BWBFieldMode = (function (TargetNS) {
         { Action: 'AgentBWBFieldHome', Label: 'Painel de Controlo', Id: 'nav-BWBField-Painel' },
         { Action: 'AgentAppointmentCalendarOverview', Label: 'Calendário', Id: 'nav-BWBField-Calendario' },
         { Action: 'AgentTicketSearch', Label: 'Procurar', Id: 'nav-BWBField-Procurar' },
-        { Action: 'AgentFAQExplorer', Label: 'Ajuda', Id: 'nav-BWBField-Ajuda' }
+        { Action: 'AgentFAQExplorer', Label: 'Ajuda', Id: 'nav-BWBField-Ajuda' },
+        { Action: 'AgentBWBAssist', Label: 'Assistente', Id: 'nav-BWBField-Assistente' }
     ];
 
     function IsFieldDevice() {

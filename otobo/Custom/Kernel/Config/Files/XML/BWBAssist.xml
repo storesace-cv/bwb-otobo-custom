@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otobo_config version="2.0" init="Application">
+    <Setting Name="BWBAssist::Enabled" Required="0" Valid="1">
+        <Description Translatable="1">Activa o Assistente de Ajuda (pesquisa FAQ + síntese no host IA).</Description>
+        <Navigation>BWB::Assist</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">1</Item>
+        </Value>
+    </Setting>
+    <Setting Name="BWBAssist::URL" Required="0" Valid="1">
+        <Description Translatable="1">URL base do serviço BWB Assist (ex. http://178.159.34.165:18101). Preferir ficheiro /opt/otobo/var/bwb-assist.url se vazio.</Description>
+        <Navigation>BWB::Assist</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex=""></Item>
+        </Value>
+    </Setting>
+    <Setting Name="BWBAssist::Timeout" Required="0" Valid="1">
+        <Description Translatable="1">Timeout HTTP (segundos) para o serviço Assist.</Description>
+        <Navigation>BWB::Assist</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^\d+$">45</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentBWBAssist" Required="0" Valid="1">
+        <Description Translatable="1">Assistente de pesquisa na base de conhecimento interna.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group"><Array><Item>users</Item></Array></Item>
+                    <Item Key="GroupRo"><Array></Array></Item>
+                    <Item Key="Description" Translatable="1">Assistente de Ajuda</Item>
+                    <Item Key="Title" Translatable="1">Assistente de Ajuda</Item>
+                    <Item Key="NavBarName">FAQ</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentBWBAssist###002-FAQ" Required="0" Valid="1">
+        <Description Translatable="1">Entrada Assistente no menu Ajuda.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation"><Hash></Hash></DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group"><Array><Item>users</Item></Array></Item>
+                        <Item Key="GroupRo"><Array></Array></Item>
+                        <Item Key="Description" Translatable="1">Pesquisa assistida na base de conhecimento</Item>
+                        <Item Key="Name" Translatable="1">Assistente</Item>
+                        <Item Key="Link">Action=AgentBWBAssist</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">FAQ</Item>
+                        <Item Key="Type"></Item>
+                        <Item Key="Block">ItemArea</Item>
+                        <Item Key="AccessKey"></Item>
+                        <Item Key="Prio">210</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="PublicFrontend::Module###PublicBWBAssistIndex" Required="0" Valid="1">
+        <Description Translatable="1">API JSON read-only de índice FAQ/tickets para o serviço BWB Assist.</Description>
+        <Navigation>Frontend::Public::ModuleRegistration</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Modules::PublicBWBAssistIndex</Item>
+                <Item Key="Description">Índice Assist (FAQ/tickets)</Item>
+                <Item Key="Title">BWB Assist Index</Item>
+                <Item Key="NavBarName"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Agent::CommonJS###965-BWBAssist" Required="0" Valid="1">
+        <Description Translatable="1">Sugestões de documentação no AgentTicketZoom.</Description>
+        <Navigation>Frontend::Base::Loader</Navigation>
+        <Value>
+            <Array>
+                <Item>Core.Agent.BWBAssist.js</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Agent::CommonCSS###965-BWBAssist" Required="0" Valid="1">
+        <Description Translatable="1">Estilos do Assistente de Ajuda.</Description>
+        <Navigation>Frontend::Base::Loader</Navigation>
+        <Value>
+            <Array>
+                <Item>BWBAssist.css</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###BWBAssistTicketSuggest" Required="0" Valid="1">
+        <Description Translatable="1">Injeta o painel Documentação sugerida no AgentTicketZoom.</Description>
+        <Navigation>Frontend::Base::OutputFilter</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::FilterElementPost::BWBAssistTicketSuggest</Item>
+                <Item Key="Templates">
+                    <Hash>
+                        <Item Key="AgentTicketZoom">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+</otobo_config>

@@ -82,4 +82,10 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | E-mail | `Ticket/Event/NotificationEvent/Transport/Email.pm`, templates NotificationEvent |
 | Modelo de resposta `mod-apple-01` | HTML `Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html` + `standard_template` / `queue_standard_template`; filtro Compose `FilterElementPost/BWBComposeAppleTemplate.pm` + JS `Core.Agent.BWBComposeApple.js` (não duplicar a saudação da fila) |
 | Contexto email → Claude MCP | `BWBEmailContext.pm`, wrapper `Email.pm`, `PublicBWBTicketContext.pm`, XML `BWBTicketContext.xml` |
+| Assistente Ajuda / RAG | `BWBAssist.pm`, `AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, filtro `BWBAssistTicketSuggest.pm`; serviço `services/bwb-assist` no VPS `178.159.34.165` |
 | Dashboard | `Output/HTML/Dashboard/BWBOpenWork.pm`, configurações `ZZZBWBDashboard*.pm` |
+
+### Assistente IA (132 ↔ 165)
+
+- **OTOBO `178.159.34.132`:** UI agente, `FAQSearch`, gate `BWBAccess`, API índice RO.
+- **IA `178.159.34.165`:** `bwb-assist` (BM25 + síntese; Ollama opcional quando houver RAM). Rede: OTOBO → `165:18101` (nginx allowlist) → `127.0.0.1:18100`.

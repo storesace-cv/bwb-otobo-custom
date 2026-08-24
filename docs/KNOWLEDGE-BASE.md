@@ -35,6 +35,7 @@ Depois disso, identificar no código os módulos Perl, templates TT, JavaScript 
 | Separação BWB ↔ ZS Angola, lojas, folhas de trabalho, convites, IMAP ZS | Este repositório (`docs/` + `otobo/Custom/`) |
 | Utilização no terreno / responsável ZS Angola | [MANUAL-ZS-ANGOLA.md](MANUAL-ZS-ANGOLA.md) |
 | Manuais internos Ajuda (FAQ agente) | Helpdesk: `db/faq-content/`; PTcert operacional: `db/ptcert-content/` + `scripts/apply-ptcert-faq.py`; PTcert técnico: repo **`bwb-otobo-custom-ptcert`** + `scripts/apply-ptcert-technical-kb.py` — ver [FEATURES.md](FEATURES.md) § Ajuda |
+| Assistente Ajuda / RAG | OTOBO Custom `BWBAssist*`; serviço `services/bwb-assist` no VPS `178.159.34.165` — ver [FEATURES.md](FEATURES.md), [OPERATIONS.md](OPERATIONS.md), [SECURITY.md](SECURITY.md) |
 | Esquema de tabelas BWB | `db/current-schema.sql` e `db/migrations/` |
 | Credenciais, Nginx, Postfix, MariaDB, Config.pm integral | Servidor de produção apenas — **fora do Git** |
 | Versão em produção | OTOBO **11.0.17** em `/opt/otobo` (`RELEASE`) |

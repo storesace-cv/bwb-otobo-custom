@@ -1,6 +1,7 @@
 # Módulos em Custom/Kernel/System carregados por pedidos web.
 # Atualizar esta lista no mesmo commit que introduza uma nova dependência web.
 Kernel/System/BWBAccess.pm
+Kernel/System/BWBAssist.pm
 Kernel/System/BWBBounce.pm
 Kernel/System/BWBBounceNotify.pm
 Kernel/System/BWBConvertCustomer.pm

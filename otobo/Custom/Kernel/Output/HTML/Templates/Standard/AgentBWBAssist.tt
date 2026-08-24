@@ -1,0 +1,94 @@
+# --
+# Copyright (C) 2026 BWB
+# --
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst BWBAssist">
+    <h1>Assistente de Ajuda</h1>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Pergunta</h2></div>
+            <div class="Content">
+                <form action="[% Env("CGIHandle") %]" method="get" class="BWBAssistForm">
+                    <input type="hidden" name="Action" value="AgentBWBAssist" />
+                    <fieldset class="TableLike">
+                        <label for="BWBAssistQuery">Descreva o problema</label>
+                        <div class="Field">
+                            <textarea id="BWBAssistQuery" name="Query" rows="5" maxlength="2000" required placeholder="Ex.: ptcert no arranque está em loop">[% Data.Query | html %]</textarea>
+                        </div>
+                        <div class="Clear"></div>
+                        <div class="Field SpacingTop">
+                            <button class="Primary CallForAction" type="submit"><span>Procurar na base de conhecimento</span></button>
+                        </div>
+                    </fieldset>
+                </form>
+                <p class="FieldExplanation">A pesquisa usa a Ajuda interna (FAQ PTcert e manuais Helpdesk). Os procedimentos vêm só dos artigos encontrados — a IA não inventa passos.</p>
+            </div>
+        </div>
+[% RenderBlockStart("Warning") %]
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Aviso</h2></div>
+            <div class="Content">
+                <p class="BWBAssistWarning">Síntese remota indisponível ([% Data.Warning | html %]). A mostrar resultados locais.</p>
+            </div>
+        </div>
+[% RenderBlockEnd("Warning") %]
+    </div>
+    <div class="ContentColumn">
+[% RenderBlockStart("Intro") %]
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Como usar</h2></div>
+            <div class="Content">
+                <p>Escreva o sintoma em português, como falaria a um colega. Exemplos:</p>
+                <ul>
+                    <li>ptcert no arranque está em loop</li>
+                    <li>recuperar EFI após clonezilla</li>
+                    <li>WSL2 hardlock não detecta</li>
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("Intro") %]
+[% RenderBlockStart("Summary") %]
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Orientação</h2></div>
+            <div class="Content">
+                <pre class="BWBAssistSummary">[% Data.Summary | html %]</pre>
+            </div>
+        </div>
+[% RenderBlockEnd("Summary") %]
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Documentação</h2></div>
+            <div class="Content">
+[% RenderBlockStart("NoHits") %]
+                <p>Não foram encontrados artigos relevantes. Tente outros termos ou abra a <a href="[% Env("Baselink") %]Action=AgentFAQExplorer">Ajuda</a>.</p>
+[% RenderBlockEnd("NoHits") %]
+                <ul class="Tablelike FAQMiniList BWBAssistList">
+[% RenderBlockStart("FAQHit") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=AgentFAQZoom;ItemID=[% Data.ItemID | uri %]" title="[% Data.Title | html %]">
+                            <strong>[% Data.Number | html %]</strong> — [% Data.Title | html %]
+                        </a>
+                        <span class="BWBAssistMeta">[% Data.Category | html %]</span>
+                        <p class="BWBAssistExcerpt">[% Data.Excerpt | html %]</p>
+                    </li>
+[% RenderBlockEnd("FAQHit") %]
+                </ul>
+            </div>
+        </div>
+        <div class="WidgetSimple">
+            <div class="Header"><h2>Casos semelhantes</h2></div>
+            <div class="Content">
+                <ul class="Tablelike FAQMiniList BWBAssistList">
+[% RenderBlockStart("TicketHit") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=AgentTicketZoom;TicketID=[% Data.TicketID | uri %]" title="[% Data.Title | html %]">
+                            <strong>Ticket#[% Data.Number | html %]</strong> — [% Data.Title | html %]
+                        </a>
+                        <span class="BWBAssistMeta">[% Data.Category | html %]</span>
+                        <p class="BWBAssistExcerpt">[% Data.Excerpt | html %]</p>
+                    </li>
+[% RenderBlockEnd("TicketHit") %]
+                </ul>
+                <p class="FieldExplanation">Só aparecem tickets a que tem acesso (isolamento BWB ↔ ZS).</p>
+            </div>
+        </div>
+    </div>
+</div>

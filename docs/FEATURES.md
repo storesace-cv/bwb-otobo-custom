@@ -124,6 +124,17 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Classificação de origem nos artigos técnicos: *Confirmado no Linux original*, *Confirmado em WSL2*, *Documentação PT-CERT*, *Por validar* — não converter hipóteses em procedimentos confirmados. Por validar inclui: USB/impressão/hardlocks/periféricos em WSL2, instalação limpa sem VM, builds Windows/WSL, restauro exacto de `hardlock_backup`.
 - Leitura: grupo `bwb_helpdesk_manual_readers` (agentes helpdesk BWB/ZS com acesso à Ajuda).
 
+### Assistente de Ajuda (FAQ + RAG)
+
+- Menu **Ajuda → Assistente** (`AgentBWBAssist`): pergunta em linguagem natural; pesquisa FAQ interna (`Kernel::System::FAQ` / `FAQSearch`) nas categorias sob **Documentação interna** (Helpdesk + PTcert); síntese no host IA `178.159.34.165` (`services/bwb-assist`).
+- O VPS OTOBO (`132`) **não** corre Ollama nem índice vectorial — só orquestra e aplica permissões.
+- Host IA (`165`, `mcp-mail.bwb.pt`): API FastAPI BM25 + síntese. Com **3,8 GiB RAM** o Ollama 7B fica **desactivado** (`BWB_ASSIST_OLLAMA_ENABLED=0`); usa-se síntese extractiva (cita artigos sem inventar passos). Upgrade para ≥8 GiB livres antes de activar `qwen2.5:7b-instruct`.
+- API RO `PublicBWBAssistIndex` (Bearer + IP allowlist) exporta FAQ e tickets fechados para indexação em `165`.
+- Casos semelhantes (tickets): retrieve em `165` → revalidação obrigatória `BWBAccess::TicketAccessCheck` no OTOBO antes de mostrar.
+- Ticket Zoom: painel **Documentação sugerida** (filtro `BWBAssistTicketSuggest` + JS `Core.Agent.BWBAssist.js`).
+- Segredos só no servidor: `/opt/otobo/var/bwb-assist.token`, `bwb-assist.url`, `bwb-assist-index.token`, `bwb-assist-index.allowed-ips`; em `165` `/var/www/bwb-assist/.env`.
+- Código: `BWBAssist.pm`, `AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, XML `BWBAssist.xml`, `services/bwb-assist/`.
+
 ## Registo telefónico / e-mail em nome do cliente
 
 - **Novo Registo Telefónico** (`AgentTicketPhone`) e **Novo Registo por E-mail** (`AgentTicketEmail`) usam o mesmo contrato do Field: **Cliente → Utilizador de cliente → pedido**, com artigo inicial `SenderType=customer` em nome do utilizador escolhido. O operador fica em `create_by` (auditoria); o ticket pertence ao cliente.
