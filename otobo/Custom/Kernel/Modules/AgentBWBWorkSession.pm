@@ -229,7 +229,44 @@ sub Run {
     $Layout->AddJSData( Key => 'TicketID', Value => $TicketID );
     $Layout->{HasDatepicker} = 1 if $Data{Active} && !$Data{ReadOnly};
 
-    my @Owners=$Ticket->TicketOwnerList(TicketID=>$TicketID); $Data{Owners}=\@Owners;
+    # TicketOwnerList is history of past owners — wrong for "assign to technician".
+    # Mirror AgentTicketActionCommon: agents with owner permission on the ticket queue.
+    my %AllUsers = $Kernel::OM->Get('Kernel::System::User')->UserList(
+        Type  => 'Long',
+        Valid => 1,
+    );
+    my $QueueGID = $Kernel::OM->Get('Kernel::System::Queue')->GetQueueGroupID(
+        QueueID => $TicketData{QueueID},
+    );
+    my %MemberList = $QueueGID
+        ? $Kernel::OM->Get('Kernel::System::Group')->PermissionGroupGet(
+            GroupID => $QueueGID,
+            Type    => 'owner',
+          )
+        : ();
+    my @Owners;
+    for my $OwnerID ( sort { ( $AllUsers{$a} || '' ) cmp ( $AllUsers{$b} || '' ) } keys %MemberList ) {
+        next if !$OwnerID || int($OwnerID) == 1;
+        next if int($OwnerID) == int( $Self->{UserID} );
+        next if !$AllUsers{$OwnerID};
+        push @Owners, {
+            UserID       => $OwnerID,
+            UserFullname => $AllUsers{$OwnerID},
+        };
+    }
+    $Data{Owners} = \@Owners;
+
+    # Restore finish fields after validation error (so OwnerChoice can stay visible).
+    $Data{SelectedResult}     = $Request->GetParam( Param => 'Result' )     || '';
+    $Data{SelectedNewOwnerID} = $Request->GetParam( Param => 'NewOwnerID' ) || '';
+    $Data{SelectedDecision}   = $Request->GetParam( Param => 'Decision' )   || '';
+    $Data{SelectedState}      = $Request->GetParam( Param => 'State' )      || '';
+    $Data{SelectedVisibility} = $Request->GetParam( Param => 'Visibility' ) || '';
+    $Data{SelectedSendEmail}  = $Request->GetParam( Param => 'SendEmail' )  || '';
+    $Data{ShowOwnerChoice}    = ( $Data{SelectedResult} eq 'Encaminhado para outro técnico' ) ? 1 : 0;
+    $Data{ShowDecisionChoice} = ( $Data{SelectedResult} eq 'Sem anomalia detetada' ) ? 1 : 0;
+    $Data{ShowStateChoice}    = ( $Data{SelectedResult} eq 'Outro' ) ? 1 : 0;
+
     my @Meta=$Kernel::OM->Get('Kernel::System::Web::UploadCache')->FormIDGetAllFilesMeta(FormID=>$Data{FormID});
     for my $Item (@Meta) { $Item->{Filesize} = $Layout->HumanReadableDataSize( Size => $Item->{Filesize} ); }
     $Data{AttachmentList}=\@Meta;

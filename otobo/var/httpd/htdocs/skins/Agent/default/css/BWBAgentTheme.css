@@ -385,3 +385,24 @@ body:not(.LoginScreen) .BWBEditorToolbar button {
   color: var(--bwb-field-text) !important;
   border-color: var(--bwb-field-border) !important;
 }
+
+body:not(.LoginScreen) .BWBWorkSheet .BWBOwnerChoice {
+  margin: 12px 0;
+  padding: 12px;
+  border: 2px solid #18864b;
+  border-radius: 6px;
+  background: #f3faf6;
+}
+
+body:not(.LoginScreen) .BWBWorkSheet .BWBOwnerChoice select {
+  display: block !important;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 6px;
+  font-size: 16px;
+}
+
+body:not(.LoginScreen) .BWBWorkSheet .BWBOwnerEmpty {
+  color: #c62828;
+  margin: 8px 0 0;
+}

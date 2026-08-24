@@ -39,6 +39,7 @@ Caminhos abaixo são relativos a `otobo/Custom/`, salvo indicação em contrári
 - O técnico inicia intervenção (tipo), guarda rascunho interno, termina com resultado, visibilidade no portal e opção de e-mail ao cliente.
 - Tempo contabilizado automaticamente; artigo final em canal **Internal**.
 - Se a ficha do cliente tiver **Duração contabilizada = Não**, o e-mail da folha e o portal omitem esse campo; o agente continua a vê-lo no artigo.
+- **Encaminhado para outro técnico:** ao escolher este resultado, a folha mostra o select «Novo proprietário» com agentes que têm permissão `owner` na fila do ticket (não usa `TicketOwnerList`, que só lista histórico). Sem Modernize nestes campos (o InputFields impedia o `change` e ocultava o select). Ao terminar: `TicketOwnerSet` + fecho da folha; notificação nativa de mudança de proprietário se estiver activa.
 - Código: `Kernel/System/BWBWorkSession.pm`, `Kernel/System/BWBWorkSheet.pm`, `Kernel/Modules/AgentBWBWorkSession.pm`, menu `TicketMenu/BWBWorkSession.pm`, JS `var/httpd/htdocs/js/Core.Agent.BWBWorkSessionDialog.js`.
 - Tipos/resultados: `BWBOperationType.pm`, `BWBResultType.pm` + Admin + XML `BWBResults.xml`.
 - Tabelas: `bwb_work_session`, `bwb_work_sheet`, `bwb_operation_type*`, `bwb_result_type*`.
