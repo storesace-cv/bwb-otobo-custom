@@ -170,6 +170,16 @@ ssh bwb-otobo-prod 'mysqldump otobo notification_event_message > /root/otobo-bac
 ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-16-email-otobo-to-helpdesk.sql
 ```
 
+Lembrete diário ao cliente em «Pendente a aguardar cliente» (após código + SysConfig `853-BWBWaitingCustomerPendingTime`):
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo notification_event notification_event_item notification_event_message ticket > /root/otobo-backups/customer-waiting-reminder-before.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-26-customer-waiting-reminder.sql
+ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
+```
+
+A migração cria a notificação cliente, restringe os lembretes agente aos estados 12/13, e põe `until_time=agora` nos tickets já nesse estado (1.º mail no próximo `TicketPendingCheck`, depois diário). **Não** altera `Ticket::StateAfterPending` (sem fecho automático).
+
 ## Cópias de segurança automáticas (helpdesk)
 
 Estratégia em **dois destinos**:
