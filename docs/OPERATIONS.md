@@ -180,6 +180,14 @@ ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/ba
 
 A migração cria a notificação cliente, restringe os lembretes agente aos estados 12/13, e põe `until_time=agora` nos tickets já nesse estado (1.º mail no próximo `TicketPendingCheck`, depois diário). **Não** altera `Ticket::StateAfterPending` (sem fecho automático).
 
+Correcção do link no corpo (tags `<OTOBO_CONFIG_*>` em `href` partiam o HTML; usar `&lt;…&gt;`):
+
+```sh
+ssh bwb-otobo-prod 'mysqldump otobo notification_event_message > /root/otobo-backups/notification_event_message-before-waiting-link-fix.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-26-customer-waiting-reminder-link-fix.sql
+ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
+```
+
 ## Cópias de segurança automáticas (helpdesk)
 
 Estratégia em **dois destinos**:
