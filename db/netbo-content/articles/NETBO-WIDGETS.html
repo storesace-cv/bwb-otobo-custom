@@ -1,0 +1,26 @@
+<p>Os widgets no net-bo são componentes modulares que facilitam a integração de diversos recursos e funcionalidades na interface do utilizador da aplicação.</p>
+<p>Cada widget é projetado para realizar uma tarefa específica e pode ser configurado e personalizado conforme as necessidades dos utilizadores. Este documento contém as especificidades para se criar um widget.</p>
+<h2>Ficheiros obrigatórios</h2><p>Cada Widget é composto por, no mínimo, dois ficheiros: <code>index.html</code> e <code>widget.json</code>.</p>
+<h2>Exemplo completo de widget.json</h2><pre><code>{
+  "name": "Widget de Exemplo",
+  "description": "Este é um widget de exemplo.",
+  "access": "*",
+  "author": "Equipa NET-BO",
+  "category": "Exemplos",
+  "icon": "",
+  "tags": ["exemplo", "widget"],
+  "version": "1.0.0",
+  "config_params": [],
+  "filter_params": []
+}</code></pre>
+<h2>Filter Params</h2><p>Os filtros necessários para o widget são declarados na raiz do ficheiro JSON. A propriedade <code>filter_params</code> é um array de objetos.</p><pre><code>"filter_params": []</code></pre>
+<h3>Preço de Custo — Cost Price</h3><pre><code>{
+  "type": "cost_price",
+  "label": "Preço de Custo a Usar"
+}</code></pre>
+<p>O manual apresenta ainda os tópicos “Lojas / Empresas / Armazéns”, “Fornecedores”, “Config Params”, “Filtros Existentes” e “Configs Existentes”, mas não contém valores ou exemplos adicionais nesses blocos.</p>
+<h2>Construção de Filtros e Config Params</h2><h3>Filtros</h3><ul><li><code>CustomPageViewer.vue</code> → <code>initializeFilterValues()</code>: definir os defaults dos filtros na página.</li><li><code>CustomPageFiltersRenderer.vue</code>: colocar os seletores dos filtros.</li><li><code>CustomPageEditor.vue</code>: editar o objeto <code>filterTypeOptions</code> para adicionar um novo tipo de filtro. Se houver opções custom dentro desse filtro, adicionar em <code>&lt;div class="filters-list-section"&gt;</code>.</li></ul>
+<h3>Config Params</h3><p>Em <code>CustomPageLayoutBuilder.vue</code>, o manual assinala a zona:</p><pre><code>&lt;!-- Widget Configuration Dialog --&gt;
+
+&lt;!-- Aqui é para adicionar novos parâmetros de configuração dos Widgets --&gt;</code></pre>
+<p><strong>Fonte indicada pelo DOCX:</strong> <a href="https://pedrocouto.craft.me/NET-BO:Documenta%C3%A7%C3%A3o-dos-Widgets">https://pedrocouto.craft.me/NET-BO:Documenta%C3%A7%C3%A3o-dos-Widgets</a>.</p>

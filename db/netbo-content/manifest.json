@@ -1,0 +1,923 @@
+{
+  "category": {
+    "name": "NET-bo",
+    "comment": "Base de conhecimento interna NET-bo para agentes de suporte."
+  },
+  "notes": [
+    "Categoria destino: Documentação interna > NET-bo (lookup por parent/name; não hardcodar id 40).",
+    "Não alterar Manuais de utilização > NET-bo (categoria histórica).",
+    "SQL gerado por scripts/apply-netbo-faq.py fica fora do Git (/tmp).",
+    "Corpus exportado da produção após importação bem-sucedida em 2026-08-25."
+  ],
+  "articles": [
+    {
+      "number": "NETBO-ATCUD-MANUAL",
+      "name": "atcud-manual",
+      "title": "Comunicar séries e obter ATCUD manualmente",
+      "keywords": "net-bo atcud séries portal finanças autoridade tributária comunicar série",
+      "summary": "<p>Registar séries no Portal das Finanças e consultar os códigos de validação gerados.</p>",
+      "use_when": "<p>Utilize quando a comunicação de séries e a obtenção do ATCUD são feitas manualmente no Portal das Finanças.</p>",
+      "body": "articles/NETBO-ATCUD-MANUAL.html",
+      "assets": [
+        {
+          "filename": "NETBO-atcud-manual-01-df1a8659836a.png",
+          "path": "media/NETBO-atcud-manual-01-df1a8659836a.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-01-df1a8659836a.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-02-bd5efb50c1aa.png",
+          "path": "media/NETBO-atcud-manual-02-bd5efb50c1aa.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-02-bd5efb50c1aa.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-03-2b965363f8c9.png",
+          "path": "media/NETBO-atcud-manual-03-2b965363f8c9.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-03-2b965363f8c9.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-04-35039cdd679f.png",
+          "path": "media/NETBO-atcud-manual-04-35039cdd679f.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-04-35039cdd679f.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-05-80014bb96307.png",
+          "path": "media/NETBO-atcud-manual-05-80014bb96307.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-05-80014bb96307.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-06-85c30875f04c.png",
+          "path": "media/NETBO-atcud-manual-06-85c30875f04c.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-06-85c30875f04c.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-07-57106db507d7.png",
+          "path": "media/NETBO-atcud-manual-07-57106db507d7.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-07-57106db507d7.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-08-203c0419aafe.png",
+          "path": "media/NETBO-atcud-manual-08-203c0419aafe.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-08-203c0419aafe.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-09-c0c06de8f8ba.png",
+          "path": "media/NETBO-atcud-manual-09-c0c06de8f8ba.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-09-c0c06de8f8ba.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-10-1d3cc33323cc.png",
+          "path": "media/NETBO-atcud-manual-10-1d3cc33323cc.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-10-1d3cc33323cc.png@@"
+        },
+        {
+          "filename": "NETBO-atcud-manual-11-779d88390b3f.png",
+          "path": "media/NETBO-atcud-manual-11-779d88390b3f.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-atcud-manual-11-779d88390b3f.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-DESPESAS",
+      "name": "despesas-fixas-variaveis",
+      "title": "Configurar despesas fixas e variáveis",
+      "keywords": "net-bo despesas custos fixos variáveis categorias periodicidade contratos resultado operacional homólogo",
+      "summary": "<p>Distinguir e registar despesas fixas e variáveis, com categorias, periodicidade e consulta de resultados.</p>",
+      "use_when": "<p>Utilize para configurar ou analisar despesas em Organização &gt; Despesas e Custos.</p>",
+      "body": "articles/NETBO-DESPESAS.html",
+      "assets": [
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-01-e4f4f757e80d.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-01-e4f4f757e80d.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-01-e4f4f757e80d.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-02-d6993cd128e4.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-02-d6993cd128e4.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-02-d6993cd128e4.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-03-9f6d673de458.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-03-9f6d673de458.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-03-9f6d673de458.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-04-a65b55967908.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-04-a65b55967908.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-04-a65b55967908.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-05-8e9f50b53aac.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-05-8e9f50b53aac.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-05-8e9f50b53aac.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-06-eefb002eddad.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-06-eefb002eddad.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-06-eefb002eddad.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-07-2b1108b19d20.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-07-2b1108b19d20.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-07-2b1108b19d20.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-08-de9bc10dfac1.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-08-de9bc10dfac1.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-08-de9bc10dfac1.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-09-cff4a43ad024.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-09-cff4a43ad024.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-09-cff4a43ad024.png@@"
+        },
+        {
+          "filename": "NETBO-despesas-fixas-variaveis-10-fe5756615c37.png",
+          "path": "media/NETBO-despesas-fixas-variaveis-10-fe5756615c37.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-despesas-fixas-variaveis-10-fe5756615c37.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-FACEID",
+      "name": "faceid-terminal",
+      "title": "Configurar a integração com terminal Face ID",
+      "keywords": "net-bo face id relógio ponto terminal utilizador rede client windows linux ptcert winrest config.xml",
+      "summary": "<p>Criar o funcionário, configurar o terminal Face ID e instalar o cliente em Windows, PT-CERT ou WinREST.</p>",
+      "use_when": "<p>Utilize na instalação ou manutenção da integração de relógio de ponto por Face ID.</p>",
+      "body": "articles/NETBO-FACEID.html",
+      "assets": [
+        {
+          "filename": "NETBO-faceid-terminal-01-27bff766014f.png",
+          "path": "media/NETBO-faceid-terminal-01-27bff766014f.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-01-27bff766014f.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-02-e4079a8641b7.png",
+          "path": "media/NETBO-faceid-terminal-02-e4079a8641b7.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-02-e4079a8641b7.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-03-5da89cc24de6.png",
+          "path": "media/NETBO-faceid-terminal-03-5da89cc24de6.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-03-5da89cc24de6.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-04-7e4e2325d580.png",
+          "path": "media/NETBO-faceid-terminal-04-7e4e2325d580.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-04-7e4e2325d580.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-05-1f5d4432739a.png",
+          "path": "media/NETBO-faceid-terminal-05-1f5d4432739a.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-05-1f5d4432739a.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-06-b4cabe3a3a0e.png",
+          "path": "media/NETBO-faceid-terminal-06-b4cabe3a3a0e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-06-b4cabe3a3a0e.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-07-6c26844f983c.png",
+          "path": "media/NETBO-faceid-terminal-07-6c26844f983c.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-07-6c26844f983c.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-08-bdd33f894469.png",
+          "path": "media/NETBO-faceid-terminal-08-bdd33f894469.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-08-bdd33f894469.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-09-c82d0b453509.png",
+          "path": "media/NETBO-faceid-terminal-09-c82d0b453509.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-09-c82d0b453509.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-10-8a9869c0769b.png",
+          "path": "media/NETBO-faceid-terminal-10-8a9869c0769b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-10-8a9869c0769b.png@@"
+        },
+        {
+          "filename": "NETBO-faceid-terminal-11-edc89ba8653d.png",
+          "path": "media/NETBO-faceid-terminal-11-edc89ba8653d.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faceid-terminal-11-edc89ba8653d.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-MENUS-FISCAL",
+      "name": "menus-iva",
+      "title": "Menus: enquadramento fiscal e exemplo de IVA",
+      "keywords": "net-bo menus iva 13 23 ofício 25019 2024 fatura recibo preço único",
+      "summary": "<p>Preservar o enquadramento fiscal e o exemplo de repartição de IVA apresentados no manual de menus.</p>",
+      "use_when": "<p>Utilize antes de configurar menus com componentes sujeitos a taxas de IVA diferentes.</p>",
+      "body": "articles/NETBO-MENUS-FISCAL.html",
+      "assets": [],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-MENUS-CONFIG",
+      "name": "menus-configuracao",
+      "title": "Criar menus, componentes e associá-los aos teclados",
+      "keywords": "net-bo menu produto componentes opções preço extra copiar colar teclado exportar sincronizar zsrest ptcert",
+      "summary": "<p>Criar o produto menu, configurar opções e componentes e exportá-lo para o teclado do ponto de venda.</p>",
+      "use_when": "<p>Utilize para configurar menus e sincronizá-los com PTCert, ZS REST ou WinREST.</p>",
+      "body": "articles/NETBO-MENUS-CONFIG.html",
+      "assets": [
+        {
+          "filename": "NETBO-menus-configuracao-01-b0a503bfcd4d.png",
+          "path": "media/NETBO-menus-configuracao-01-b0a503bfcd4d.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-01-b0a503bfcd4d.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-02-8d7c6109b8a0.png",
+          "path": "media/NETBO-menus-configuracao-02-8d7c6109b8a0.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-02-8d7c6109b8a0.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-03-e3ee57fd315a.png",
+          "path": "media/NETBO-menus-configuracao-03-e3ee57fd315a.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-03-e3ee57fd315a.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-04-cb5053f9a23b.png",
+          "path": "media/NETBO-menus-configuracao-04-cb5053f9a23b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-04-cb5053f9a23b.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-05-25764a9eb40e.png",
+          "path": "media/NETBO-menus-configuracao-05-25764a9eb40e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-05-25764a9eb40e.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-06-c0e1a19059b4.png",
+          "path": "media/NETBO-menus-configuracao-06-c0e1a19059b4.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-06-c0e1a19059b4.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-07-1f4184ee2735.png",
+          "path": "media/NETBO-menus-configuracao-07-1f4184ee2735.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-07-1f4184ee2735.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-08-611bff3e02fb.png",
+          "path": "media/NETBO-menus-configuracao-08-611bff3e02fb.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-08-611bff3e02fb.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-09-36c70c47a382.png",
+          "path": "media/NETBO-menus-configuracao-09-36c70c47a382.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-09-36c70c47a382.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-10-d3f9da1c4fd9.png",
+          "path": "media/NETBO-menus-configuracao-10-d3f9da1c4fd9.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-10-d3f9da1c4fd9.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-11-7b920c320812.png",
+          "path": "media/NETBO-menus-configuracao-11-7b920c320812.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-11-7b920c320812.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-12-3749656f4c03.png",
+          "path": "media/NETBO-menus-configuracao-12-3749656f4c03.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-12-3749656f4c03.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-13-d258bdd46680.png",
+          "path": "media/NETBO-menus-configuracao-13-d258bdd46680.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-13-d258bdd46680.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-14-52361ad1d762.png",
+          "path": "media/NETBO-menus-configuracao-14-52361ad1d762.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-14-52361ad1d762.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-15-b724f39fd849.png",
+          "path": "media/NETBO-menus-configuracao-15-b724f39fd849.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-15-b724f39fd849.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-16-94f1266df679.png",
+          "path": "media/NETBO-menus-configuracao-16-94f1266df679.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-16-94f1266df679.png@@"
+        },
+        {
+          "filename": "NETBO-menus-configuracao-17-d397542aa5b7.png",
+          "path": "media/NETBO-menus-configuracao-17-d397542aa5b7.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-menus-configuracao-17-d397542aa5b7.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-ETIQUETAS",
+      "name": "etiquetas",
+      "title": "Criar e imprimir etiquetas",
+      "keywords": "net-bo etiquetas template dimensões campos descrição preço código barras pré-visualização impressão",
+      "summary": "<p>Criar um template de etiqueta, validar o resultado e imprimir etiquetas para produtos.</p>",
+      "use_when": "<p>Utilize na configuração de templates e impressão de etiquetas.</p>",
+      "body": "articles/NETBO-ETIQUETAS.html",
+      "assets": [
+        {
+          "filename": "NETBO-etiquetas-01-1447411e32ab.png",
+          "path": "media/NETBO-etiquetas-01-1447411e32ab.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-01-1447411e32ab.png@@"
+        },
+        {
+          "filename": "NETBO-etiquetas-02-01ddb54b6805.png",
+          "path": "media/NETBO-etiquetas-02-01ddb54b6805.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-02-01ddb54b6805.png@@"
+        },
+        {
+          "filename": "NETBO-etiquetas-03-7d8e50337d68.png",
+          "path": "media/NETBO-etiquetas-03-7d8e50337d68.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-03-7d8e50337d68.png@@"
+        },
+        {
+          "filename": "NETBO-etiquetas-04-5b0f3314e394.png",
+          "path": "media/NETBO-etiquetas-04-5b0f3314e394.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-04-5b0f3314e394.png@@"
+        },
+        {
+          "filename": "NETBO-etiquetas-05-2d971e5bd024.png",
+          "path": "media/NETBO-etiquetas-05-2d971e5bd024.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-05-2d971e5bd024.png@@"
+        },
+        {
+          "filename": "NETBO-etiquetas-06-695d70ef8b1d.png",
+          "path": "media/NETBO-etiquetas-06-695d70ef8b1d.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-06-695d70ef8b1d.png@@"
+        },
+        {
+          "filename": "NETBO-etiquetas-07-f82ae6b852bc.png",
+          "path": "media/NETBO-etiquetas-07-f82ae6b852bc.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-etiquetas-07-f82ae6b852bc.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-ENCOMENDAS",
+      "name": "encomendas-clientes",
+      "title": "Registar e consultar encomendas de clientes",
+      "keywords": "net-bo encomendas clientes nota encomenda conferência data entrega produtos rascunhos anulados",
+      "summary": "<p>Registar, gravar e consultar encomendas de clientes.</p>",
+      "use_when": "<p>Utilize em Documentos &gt; Conferência &gt; Nota de Encomenda.</p>",
+      "body": "articles/NETBO-ENCOMENDAS.html",
+      "assets": [
+        {
+          "filename": "NETBO-encomendas-clientes-01-57fa75d7fda2.png",
+          "path": "media/NETBO-encomendas-clientes-01-57fa75d7fda2.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-encomendas-clientes-01-57fa75d7fda2.png@@"
+        },
+        {
+          "filename": "NETBO-encomendas-clientes-02-53917f49ba8c.png",
+          "path": "media/NETBO-encomendas-clientes-02-53917f49ba8c.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-encomendas-clientes-02-53917f49ba8c.png@@"
+        },
+        {
+          "filename": "NETBO-encomendas-clientes-03-5713fee0441f.png",
+          "path": "media/NETBO-encomendas-clientes-03-5713fee0441f.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-encomendas-clientes-03-5713fee0441f.png@@"
+        },
+        {
+          "filename": "NETBO-encomendas-clientes-04-1ea1b039d95e.png",
+          "path": "media/NETBO-encomendas-clientes-04-1ea1b039d95e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-encomendas-clientes-04-1ea1b039d95e.png@@"
+        },
+        {
+          "filename": "NETBO-encomendas-clientes-05-620d7d26038c.png",
+          "path": "media/NETBO-encomendas-clientes-05-620d7d26038c.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-encomendas-clientes-05-620d7d26038c.png@@"
+        },
+        {
+          "filename": "NETBO-encomendas-clientes-06-8bc18444af2b.png",
+          "path": "media/NETBO-encomendas-clientes-06-8bc18444af2b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-encomendas-clientes-06-8bc18444af2b.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-FAT-CONFIG",
+      "name": "faturacao-configuracao",
+      "title": "Faturação: configurar empresa, dados fiscais e ATCUD",
+      "keywords": "net-bo faturação empresa dados fiscais atcud séries portal finanças utilizador",
+      "summary": "<p>Preencher a configuração da empresa e obter os códigos ATCUD através do NET-BO.</p>",
+      "use_when": "<p>Utilize na preparação fiscal da empresa antes da emissão de documentos.</p>",
+      "body": "articles/NETBO-FAT-CONFIG.html",
+      "assets": [
+        {
+          "filename": "NETBO-faturacao-configuracao-01-7d7678feb26c.png",
+          "path": "media/NETBO-faturacao-configuracao-01-7d7678feb26c.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-configuracao-01-7d7678feb26c.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-configuracao-02-efb917487db8.png",
+          "path": "media/NETBO-faturacao-configuracao-02-efb917487db8.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-configuracao-02-efb917487db8.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-configuracao-03-770eab247c0b.png",
+          "path": "media/NETBO-faturacao-configuracao-03-770eab247c0b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-configuracao-03-770eab247c0b.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-configuracao-04-9880552a7291.png",
+          "path": "media/NETBO-faturacao-configuracao-04-9880552a7291.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-configuracao-04-9880552a7291.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-configuracao-05-2b2cffe5e1cb.png",
+          "path": "media/NETBO-faturacao-configuracao-05-2b2cffe5e1cb.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-configuracao-05-2b2cffe5e1cb.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-configuracao-06-b2b8dfecad5f.png",
+          "path": "media/NETBO-faturacao-configuracao-06-b2b8dfecad5f.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-configuracao-06-b2b8dfecad5f.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-FAT-DOCUMENTOS",
+      "name": "faturacao-documentos",
+      "title": "Emitir faturas, orçamentos e guias de transporte",
+      "keywords": "net-bo faturar crédito consumidor final orçamento guia transporte carga descarga comunicar at",
+      "summary": "<p>Emitir documentos de venda, faturar a crédito, criar orçamentos e comunicar guias de transporte.</p>",
+      "use_when": "<p>Utilize na emissão e gestão de documentos comerciais e de transporte.</p>",
+      "body": "articles/NETBO-FAT-DOCUMENTOS.html",
+      "assets": [
+        {
+          "filename": "NETBO-faturacao-documentos-01-a7da420a2623.png",
+          "path": "media/NETBO-faturacao-documentos-01-a7da420a2623.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-01-a7da420a2623.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-02-704effda41ba.png",
+          "path": "media/NETBO-faturacao-documentos-02-704effda41ba.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-02-704effda41ba.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-03-fcd2d279856e.png",
+          "path": "media/NETBO-faturacao-documentos-03-fcd2d279856e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-03-fcd2d279856e.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-04-ef9ff9307097.png",
+          "path": "media/NETBO-faturacao-documentos-04-ef9ff9307097.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-04-ef9ff9307097.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-05-66d313055911.png",
+          "path": "media/NETBO-faturacao-documentos-05-66d313055911.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-05-66d313055911.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-06-5dfd7f276b5b.png",
+          "path": "media/NETBO-faturacao-documentos-06-5dfd7f276b5b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-06-5dfd7f276b5b.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-07-63f7bdad7345.png",
+          "path": "media/NETBO-faturacao-documentos-07-63f7bdad7345.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-07-63f7bdad7345.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-08-737b742c6749.png",
+          "path": "media/NETBO-faturacao-documentos-08-737b742c6749.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-08-737b742c6749.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-09-a5834c4a15e3.png",
+          "path": "media/NETBO-faturacao-documentos-09-a5834c4a15e3.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-09-a5834c4a15e3.png@@"
+        },
+        {
+          "filename": "NETBO-faturacao-documentos-10-e25ff0649da5.png",
+          "path": "media/NETBO-faturacao-documentos-10-e25ff0649da5.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-faturacao-documentos-10-e25ff0649da5.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-AVENCAS",
+      "name": "avencas",
+      "title": "Criar e gerir avenças",
+      "keywords": "net-bo avença periodicidade frequência evento data início fim repetir cliente",
+      "summary": "<p>Criar avenças e configurar a periodicidade dos respetivos eventos.</p>",
+      "use_when": "<p>Utilize para serviços regulares faturados de forma periódica.</p>",
+      "body": "articles/NETBO-AVENCAS.html",
+      "assets": [
+        {
+          "filename": "NETBO-avencas-01-5b3be33292f6.png",
+          "path": "media/NETBO-avencas-01-5b3be33292f6.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-01-5b3be33292f6.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-02-103361b69d1e.png",
+          "path": "media/NETBO-avencas-02-103361b69d1e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-02-103361b69d1e.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-03-d96a8d33a616.png",
+          "path": "media/NETBO-avencas-03-d96a8d33a616.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-03-d96a8d33a616.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-04-515b91b610b7.png",
+          "path": "media/NETBO-avencas-04-515b91b610b7.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-04-515b91b610b7.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-05-3e3a3ba2967e.png",
+          "path": "media/NETBO-avencas-05-3e3a3ba2967e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-05-3e3a3ba2967e.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-06-80eac9a3176b.png",
+          "path": "media/NETBO-avencas-06-80eac9a3176b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-06-80eac9a3176b.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-07-778b8200d4ea.png",
+          "path": "media/NETBO-avencas-07-778b8200d4ea.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-07-778b8200d4ea.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-08-315a717050de.png",
+          "path": "media/NETBO-avencas-08-315a717050de.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-08-315a717050de.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-09-def0eb254473.png",
+          "path": "media/NETBO-avencas-09-def0eb254473.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-09-def0eb254473.png@@"
+        },
+        {
+          "filename": "NETBO-avencas-10-2eeaf0e29b24.png",
+          "path": "media/NETBO-avencas-10-2eeaf0e29b24.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-avencas-10-2eeaf0e29b24.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-CONTA-CORRENTE",
+      "name": "conta-corrente-recibos",
+      "title": "Conta corrente de clientes e emissão de recibos",
+      "keywords": "net-bo conta corrente pendentes não liquidados recibo pagamento parcial anular dívida excel pdf",
+      "summary": "<p>Consultar valores pendentes e emitir recibos totais, parciais ou com acertos.</p>",
+      "use_when": "<p>Utilize para acompanhar dívida de clientes e registar recebimentos.</p>",
+      "body": "articles/NETBO-CONTA-CORRENTE.html",
+      "assets": [
+        {
+          "filename": "NETBO-conta-corrente-recibos-01-b628a97ea761.png",
+          "path": "media/NETBO-conta-corrente-recibos-01-b628a97ea761.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-01-b628a97ea761.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-02-f57b04ae8b11.png",
+          "path": "media/NETBO-conta-corrente-recibos-02-f57b04ae8b11.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-02-f57b04ae8b11.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-03-50f7b30a9edb.png",
+          "path": "media/NETBO-conta-corrente-recibos-03-50f7b30a9edb.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-03-50f7b30a9edb.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-04-f8f2bd978f0f.png",
+          "path": "media/NETBO-conta-corrente-recibos-04-f8f2bd978f0f.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-04-f8f2bd978f0f.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-05-e1e1ff157d1b.png",
+          "path": "media/NETBO-conta-corrente-recibos-05-e1e1ff157d1b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-05-e1e1ff157d1b.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-06-1159be3736ab.png",
+          "path": "media/NETBO-conta-corrente-recibos-06-1159be3736ab.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-06-1159be3736ab.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-07-165d8a6f9a30.png",
+          "path": "media/NETBO-conta-corrente-recibos-07-165d8a6f9a30.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-07-165d8a6f9a30.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-08-c82b7c27e1b0.png",
+          "path": "media/NETBO-conta-corrente-recibos-08-c82b7c27e1b0.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-08-c82b7c27e1b0.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-09-8e2062c619dc.png",
+          "path": "media/NETBO-conta-corrente-recibos-09-8e2062c619dc.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-09-8e2062c619dc.png@@"
+        },
+        {
+          "filename": "NETBO-conta-corrente-recibos-10-2aea98cbbb32.png",
+          "path": "media/NETBO-conta-corrente-recibos-10-2aea98cbbb32.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-conta-corrente-recibos-10-2aea98cbbb32.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-TABELAS-PRECOS",
+      "name": "tabelas-precos",
+      "title": "Criar tabelas de preços de venda",
+      "keywords": "net-bo tabela preços venda cliente produto desconto pvp revenda distribuição",
+      "summary": "<p>Criar uma tabela de preços e associar produtos e clientes.</p>",
+      "use_when": "<p>Utilize quando clientes ou segmentos devem usar preços diferentes do preço de venda base.</p>",
+      "body": "articles/NETBO-TABELAS-PRECOS.html",
+      "assets": [
+        {
+          "filename": "NETBO-tabelas-precos-01-2bb00cb886d8.png",
+          "path": "media/NETBO-tabelas-precos-01-2bb00cb886d8.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-tabelas-precos-01-2bb00cb886d8.png@@"
+        },
+        {
+          "filename": "NETBO-tabelas-precos-02-db68f00a08b1.png",
+          "path": "media/NETBO-tabelas-precos-02-db68f00a08b1.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-tabelas-precos-02-db68f00a08b1.png@@"
+        },
+        {
+          "filename": "NETBO-tabelas-precos-03-90ccf4f30f89.png",
+          "path": "media/NETBO-tabelas-precos-03-90ccf4f30f89.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-tabelas-precos-03-90ccf4f30f89.png@@"
+        },
+        {
+          "filename": "NETBO-tabelas-precos-04-312f69d92592.png",
+          "path": "media/NETBO-tabelas-precos-04-312f69d92592.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-tabelas-precos-04-312f69d92592.png@@"
+        },
+        {
+          "filename": "NETBO-tabelas-precos-05-66762798e377.png",
+          "path": "media/NETBO-tabelas-precos-05-66762798e377.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-tabelas-precos-05-66762798e377.png@@"
+        },
+        {
+          "filename": "NETBO-tabelas-precos-06-c1fdb83a06f9.png",
+          "path": "media/NETBO-tabelas-precos-06-c1fdb83a06f9.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-tabelas-precos-06-c1fdb83a06f9.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-SAFT",
+      "name": "saft",
+      "title": "Exportar e enviar automaticamente o SAF-T",
+      "keywords": "net-bo saft pt exportar e-fatura mês nif email automático contabilidade",
+      "summary": "<p>Exportar o SAF-T localmente ou configurar o envio mensal automático por email.</p>",
+      "use_when": "<p>Utilize na preparação e entrega periódica do ficheiro SAF-T.</p>",
+      "body": "articles/NETBO-SAFT.html",
+      "assets": [
+        {
+          "filename": "NETBO-saft-01-227b509de2c9.png",
+          "path": "media/NETBO-saft-01-227b509de2c9.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-saft-01-227b509de2c9.png@@"
+        },
+        {
+          "filename": "NETBO-saft-02-a2a30ba81a40.png",
+          "path": "media/NETBO-saft-02-a2a30ba81a40.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-saft-02-a2a30ba81a40.png@@"
+        },
+        {
+          "filename": "NETBO-saft-03-3296913b9cad.png",
+          "path": "media/NETBO-saft-03-3296913b9cad.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-saft-03-3296913b9cad.png@@"
+        },
+        {
+          "filename": "NETBO-saft-04-be96b0a0184e.png",
+          "path": "media/NETBO-saft-04-be96b0a0184e.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-saft-04-be96b0a0184e.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-TRANSFERENCIAS",
+      "name": "transferencias-armazem",
+      "title": "APP Movimentos: transferir mercadoria entre armazéns",
+      "keywords": "net-bo app movimentos transferência armazém destino scanner código barras unidade quantidade produto não encontrado",
+      "summary": "<p>Registar transferências de mercadoria com leitura de código de barras e tratar erros comuns.</p>",
+      "use_when": "<p>Utilize quando retira mercadoria de um armazém para outro espaço.</p>",
+      "body": "articles/NETBO-TRANSFERENCIAS.html",
+      "assets": [
+        {
+          "filename": "NETBO-transferencias-armazem-01-e5ff36b61ef9.png",
+          "path": "media/NETBO-transferencias-armazem-01-e5ff36b61ef9.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-01-e5ff36b61ef9.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-02-fbedd342564b.png",
+          "path": "media/NETBO-transferencias-armazem-02-fbedd342564b.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-02-fbedd342564b.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-03-1752dc18ba81.png",
+          "path": "media/NETBO-transferencias-armazem-03-1752dc18ba81.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-03-1752dc18ba81.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-04-59bc4b4b3dba.png",
+          "path": "media/NETBO-transferencias-armazem-04-59bc4b4b3dba.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-04-59bc4b4b3dba.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-05-76dc81ec5f35.png",
+          "path": "media/NETBO-transferencias-armazem-05-76dc81ec5f35.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-05-76dc81ec5f35.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-06-de746cca8bc3.png",
+          "path": "media/NETBO-transferencias-armazem-06-de746cca8bc3.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-06-de746cca8bc3.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-07-2adf0acb02a3.png",
+          "path": "media/NETBO-transferencias-armazem-07-2adf0acb02a3.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-07-2adf0acb02a3.png@@"
+        },
+        {
+          "filename": "NETBO-transferencias-armazem-08-4cfe4fbe8436.png",
+          "path": "media/NETBO-transferencias-armazem-08-4cfe4fbe8436.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-transferencias-armazem-08-4cfe4fbe8436.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-ACESSO-CLIENTE",
+      "name": "acesso-cliente",
+      "title": "Dar ao cliente acesso à sua conta corrente",
+      "keywords": "net-bo cliente acesso conta corrente email utilizador password inativar",
+      "summary": "<p>Ativar ou retirar o acesso de um cliente à informação associada no NET-BO.</p>",
+      "use_when": "<p>Utilize na ficha de cliente para criar ou inativar o acesso por email.</p>",
+      "body": "articles/NETBO-ACESSO-CLIENTE.html",
+      "assets": [
+        {
+          "filename": "NETBO-acesso-cliente-01-213f73f19752.png",
+          "path": "media/NETBO-acesso-cliente-01-213f73f19752.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-acesso-cliente-01-213f73f19752.png@@"
+        },
+        {
+          "filename": "NETBO-acesso-cliente-02-a9086cfdd6b4.png",
+          "path": "media/NETBO-acesso-cliente-02-a9086cfdd6b4.png",
+          "content_type": "image/png",
+          "token": "@@NETBO_IMAGE:NETBO-acesso-cliente-02-a9086cfdd6b4.png@@"
+        }
+      ],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-SDR",
+      "name": "embalagem-volta-sdr",
+      "title": "Configurar e utilizar Embalagem Volta (SDR)",
+      "keywords": "net-bo sdr embalagem volta depósito reembolso associar produto venda nota crédito cliente sdr",
+      "summary": "<p>Criar embalagens retornáveis, associá-las a produtos e devolver o depósito por nota de crédito.</p>",
+      "use_when": "<p>Utilize na configuração e operação do Sistema de Depósito e Reembolso.</p>",
+      "body": "articles/NETBO-SDR.html",
+      "assets": [],
+      "source": "exported-from-production-after-import-2026-08-25"
+    },
+    {
+      "number": "NETBO-WIDGETS",
+      "name": "widgets",
+      "title": "Criar e configurar Widgets",
+      "keywords": "net-bo widgets index.html widget.json filter_params config_params cost_price vue",
+      "summary": "<p>Estrutura mínima, exemplo de widget.json e pontos de extensão para filtros e parâmetros de configuração.</p>",
+      "use_when": "<p>Utilize no desenvolvimento de Widgets para o NET-bo.</p>",
+      "body": "articles/NETBO-WIDGETS.html",
+      "assets": [],
+      "source": "exported-from-production-after-import-2026-08-25"
+    }
+  ]
+}

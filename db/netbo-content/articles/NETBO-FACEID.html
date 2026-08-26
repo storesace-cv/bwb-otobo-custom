@@ -1,0 +1,60 @@
+<h2>Acesso ao NET-BO</h2>
+<p>Para iniciar a configuração do relógio de ponto e de um terminal de Face ID, deve ter acesso ao NET-BO da empresa. Se ainda não tiver, solicite a licença para suporte@opalaconsult.com.</p>
+<p>Na opção &gt;&gt; Tabelas &gt;&gt; utilizadores deverá criar um utilizador na opção de + ou editar no caso deste já existir, clicando duas vezes sobre a linha do nome do utilizador.</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-01-27bff766014f.png@@" width="220" height="207" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<h2>Criação de utilizador</h2>
+<p>Ao criar o utilizador escolha de imediato o tipo de acesso, devendo escolher &gt;&gt; Sem Acesso/ Relógio de Ponto &lt;&lt; pois só terá que caracterizar o nome do funcionário.</p>
+<p>Escolha o separador de &gt;&gt; Organização &lt;&lt; para tirar uma foto; pode também fazê-lo pelo aplicação1; deve ser o mais próximo possível da face; ou efetuar upload de uma foto previamente criada.</p>
+<p>Escolha a empresa e /ou loja a associar o funcionário.</p>
+<p>O funcionário só fica associado a uma loja ou armazém. Se tiver acesso através de face ID a várias lojas ou armazéns, deverá duplicar o funcionário e mudar a loja em &gt;&gt; Organização.</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-02-e4079a8641b7.png@@" width="951" height="907" alt="Captura de ecrã do procedimento NET-bo"></figure><figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-03-5da89cc24de6.png@@" width="851" height="609" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<h2>Perfil de acessos</h2>
+<p>O perfil de acesso para o relógio de ponto está criado de sistema pelo que não precisa de efetuar qualquer configuração para que este seja ativado.</p>
+<h2>Configuração do Software Cliente para ligar o terminal FACE ID</h2>
+<p>Comece por ligar o terminal à rede através de cabo de rede. Ligue também a fonte de alimentação.</p>
+<p>O terminal vai arrancar.</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-04-7e4e2325d580.png@@" width="804" height="1600" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<h2>Configurar a rede</h2>
+<p>Depois de arrancar no canto superior direito, pressionem para efetuar as configurações.</p>
+<p>A password a inserir é “admin” e não pode ser alterada.</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-05-1f5d4432739a.png@@" width="779" height="1600" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<p>O terminal não pode/deve ser ligado por wireless para não comprometer a troca de IP’s.</p>
+<p>Escolher a opção &gt;&gt; System Config</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-06-b4cabe3a3a0e.png@@" width="1200" height="1600" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<p>Escolha a opção de rede por cabo: <em>wired network</em></p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-07-6c26844f983c.png@@" width="1200" height="1600" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<p>Insira o IP do servidor</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-08-bdd33f894469.png@@" width="1200" height="1600" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<h2>Ponto de Venda ou Escritório: NET-BO Client</h2>
+<p>Na máquina de escritório ou ponto de venda deverá abrir o NET-BO e efetuar donwload do Client.</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-09-c82d0b453509.png@@" width="394" height="84" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<h2>Que software de Client escolher?</h2>
+<h3>Windows</h3>
+<p>Se a máquina em que o for instalar estiver com o sistema operativo windows deverá efetuar download da pasta Client para windows AQUI.</p>
+<p>Instale o setup29.exe no pc, na raiz.</p>
+<p>O Client fica automaticamente instalado no arranque rápido do windows pelo que não tem que ter essa preocupação.</p>
+<p>Para finalizar o processo, faça download do ficheiro config.xml AQUI e coloque dentro da pasta NETBO/ETC.</p>
+<h2>Alterações a aplicar no ficheiro config.xml</h2>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-10-8a9869c0769b.png@@" width="1166" height="1349" alt="Captura de ecrã do procedimento NET-bo"></figure>
+<h3>Linux - PT-CERT</h3>
+<p>Deverá aceder ao configurador da máquina e ativar o parâmetro:</p>
+<p>geral) usa cliente NetBO</p>
+<p>Depois, abrir um terminal e executar:</p>
+<pre><code>cd /root/</code></pre>
+<pre><code>wget de.net-bo.com/downloads/setup_attendance.tgz</code></pre>
+<pre><code>tar zxvf setup_attendance.tgz</code></pre>
+<pre><code>rm setup_attendance.tgz</code></pre>
+<p>Copiar o ficheiro config.xml para /root/weckOFFICE/etc/</p>
+<p>Para arrancar o programa, executar:</p>
+<pre><code>/root/weckOFFICE/bin/tray_application</code></pre>
+<h3>Linux - WinREST</h3>
+<p>Se a máquina em que o for instalar estiver com uma distribuição linux deverá efetuar download; abrir o terminal:</p>
+<pre><code>cd /home/</code></pre>
+<pre><code>wget de.net-bo.com/downloads/setup29.tgz</code></pre>
+<pre><code>tar zxvf setup29.tgz</code></pre>
+<pre><code>rm setup29.tgz</code></pre>
+<p>Copiar o ficheiro config.xml para /home/weckOFFICE/etc/</p>
+<p>Para instalar e sincronizar:</p>
+<pre><code>/home/weckOFFICE/bin/start &amp;</code></pre>
+<p>Qualquer dúvida, por favor, contacte-nos.</p>
+<figure class="image"><img src="@@NETBO_IMAGE:NETBO-faceid-terminal-11-edc89ba8653d.png@@" width="1141" height="1600" alt="Captura de ecrã do procedimento NET-bo"></figure>

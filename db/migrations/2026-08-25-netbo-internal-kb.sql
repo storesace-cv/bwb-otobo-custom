@@ -1,0 +1,22 @@
+-- NET-bo internal knowledge base (2026-08-25)
+--
+-- Este ficheiro NÃO contém o SQL com anexos binários (demasiado grande para o Git).
+-- Gerar localmente:
+--   python3 scripts/validate-netbo-faq.py
+--   python3 scripts/apply-netbo-faq.py --write /tmp/netbo-internal-kb.sql
+--
+-- Produção: já aplicada em 2026-08-25. NÃO reaplicar sem necessidade e sem dump prévio.
+-- Backup pré-importação: /root/otobo-backups/faq-before-netbo-internal-20260825.sql (~29,4 MB)
+--
+-- Propriedades do SQL gerado (rever sempre antes de aplicar noutro ambiente):
+-- - Transaccional (START TRANSACTION / COMMIT)
+-- - Categoria «Documentação interna» obrigatória (SIGNAL se em falta)
+-- - Cria/reutiliza apenas «Documentação interna > NET-bo» (lookup parent_id+name)
+-- - NÃO altera «Manuais de utilização > NET-bo»
+-- - Upsert por f_number NETBO-*
+-- - DELETE de anexos apenas WHERE filename LIKE 'NETBO-{name}-%'
+-- - Grupos: bwb_helpdesk_manual_editors + bwb_helpdesk_manual_readers
+--
+-- Reversão: restaurar o dump faq-before-netbo-internal-20260825.sql (tabelas FAQ).
+-- Não apagar artigos/categorias à mão sem análise.
+SELECT 'Generate SQL with scripts/apply-netbo-faq.py — do not apply this stub' AS message;
