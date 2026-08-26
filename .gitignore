@@ -17,3 +17,9 @@ exports/
 .DS_Store
 .idea/
 .vscode/
+
+# Local AI/IDE tooling and Python bytecode (never version).
+.serena/
+**/__pycache__/
+*.py[cod]
+
