@@ -109,7 +109,7 @@ SELECT
         '<li><strong>responder a este e-mail</strong>, ou</li>',
         '<li><strong>abrir o pedido no portal</strong> e responder ou, se o assunto já estiver resolvido, <strong>fechar a ocorrência</strong>.</li>',
         '</ul>',
-        '<p><a href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketNumber=&lt;OTOBO_TICKET_TicketNumber&gt;">Abrir o ticket no Helpdesk</a></p>',
+        '<p><a href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketNumber=&lt;OTOBO_TICKET_TicketNumber&gt;" style="color:#59B3FF !important;text-decoration:underline !important;font-weight:700;font-size:14px;" target="_blank" rel="noopener noreferrer">Abrir o ticket no Helpdesk&nbsp;&#128279;</a></p>',
         '<p>Se precisar de esclarecimentos, responda a esta mensagem — ficamos a aguardar.</p>',
         '<p>Com os melhores cumprimentos,<br><strong>Helpdesk</strong></p>'
     ),
@@ -138,7 +138,7 @@ SELECT
         '<li><strong>reply to this email</strong>, or</li>',
         '<li><strong>open the ticket in the portal</strong> to reply or, if already resolved, <strong>close the request</strong>.</li>',
         '</ul>',
-        '<p><a href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketNumber=&lt;OTOBO_TICKET_TicketNumber&gt;">Open the ticket in Helpdesk</a></p>',
+        '<p><a href="&lt;OTOBO_CONFIG_HttpType&gt;://&lt;OTOBO_CONFIG_FQDN&gt;/&lt;OTOBO_CONFIG_ScriptAlias&gt;customer.pl?Action=CustomerTicketZoom;TicketNumber=&lt;OTOBO_TICKET_TicketNumber&gt;" style="color:#59B3FF !important;text-decoration:underline !important;font-weight:700;font-size:14px;" target="_blank" rel="noopener noreferrer">Open the ticket in Helpdesk&nbsp;&#128279;</a></p>',
         '<p>If you need clarification, reply to this message — we look forward to hearing from you.</p>',
         '<p>Kind regards,<br><strong>Helpdesk</strong></p>'
     ),
