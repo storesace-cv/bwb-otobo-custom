@@ -94,7 +94,7 @@ WHERE @notif_id IS NOT NULL
 
 -- Mensagem PT
 INSERT INTO notification_event_message (
-    notification_id, language, subject, text, content_type, create_time, create_by, change_time, change_by
+    notification_id, language, subject, text, content_type
 )
 SELECT
     @notif_id,
@@ -113,11 +113,7 @@ SELECT
         '<p>Se precisar de esclarecimentos, responda a esta mensagem — ficamos a aguardar.</p>',
         '<p>Com os melhores cumprimentos,<br><strong>Helpdesk</strong></p>'
     ),
-    'text/html',
-    UTC_TIMESTAMP(),
-    1,
-    UTC_TIMESTAMP(),
-    1
+    'text/html'
 FROM DUAL
 WHERE @notif_id IS NOT NULL
   AND NOT EXISTS (
@@ -127,7 +123,7 @@ WHERE @notif_id IS NOT NULL
 
 -- Mensagem EN (fallback)
 INSERT INTO notification_event_message (
-    notification_id, language, subject, text, content_type, create_time, create_by, change_time, change_by
+    notification_id, language, subject, text, content_type
 )
 SELECT
     @notif_id,
@@ -146,11 +142,7 @@ SELECT
         '<p>If you need clarification, reply to this message — we look forward to hearing from you.</p>',
         '<p>Kind regards,<br><strong>Helpdesk</strong></p>'
     ),
-    'text/html',
-    UTC_TIMESTAMP(),
-    1,
-    UTC_TIMESTAMP(),
-    1
+    'text/html'
 FROM DUAL
 WHERE @notif_id IS NOT NULL
   AND NOT EXISTS (
