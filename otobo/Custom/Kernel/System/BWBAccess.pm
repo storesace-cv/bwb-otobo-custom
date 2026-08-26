@@ -241,6 +241,8 @@ sub VisualPreferencesCopy {
         UserDashboardPosition
         UserDashboardPref0120-TicketNew-Columns
         UserDashboardPref0120-TicketNew-Shown
+        UserDashboardPref0129-TicketWaitingCustomer-Columns
+        UserDashboardPref0129-TicketWaitingCustomer-Shown
         UserDashboardPref0130-TicketOpen-Columns
         UserDashboardPref0130-TicketOpen-Shown
         UserFilterColumnsEnabled-AgentTicketStatusView

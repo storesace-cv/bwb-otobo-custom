@@ -7,6 +7,32 @@ sub Load {
     $Self->{'DashboardBackend'}->{'0120-TicketNew'}->{Limit}='25';
     $Self->{'DashboardBackend'}->{'0120-TicketNew'}->{DefaultColumns}->{CustomerCompanyName}='2';
     $Self->{'DashboardBackend'}->{'0120-TicketNew'}->{DefaultColumns}->{DynamicField_BWBStore}='2';
+    $Self->{'DashboardBackend'}->{'0129-TicketWaitingCustomer'} = {
+        Attributes => 'States=Pendente a aguardar cliente;SortBy=Age;OrderBy=Up;',
+        Block         => 'ContentLarge',
+        CacheTTLLocal => '0.5',
+        Default       => '1',
+        DefaultColumns => {
+            Age                  => '2',
+            CustomerCompanyName  => '2',
+            CustomerName         => '1',
+            DynamicField_BWBStore => '2',
+            Owner                => '1',
+            State                => '2',
+            TicketNumber         => '2',
+            Title                => '2',
+            Changed              => '1',
+        },
+        Description => 'Tickets à espera de resposta do cliente (estado Pendente a aguardar cliente).',
+        Filter      => 'All',
+        Group       => '',
+        Limit       => '25',
+        Mandatory   => '0',
+        Module      => 'Kernel::Output::HTML::Dashboard::TicketGeneric',
+        Permission  => 'rw',
+        Time        => 'Age',
+        Title       => 'A aguardar resposta do cliente',
+    };
     $Self->{'DashboardBackend'}->{'0130-TicketOpen'}->{Limit}='25';
     $Self->{'DashboardBackend'}->{'0130-TicketOpen'}->{DefaultColumns}->{CustomerCompanyName}='2';
     $Self->{'DashboardBackend'}->{'0130-TicketOpen'}->{DefaultColumns}->{DynamicField_BWBStore}='2';
