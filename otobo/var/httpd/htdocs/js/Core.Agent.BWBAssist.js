@@ -11,8 +11,11 @@ Core.Agent.BWBAssist = (function (TargetNS) {
 
     function RenderResult($Box, Data) {
         var Html = '';
-        if (!Data || !Data.ok) {
-            $Box.html('<p>Não foi possível obter sugestões.</p>');
+        if (!Data || !Data.ok || Data.unavailable) {
+            var Msg = (Data && Data.message)
+                ? Data.message
+                : 'O Assistente não está disponível. Use a Ajuda (pesquisa standard).';
+            $Box.html('<p class="BWBAssistUnavailableMsg">' + Core.App.EscapeHTML(Msg) + '</p>');
             return;
         }
         if (Data.summary) {
@@ -27,7 +30,12 @@ Core.Agent.BWBAssist = (function (TargetNS) {
                     + Core.App.EscapeHTML(Hit.number || '')
                     + '</strong> — '
                     + Core.App.EscapeHTML(Hit.title || '')
-                    + '</a></li>';
+                    + '</a>';
+                if (Hit.justification) {
+                    Html += '<p class="BWBAssistWhy"><strong>Porquê este artigo:</strong> '
+                        + Core.App.EscapeHTML(Hit.justification) + '</p>';
+                }
+                Html += '</li>';
             });
             Html += '</ul>';
         }
@@ -40,7 +48,12 @@ Core.Agent.BWBAssist = (function (TargetNS) {
                     + Core.App.EscapeHTML(Hit.number || '')
                     + '</strong> — '
                     + Core.App.EscapeHTML(Hit.title || '')
-                    + '</a></li>';
+                    + '</a>';
+                if (Hit.justification) {
+                    Html += '<p class="BWBAssistWhy"><strong>Porquê este ticket:</strong> '
+                        + Core.App.EscapeHTML(Hit.justification) + '</p>';
+                }
+                Html += '</li>';
             });
             Html += '</ul>';
         }

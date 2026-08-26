@@ -82,7 +82,7 @@ O acesso ao servidor é feito através da chave privada local do administrador. 
 | E-mail | `Ticket/Event/NotificationEvent/Transport/Email.pm`, templates NotificationEvent |
 | Modelo de resposta `mod-apple-01` | HTML `Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html` + `standard_template` / `queue_standard_template`; filtro Compose `FilterElementPost/BWBComposeAppleTemplate.pm` + JS `Core.Agent.BWBComposeApple.js` (não duplicar a saudação da fila) |
 | Contexto email → Claude MCP | `BWBEmailContext.pm`, wrapper `Email.pm`, `PublicBWBTicketContext.pm`, XML `BWBTicketContext.xml` |
-| Assistente Ajuda / RAG | `BWBAssist.pm`, `AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, filtro `BWBAssistTicketSuggest.pm`; serviço `services/bwb-assist` no VPS `178.159.34.165` |
+| Assistente Ajuda / RAG | `BWBAssist.pm`, `AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, filtro `BWBAssistTicketSuggest.pm`; serviço `services/bwb-assist` no VPS `178.159.34.165` (`/v1/assist/query`, filtro de contexto, limiar tickets, modo operacional) |
 | Dashboard | `Output/HTML/Dashboard/BWBOpenWork.pm`, `ZZZBWBDashboard*.pm`, ordem: `AgentDashboard.pm` + `BWBDashboard.pm` |
 
 ### Assistente IA (132 ↔ 165)

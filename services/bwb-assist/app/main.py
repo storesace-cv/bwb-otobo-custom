@@ -9,13 +9,15 @@ from pydantic import BaseModel, Field
 
 from app.auth import log_safe, require_bearer
 from app.config import get_settings
+from app.context import product_labels
 from app.index_store import Doc, IndexStore
-from app.synthesize import synthesize
+from app.retrieve import retrieve_faq, retrieve_tickets
+from app.synthesize import build_justification, synthesize
 
 logger = logging.getLogger("bwb-assist")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-app = FastAPI(title="BWB Assist", version="1.0.0")
+app = FastAPI(title="BWB Assist", version="1.1.0")
 _store: IndexStore | None = None
 
 
@@ -51,6 +53,15 @@ class AssistSearchRequest(BaseModel):
     question: str = Field(min_length=2, max_length=2000)
     kinds: list[Literal["faq", "ticket"]] = Field(default_factory=lambda: ["faq"])
     limit: int = Field(default=8, ge=1, le=30)
+    contexts: list[str] = Field(default_factory=list)
+
+
+class AssistQueryRequest(BaseModel):
+    question: str = Field(min_length=2, max_length=2000)
+    excerpts: list[ExcerptIn] = Field(default_factory=list)
+    faq_limit: int = Field(default=5, ge=1, le=20)
+    ticket_limit: int = Field(default=5, ge=0, le=20)
+    use_index: bool = True
 
 
 class IndexDocsRequest(BaseModel):
@@ -67,50 +78,69 @@ def health() -> dict[str, Any]:
         "docs": len(st.docs),
         "ollama_enabled": settings.ollama_enabled,
         "model": settings.ollama_model if settings.ollama_enabled else None,
+        "version": "1.1.0",
     }
 
 
 @app.post("/v1/assist/faq")
 async def assist_faq(payload: AssistFAQRequest, _: None = Depends(require_bearer)) -> dict[str, Any]:
     question = payload.question.strip()
-    excerpts = [e.model_dump() for e in payload.excerpts]
-
-    # Optional BM25 re-rank / fill from local index when OTOBO sent few hits.
+    seeds = [e.model_dump() for e in payload.excerpts]
     if payload.use_index:
-        hits = store().search(question, kinds=["faq"], limit=payload.limit)
-        for doc, score in hits:
-            if any(x.get("doc_id") == doc.doc_id for x in excerpts):
-                continue
-            excerpts.append(
-                {
-                    "doc_id": doc.doc_id,
-                    "kind": doc.kind,
-                    "number": doc.number,
-                    "title": doc.title,
-                    "category": doc.category,
-                    "excerpt": doc.body[:800],
-                    "body": doc.body[:2000],
-                    "url": doc.url,
-                    "meta": {**(doc.meta or {}), "score": score},
-                }
-            )
-        excerpts = excerpts[: payload.limit]
+        excerpts, debug = retrieve_faq(
+            store(),
+            question,
+            limit=payload.limit,
+            seed_excerpts=seeds,
+        )
+    else:
+        excerpts = seeds[: payload.limit]
+        debug = {"use_index": False, "detected_contexts": []}
 
     summary, mode = await synthesize(question, excerpts)
     cited = [e.get("doc_id") for e in excerpts if e.get("doc_id")]
-    logger.info("%s", log_safe("assist_faq", mode=mode, hits=len(excerpts), cited=cited))
+    logger.info("%s", log_safe("assist_faq", mode=mode, hits=len(excerpts), cited=cited, debug=debug))
     return {
         "ok": True,
         "summary": summary,
         "mode": mode,
         "excerpts": excerpts,
         "cited_ids": cited,
+        "debug": debug,
     }
 
 
 @app.post("/v1/assist/search")
 async def assist_search(payload: AssistSearchRequest, _: None = Depends(require_bearer)) -> dict[str, Any]:
-    hits = store().search(payload.question, kinds=list(payload.kinds), limit=payload.limit)
+    st = store()
+    if payload.kinds == ["ticket"] or "ticket" in payload.kinds:
+        contexts = set(payload.contexts or [])
+        if not contexts:
+            faq_hits, faq_debug = retrieve_faq(st, payload.question, limit=5, seed_excerpts=[])
+            contexts = set(faq_debug.get("detected_contexts") or [])
+            if not contexts:
+                for item in faq_hits[:3]:
+                    pseudo = Doc(
+                        doc_id=str(item.get("doc_id") or ""),
+                        kind="faq",
+                        title=item.get("title") or "",
+                        number=item.get("number") or "",
+                        category=item.get("category") or "",
+                        body="",
+                        url="",
+                        meta=item.get("meta") or {},
+                    )
+                    contexts |= product_labels(pseudo)
+        results, debug = retrieve_tickets(
+            st,
+            payload.question,
+            contexts=contexts,
+            limit=payload.limit,
+        )
+        logger.info("%s", log_safe("assist_search", kinds=payload.kinds, hits=len(results), debug=debug))
+        return {"ok": True, "results": results, "debug": debug}
+
+    hits = st.search(payload.question, kinds=list(payload.kinds), limit=payload.limit)
     results = []
     for doc, score in hits:
         results.append(
@@ -124,10 +154,84 @@ async def assist_search(payload: AssistSearchRequest, _: None = Depends(require_
                 "url": doc.url,
                 "score": score,
                 "meta": doc.meta,
+                "justification": build_justification(
+                    payload.question,
+                    title=doc.title,
+                    body=doc.body,
+                    number=doc.number,
+                    score=float(score),
+                    source="index",
+                ),
             }
         )
     logger.info("%s", log_safe("assist_search", kinds=payload.kinds, hits=len(results)))
     return {"ok": True, "results": results}
+
+
+@app.post("/v1/assist/query")
+async def assist_query(payload: AssistQueryRequest, _: None = Depends(require_bearer)) -> dict[str, Any]:
+    """Combined FAQ + similar tickets with shared context detection and debug."""
+    question = payload.question.strip()
+    seeds = [e.model_dump() for e in payload.excerpts]
+    excerpts, faq_debug = retrieve_faq(
+        store(),
+        question,
+        limit=payload.faq_limit,
+        seed_excerpts=seeds,
+    )
+    contexts = set(faq_debug.get("detected_contexts") or [])
+    # Fallback: product labels from top FAQ hits only (not every noisy meta label).
+    if not contexts:
+        for item in excerpts[:3]:
+            pseudo = Doc(
+                doc_id=str(item.get("doc_id") or ""),
+                kind="faq",
+                title=item.get("title") or "",
+                number=item.get("number") or "",
+                category=item.get("category") or "",
+                body="",
+                url="",
+                meta=item.get("meta") or {},
+            )
+            contexts |= product_labels(pseudo)
+
+    tickets: list[dict[str, Any]] = []
+    ticket_debug: dict[str, Any] = {}
+    if payload.ticket_limit > 0:
+        tickets, ticket_debug = retrieve_tickets(
+            store(),
+            question,
+            contexts=contexts,
+            limit=payload.ticket_limit,
+        )
+
+    summary, mode = await synthesize(question, excerpts)
+    debug = {
+        **faq_debug,
+        **ticket_debug,
+        "detected_contexts": sorted(contexts),
+        "mode": mode,
+    }
+    logger.info(
+        "%s",
+        log_safe(
+            "assist_query",
+            mode=mode,
+            faq=len(excerpts),
+            tickets=len(tickets),
+            contexts=sorted(contexts),
+            threshold=ticket_debug.get("threshold"),
+        ),
+    )
+    return {
+        "ok": True,
+        "summary": summary,
+        "mode": mode,
+        "excerpts": excerpts,
+        "tickets": tickets,
+        "cited_ids": [e.get("doc_id") for e in excerpts if e.get("doc_id")],
+        "debug": debug,
+    }
 
 
 @app.post("/v1/index/replace")

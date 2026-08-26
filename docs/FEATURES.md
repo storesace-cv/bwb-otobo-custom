@@ -131,12 +131,16 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 
 - Menu **Ajuda → Assistente** (`AgentBWBAssist`): pergunta em linguagem natural; pesquisa FAQ interna (`Kernel::System::FAQ` / `FAQSearch`) nas categorias sob **Documentação interna** (Helpdesk + PTcert); síntese no host IA `178.159.34.165` (`services/bwb-assist`).
 - O VPS OTOBO (`132`) **não** corre Ollama nem índice vectorial — só orquestra e aplica permissões.
-- Host IA (`165`, `mcp-mail.bwb.pt`): API FastAPI BM25 + síntese. Com **3,8 GiB RAM** o Ollama 7B fica **desactivado** (`BWB_ASSIST_OLLAMA_ENABLED=0`); usa-se síntese extractiva (cita artigos sem inventar passos). Upgrade para ≥8 GiB livres antes de activar `qwen2.5:7b-instruct`.
+- Host IA (`165`, `mcp-mail.bwb.pt`): API FastAPI BM25 + síntese. Com **3,8 GiB RAM** o Ollama 7B fica **desactivado** (`BWB_ASSIST_OLLAMA_ENABLED=0`); usa-se síntese extractiva/operacional (cita artigos sem inventar passos). Upgrade para ≥8 GiB livres antes de activar `qwen2.5:7b-instruct`.
+- Endpoint **`POST /v1/assist/query`**: retrieve FAQ + tickets + síntese com contexto partilhado; justificação por hit; modo `operational` quando a pergunta é procedural e as fontes têm procedimento confirmado (comandos literais).
+- Retrieve de tickets: filtro de produto/contexto (labels/metadados indexados, **sem** lista fixa de produtos) → limiar de score → lista vazia se nada for relevante (não preenche com casos de outros produtos).
+- Sem serviço IA: o Assistente mostra indisponível e aponta para a Ajuda standard (não faz fallback silencioso a resultados locais incompletos).
+- FAQ no OTOBO: tokens de pesquisa com stop-words PT/EN removidas; fallback OR por tokens fortes.
 - API RO `PublicBWBAssistIndex` (Bearer + IP allowlist) exporta FAQ e tickets fechados para indexação em `165`.
 - Casos semelhantes (tickets): retrieve em `165` → revalidação obrigatória `BWBAccess::TicketAccessCheck` no OTOBO antes de mostrar.
 - Ticket Zoom: painel **Documentação sugerida** (filtro `BWBAssistTicketSuggest` + JS `Core.Agent.BWBAssist.js`).
 - Segredos só no servidor: `/opt/otobo/var/bwb-assist.token`, `bwb-assist.url`, `bwb-assist-index.token`, `bwb-assist-index.allowed-ips`; em `165` `/var/www/bwb-assist/.env`.
-- Código: `BWBAssist.pm`, `AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, XML `BWBAssist.xml`, `services/bwb-assist/`.
+- Código: `BWBAssist.pm`, `AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, XML `BWBAssist.xml`, `services/bwb-assist/` (`context.py`, `retrieve.py`, testes `tests/`).
 
 ## Registo telefónico / e-mail em nome do cliente
 

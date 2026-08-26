@@ -53,13 +53,10 @@ sub Run {
     }
 
     my %Data = (
-        Query          => $Query,
-        Summary        => '',
-        Mode           => '',
-        Warning        => '',
-        HasResults     => 0,
-        HasTickets     => 0,
-        AssistEnabled  => $Assist->Enabled() ? 1 : 0,
+        Query         => $Query,
+        Summary       => '',
+        AssistEnabled => $Assist->Enabled() ? 1 : 0,
+        Message       => '',
     );
 
     if ( $Query ne '' ) {
@@ -67,52 +64,67 @@ sub Run {
             UserID => $Self->{UserID},
             Query  => $Query,
         );
-        $Data{Summary} = $Result->{summary} || '';
-        $Data{Mode}    = $Result->{mode}    || '';
-        $Data{Warning} = $Result->{warning} || '';
 
-        for my $Hit ( @{ $Result->{excerpts} || [] } ) {
-            $Data{HasResults} = 1;
+        if ( !$Result->{ok} || $Result->{unavailable} ) {
+            $Data{Message} = $Result->{message}
+                || 'O Assistente de Ajuda não está disponível. Use o menu Ajuda (pesquisa standard).';
             $Layout->Block(
-                Name => 'FAQHit',
-                Data => {
-                    Number   => $Hit->{number}   || '',
-                    Title    => $Hit->{title}    || '',
-                    Category => $Hit->{category} || '',
-                    Excerpt  => $Hit->{excerpt}  || '',
-                    ItemID   => $Hit->{item_id}  || 0,
-                    URL      => $Hit->{url}      || '',
-                },
+                Name => 'Unavailable',
+                Data => { Message => $Data{Message} },
             );
         }
-        for my $Hit ( @{ $Result->{tickets} || [] } ) {
-            $Data{HasTickets} = 1;
-            my $TicketID = $Hit->{ticket_id} || 0;
-            $Layout->Block(
-                Name => 'TicketHit',
-                Data => {
-                    Number   => $Hit->{number}   || '',
-                    Title    => $Hit->{title}    || '',
-                    Category => $Hit->{category} || '',
-                    Excerpt  => $Hit->{excerpt}  || '',
-                    TicketID => $TicketID,
-                    URL      => $Hit->{url}      || '',
-                },
-            );
-        }
-        if ( !$Data{HasResults} && !$Data{HasTickets} ) {
-            $Layout->Block( Name => 'NoHits' );
+        else {
+            $Data{Summary} = $Result->{summary} || '';
+            if ( $Data{Summary} ) {
+                $Layout->Block( Name => 'Summary', Data => { Summary => $Data{Summary} } );
+            }
+
+            $Layout->Block( Name => 'DocSection' );
+            my $HasFAQ = 0;
+            for my $Hit ( @{ $Result->{excerpts} || [] } ) {
+                $HasFAQ = 1;
+                $Layout->Block(
+                    Name => 'FAQHit',
+                    Data => {
+                        Number        => $Hit->{number}        || '',
+                        Title         => $Hit->{title}         || '',
+                        Category      => $Hit->{category}      || '',
+                        Excerpt       => $Hit->{excerpt}       || '',
+                        Justification => $Hit->{justification} || 'Sem justificação devolvida pelo serviço.',
+                        ItemID        => $Hit->{item_id}       || 0,
+                        URL           => $Hit->{url}           || '',
+                    },
+                );
+            }
+            if ( !$HasFAQ ) {
+                $Layout->Block( Name => 'NoHits' );
+            }
+
+            my @Tickets = @{ $Result->{tickets} || [] };
+            $Layout->Block( Name => 'TicketSection' );
+            if (@Tickets) {
+                for my $Hit (@Tickets) {
+                    $Layout->Block(
+                        Name => 'TicketHit',
+                        Data => {
+                            Number        => $Hit->{number}        || '',
+                            Title         => $Hit->{title}         || '',
+                            Category      => $Hit->{category}      || '',
+                            Excerpt       => $Hit->{excerpt}       || '',
+                            Justification => $Hit->{justification} || 'Sem justificação devolvida pelo serviço.',
+                            TicketID      => $Hit->{ticket_id}     || 0,
+                            URL           => $Hit->{url}           || '',
+                        },
+                    );
+                }
+            }
+            else {
+                $Layout->Block( Name => 'NoTicketHits' );
+            }
         }
     }
     else {
         $Layout->Block( Name => 'Intro' );
-    }
-
-    if ( $Data{Warning} ) {
-        $Layout->Block( Name => 'Warning', Data => { Warning => $Data{Warning} } );
-    }
-    if ( $Data{Summary} ) {
-        $Layout->Block( Name => 'Summary', Data => { Summary => $Data{Summary} } );
     }
 
     my $Output = $Layout->Header( Title => 'Assistente de Ajuda' );
