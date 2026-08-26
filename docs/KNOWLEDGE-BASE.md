@@ -19,6 +19,7 @@ Antes de planear ou alterar código:
 | 1 | [REFERENCES.md](REFERENCES.md) | Manuais oficiais: administração, utilização, desenvolvimento, instalação |
 | 2 | [ARCHITECTURE.md](ARCHITECTURE.md) | Domínios funcionais e componentes BWB |
 | 3 | [FEATURES.md](FEATURES.md) | Catálogo do que já foi desenvolvido e como se comporta |
+| 3b | [PTCERT-TECNICO.md](PTCERT-TECNICO.md) | Estado confirmado PTcert: VM Linux original vs WSL2 (obrigatório em tarefas PTcert) |
 | 4 | [ROADMAP.md](ROADMAP.md) | Entregue recentemente e passos seguintes |
 | 5 | [DEVELOPMENT.md](DEVELOPMENT.md) | Princípios, fluxo de alteração e validação |
 | 6 | [OPERATIONS.md](OPERATIONS.md) | Publicação, SSH, cópias de segurança |
@@ -34,7 +35,7 @@ Depois disso, identificar no código os módulos Perl, templates TT, JavaScript 
 | Comportamento genérico OTOBO (tickets, filas, notificações, ACL, console, Custom/) | Manuais oficiais 11.0 em [REFERENCES.md](REFERENCES.md) |
 | Separação BWB ↔ ZS Angola, lojas, folhas de trabalho, convites, IMAP ZS | Este repositório (`docs/` + `otobo/Custom/`) |
 | Utilização no terreno / responsável ZS Angola | [MANUAL-ZS-ANGOLA.md](MANUAL-ZS-ANGOLA.md) |
-| Manuais internos Ajuda (FAQ agente) | Helpdesk: `db/faq-content/`; PTcert operacional: `db/ptcert-content/` + `scripts/apply-ptcert-faq.py`; PTcert técnico: repo **`bwb-otobo-custom-ptcert`** + `scripts/apply-ptcert-technical-kb.py` — ver [FEATURES.md](FEATURES.md) § Ajuda |
+| Manuais internos Ajuda (FAQ agente) | Helpdesk: `db/faq-content/`; PTcert operacional: `db/ptcert-content/` + `scripts/apply-ptcert-faq.py`; PTcert técnico: [PTCERT-TECNICO.md](PTCERT-TECNICO.md) + `db/ptcert-technical-content/` + `scripts/apply-ptcert-technical-content.py` — ver [FEATURES.md](FEATURES.md) § Ajuda |
 | Assistente Ajuda / RAG | OTOBO Custom `BWBAssist*`; serviço `services/bwb-assist` no VPS `178.159.34.165` — ver [FEATURES.md](FEATURES.md), [OPERATIONS.md](OPERATIONS.md), [SECURITY.md](SECURITY.md) |
 | Esquema de tabelas BWB | `db/current-schema.sql` e `db/migrations/` |
 | Credenciais, Nginx, Postfix, MariaDB, Config.pm integral | Servidor de produção apenas — **fora do Git** |

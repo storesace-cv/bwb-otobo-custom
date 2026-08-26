@@ -1,0 +1,43 @@
+<h2>Linux original</h2>
+<p><strong>Confirmado no Linux original:</strong> o ambiente gráfico é Xubuntu/XFCE sobre X11. LightDM faz autologin do utilizador <code>pos</code>, com UID/GID 1000 observado na instalação migrada. O autostart chama o lançador através de <code>sudo</code>.</p>
+<h2>Root versus pos</h2>
+<p><strong>Confirmado em WSL2:</strong> a execução directa como root abriu o PTcert e consultou a base <code>pos</code>. O teste como <code>pos</code> produziu <code>Access forbidden</code>. Portanto, o método WSL2 validado usa root.</p>
+<p>Isto não significa que todos os componentes devam correr como root na VM original: a sessão Linux original continua a ser do utilizador <code>pos</code>. Preservar o contexto previsto por cada script.</p>
+<h2>Login loop LightDM (VM original) — resolvido 2026-08-25</h2>
+<p><strong>Confirmado no Linux original:</strong> a VM entrou em loop LightDM → autologin <code>pos</code> → sessão inicia → sessão termina → greeter → repetição.</p>
+<p><strong>Causa confirmada:</strong> ownership incorrecto de ficheiros de autoridade da sessão gráfica no HOME de <code>pos</code>:</p>
+<ul>
+<li><code>/home/pos/.Xauthority</code> estava <code>root:root</code> (0600) — LightDM: <em>Failed to open X authority … Permission denied</em>.</li>
+<li><code>/home/pos/.ICEauthority</code> estava <code>root:root</code> (0600) — <code>.xsession-errors</code>: <em>xfce4-session: Unable to access file …/.ICEauthority: Permission denied</em>.</li>
+</ul>
+<p><strong>Procedimento canónico de diagnóstico e correcção</strong> (Confirmado no Linux original):</p>
+<ol>
+<li>Aceder por terminal/SSH/MeshCentral.</li>
+<li>Verificar LightDM:<pre>systemctl status lightdm --no-pager -l</pre></li>
+<li>Verificar ficheiros:
+<pre>ls -la /home/pos/.Xauthority /home/pos/.ICEauthority /home/pos/.xsession-errors</pre>
+</li>
+<li>Consultar erros da sessão:
+<pre>tail -n 120 /home/pos/.xsession-errors</pre>
+</li>
+<li>Se ownership incorrecto (<code>root:root</code>), corrigir <strong>apenas</strong> esses ficheiros:
+<pre>chown pos:pos /home/pos/.Xauthority
+chown pos:pos /home/pos/.ICEauthority</pre>
+</li>
+<li>Confirmar:
+<pre>ls -l /home/pos/.Xauthority /home/pos/.ICEauthority</pre>
+</li>
+<li>Reiniciar apenas o gestor gráfico:
+<pre>systemctl restart lightdm</pre>
+</li>
+<li>Resultado esperado: LightDM → autologin <code>pos</code> → XFCE → arranque automático do PTcert.</li>
+</ol>
+<p><strong>Não fazer:</strong> <code>chown</code> recursivo em <code>/home/pos</code>. Corrigir apenas os ficheiros afectados.</p>
+<p><strong>Confirmado no Linux original:</strong> o erro <code>XIO: fatal IO error 11 … on X server ":0"</code> foi consequência da queda da sessão, não a causa primária. Warnings PAM <code>pam_kwallet</code> / <code>pam_kwallet5</code> também não foram a causa.</p>
+<h2>Diagnóstico X11/WSLg</h2>
+<p><strong>Confirmado em WSL2:</strong> foram observadas as variáveis <code>DISPLAY=:0</code>, <code>WAYLAND_DISPLAY=wayland-0</code> e <code>XDG_RUNTIME_DIR=/run/user/0</code> no contexto root.</p>
+<p>Um <code>BadAtom</code> isolado pode coexistir com arranque funcional. Avaliar sempre o resultado visível e o processo, não apenas uma linha isolada.</p>
+<pre>echo "DISPLAY=$DISPLAY"
+echo "WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR"
+ps auxww | grep -E 'gbr3|/opt/pos/common/bin/pos' | grep -v grep</pre>

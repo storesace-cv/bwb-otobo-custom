@@ -123,9 +123,12 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Conteúdo versionado: `db/faq-content/*.html`; migração gerada por `scripts/apply-faq-manuals.py` → `db/migrations/2026-08-22-faq-manuais-gps-calendario.sql`.
 - Base PTcert (produção, 2026-08-24): **Documentação interna → PTcert** (`faq_category` id **29**, pai id 16). **48** artigos internos (`PTC-*`): 39 operacionais + **9 técnicos** (`PTC-TEC-*`, `PTC-WSL2-*`). Subcategorias técnicas: **Arquitectura técnica** (id **38**), **WSL2** (id **39**). Estado `internal (agent)` (`state_id=2`); grupos `bwb_helpdesk_manual_readers` e `bwb_helpdesk_manual_editors`. **Não confundir** com a categoria antiga vazia **PTCert** (id **12**, fora da árvore interna) — não consolidar sem decisão humana.
 - Conteúdo operacional (39 artigos + imagens): repo `bwb-otobo-custom` — `db/ptcert-content/`, `scripts/build-ptcert-faq.py`, `scripts/apply-ptcert-faq.py`.
-- Conteúdo técnico (9 artigos): repo **`bwb-otobo-custom-ptcert`** — `db/ptcert-technical-content/`, `scripts/apply-ptcert-technical-kb.py`. Migração idempotente **só** por `f_number` `PTC-TEC-*` / `PTC-WSL2-*`; não recria os 39 operacionais nem altera id 12.
-- Classificação de origem nos artigos técnicos: *Confirmado no Linux original*, *Confirmado em WSL2*, *Documentação PT-CERT*, *Por validar* — não converter hipóteses em procedimentos confirmados. Por validar inclui: USB/impressão/hardlocks/periféricos em WSL2, instalação limpa sem VM, builds Windows/WSL, restauro exacto de `hardlock_backup`.
+- Conteúdo técnico: estado canónico em [PTCERT-TECNICO.md](PTCERT-TECNICO.md); HTML FAQ em `db/ptcert-technical-content/` + `scripts/apply-ptcert-technical-content.py`. Importação inicial histórica: repo **`bwb-otobo-custom-ptcert`**. Actualização 2026-08-25: arranque VM, login loop resolvido (`.Xauthority`/`.ICEauthority`), WSL2 funcional, instalador PowerShell em teste.
+- Classificação de origem nos artigos técnicos: *Confirmado no Linux original*, *Confirmado em WSL2*, *Documentação PT-CERT*, *Por validar* — não converter hipóteses em procedimentos confirmados.
+- **Confirmado (2026-08-25):** PTcert funcional em WSL2 (`ptCERT`); cadeia LightDM→…→`pos` na VM original; login loop da VM resolvido por ownership `pos:pos` em `.Xauthority` e `.ICEauthority`.
+- **Por validar (ainda):** USB/impressão/hardlocks/periféricos em WSL2; conclusão do teste integral do `Install-ptCERT.ps1` corrigido; restauro exacto de `hardlock_backup`.
 - Leitura: grupo `bwb_helpdesk_manual_readers` (agentes helpdesk BWB/ZS com acesso à Ajuda).
+- **Separar sempre** VM Linux original (LightDM/XFCE/autologin `pos`) de WSL2 no Windows (systemd, WSLg, lançamento como root) — ver [PTCERT-TECNICO.md](PTCERT-TECNICO.md).
 
 ### Assistente de Ajuda (FAQ + RAG)
 

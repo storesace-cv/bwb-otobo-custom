@@ -1,0 +1,29 @@
+<h2>Estado validado</h2>
+<p><strong>Confirmado em WSL2 (2026-08-25):</strong> a implementação do PTcert em WSL2 ficou funcional. Foi importado o root filesystem proveniente da VM PTcert original para a distribuição WSL <code>ptCERT</code>.</p>
+<ul>
+<li>WSL2 funcional; <code>systemd</code> como PID 1</li>
+<li>Ubuntu 18.04.5 LTS (Bionic), arquitectura amd64</li>
+<li>Gambas: <code>/usr/bin/gbr3</code> versão 3.14.0</li>
+<li>Aplicação: <code>/opt/pos/common/bin/pos</code> (executado via <code>/usr/bin/env gbr3</code>)</li>
+<li>PostgreSQL funcional; base <code>pos</code>; ligação activa observada em <code>pg_stat_activity</code></li>
+<li>Serviços activos: <code>postgresql</code>, <code>memcached</code>, <code>ssh</code>, <code>smbd</code>, <code>meshagent</code></li>
+<li>WSLg permite execução gráfica</li>
+<li>Executar como <strong>root</strong>; como <code>pos</code> → <code>Access forbidden</code></li>
+</ul>
+<h2>systemd</h2>
+<p><strong>Confirmado em WSL2:</strong> <code>/etc/wsl.conf</code> com <code>[boot] systemd=true</code>. Depois de <code>wsl --shutdown</code>, <code>systemd</code> aparece como PID 1.</p>
+<h2>Locale</h2>
+<p><strong>Confirmado em WSL2:</strong> o arranque validado exporta explicitamente:</p>
+<pre>LANG=en_GB.UTF-8
+LANGUAGE=en_GB:en
+LC_ALL=en_GB.UTF-8</pre>
+<p>Isto eliminou o warning inicial de locale. Pode continuar a surgir <code>X Error: BadAtom (invalid Atom parameter) 5</code> sem impedir o PTcert de abrir e funcionar correctamente.</p>
+<h2>Comando validado</h2>
+<pre>wsl.exe -d ptCERT -u root -- bash -ic 'export LANG=en_GB.UTF-8; export LANGUAGE=en_GB:en; export LC_ALL=en_GB.UTF-8; cd /opt/pos/common/bin &amp;&amp; ./pos /opt/pos'</pre>
+<p><strong>Confirmado em WSL2:</strong> este comando abriu a aplicação correctamente.</p>
+<p><strong>Confirmado em WSL2:</strong> não é necessário reproduzir a cadeia LightDM/XFCE da VM original para lançar o PTcert no Windows.</p>
+<h2>Instalador e pacotes</h2>
+<p><strong>Confirmado em WSL2:</strong> existe launcher Windows e instalador PowerShell. Em teste: <code>C:\ptCERT\Install-ptCERT.ps1</code>. Pacotes observados: <code>ptCERT-wsl-rootfs.tar</code> (6237429760 bytes) e <code>ptCERT-wsl-rootfs.tar.7z</code> (1429584405 bytes). Ícone próprio para o atalho Windows.</p>
+<p>Correcções no instalador: delimitar variáveis PowerShell junto a <code>:</code> com <code>${service}:</code>; gravar o script em UTF-8 com BOM para caracteres portugueses.</p>
+<h2>Limites</h2>
+<p><strong>Por validar:</strong> conclusão do teste integral da versão corrigida do instalador após instalação limpa (<code>wsl --unregister ptCERT</code> já executado no início do teste). Também: USB/impressão/hardlocks/periféricos em WSL2; versões diferentes de Windows/WSL; restauro exacto de <code>hardlock_backup</code>.</p>

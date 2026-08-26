@@ -1,0 +1,22 @@
+<h2>Fluxo confirmado no Linux original</h2>
+<p><strong>Confirmado no Linux original:</strong></p>
+<pre>LightDM
+→ autologin do utilizador pos
+→ sessão Xubuntu/XFCE (startxfce4)
+→ /home/pos/.config/autostart/pos.desktop
+→ sudo /opt/bin/xfce/startup.sh
+→ /opt/pos/common/bin/run_pos_new.sh
+→ /opt/pos/common/bin/run_software.sh
+→ /opt/pos/common/bin/pos /opt/pos</pre>
+<p>O LightDM usa <code>autologin-guest=false</code>, <code>autologin-user=pos</code>, <code>autologin-user-timeout=2</code> e a sessão <code>xubuntu</code> (<code>/usr/share/xsessions/xubuntu.desktop</code> → <code>Exec=startxfce4</code>). O ficheiro <code>pos.desktop</code> executa <code>sudo /opt/bin/xfce/startup.sh</code>. A sessão gráfica pertence a <code>pos</code>, mas o lançador sobe para root.</p>
+<p><strong>Confirmado no Linux original:</strong> o PTcert não arranca num desktop Linux convencional para utilização normal — a máquina faz autologin e lança imediatamente o ambiente/aplicação PTcert.</p>
+<h2>Responsabilidade dos scripts</h2>
+<ul>
+<li><code>startup.sh</code> verifica se <code>run_software</code> já está em execução e, se não estiver, lança <code>run_pos_new.sh &amp;</code>.</li>
+<li><code>run_pos_new.sh</code> prepara o ambiente PTcert e termina por arrancar <code>run_software.sh &amp;</code>.</li>
+<li><code>run_software.sh</code> mantém um ciclo de execução e arranca finalmente <code>/opt/pos/common/bin/pos /opt/pos</code>.</li>
+</ul>
+<h2>Atenção operacional</h2>
+<p><strong>Confirmado no Linux original:</strong> os scripts fazem alterações de sistema e hardware. Não os executar cegamente num ambiente diferente.</p>
+<p><strong>Confirmado em WSL2:</strong> o arranque funcional chama directamente o executável Gambas como root, <strong>sem</strong> reproduzir LightDM/XFCE nem toda a preparação física da VM original.</p>
+<p>Login loop LightDM/XFCE na VM original: ver artigo <strong>PTC-TEC-GRAFICO-USUARIOS</strong> (causa e procedimento confirmados em 2026-08-25).</p>

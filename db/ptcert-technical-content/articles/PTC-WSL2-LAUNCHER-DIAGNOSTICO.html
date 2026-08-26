@@ -1,0 +1,27 @@
+<h2>Launcher Windows</h2>
+<p><strong>Confirmado em WSL2:</strong> existe launcher Windows e instalador PowerShell para automatizar a instalação e criar o atalho do PTcert. Instalador em teste: <code>C:\ptCERT\Install-ptCERT.ps1</code>.</p>
+<p><strong>Confirmado em WSL2:</strong> foi criado <code>C:\ptCERT\Start-ptCERT.ps1</code> para executar o comando validado com a janela PowerShell oculta. Um atalho <code>ptCERT.lnk</code> no Ambiente de Trabalho aponta para:</p>
+<pre>powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\ptCERT\Start-ptCERT.ps1"</pre>
+<p>O atalho usa <code>C:\ptCERT</code> como directório de trabalho e pode referenciar ícone próprio <code>ptCERT</code>. O fluxo confirmado é Windows → PowerShell → WSL2 → bash/root → Gambas → PTcert.</p>
+<h2>Diagnóstico rápido</h2>
+<ol>
+<li>Confirmar a distro e versão: <code>wsl --list --verbose</code>.</li>
+<li>Se alterou <code>wsl.conf</code> ou locale, executar <code>wsl --shutdown</code>.</li>
+<li>Confirmar PID 1 e serviços (<code>postgresql</code>, <code>memcached</code>, <code>ssh</code>, <code>smbd</code>, <code>meshagent</code>).</li>
+<li>Confirmar variáveis WSLg no contexto root.</li>
+<li>Arrancar pelo comando validado numa consola visível e observar o primeiro erro.</li>
+<li>Confirmar o processo <code>gbr3</code> e a actividade na base <code>pos</code>.</li>
+</ol>
+<h2>Interpretação de sintomas</h2>
+<ul>
+<li><code>Access forbidden</code> ao arrancar como <code>pos</code>: usar o contexto root validado.</li>
+<li>Avisos de locale/encoding: exportar <code>LANG</code>, <code>LANGUAGE</code> e <code>LC_ALL</code> para <code>en_GB.UTF-8</code>.</li>
+<li><code>BadAtom</code> isolado: pode ser não bloqueante; confirmar visualmente e pelo processo.</li>
+<li><code>MIT-SHM</code>, <code>BadShmSeg</code> e muitos <code>BadDrawable</code>: tratar como falha gráfica até prova em contrário.</li>
+<li>Sem ligação TCP a 5432: verificar <code>pg_stat_activity</code> (socket Unix).</li>
+</ul>
+<h2>Instalador PowerShell — notas de teste</h2>
+<p><strong>Confirmado em WSL2:</strong> em strings PowerShell, <code>$service:</code> deve ser escrito <code>${service}:</code>. O script deve estar em UTF-8 com BOM para evitar <code>ServiÃ§o</code> / <code>cÃ³digo</code>.</p>
+<p><strong>Por validar:</strong> conclusão do teste integral do instalador corrigido após instalação limpa.</p>
+<h2>Periféricos</h2>
+<p><strong>Por validar:</strong> o launcher não garante passagem de impressoras USB, hardlocks, TPA ou portas série. Não anunciar estes dispositivos como suportados apenas porque a interface e a base de dados funcionam.</p>
