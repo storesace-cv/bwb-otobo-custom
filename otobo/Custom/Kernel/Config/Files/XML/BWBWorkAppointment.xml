@@ -36,6 +36,7 @@
                 <Item Key="CSS">
                     <Array>
                         <Item>Core.AppointmentCalendar.css</Item>
+                        <Item>BWBWorkAppointment.css</Item>
                     </Array>
                 </Item>
                 <Item Key="JavaScript">
@@ -57,6 +58,7 @@
                 <Item Key="CSS">
                     <Array>
                         <Item>Core.AppointmentCalendar.css</Item>
+                        <Item>BWBWorkAppointment.css</Item>
                     </Array>
                 </Item>
                 <Item Key="JavaScript">
@@ -78,6 +80,7 @@
                 <Item Key="CSS">
                     <Array>
                         <Item>Core.AppointmentCalendar.css</Item>
+                        <Item>BWBWorkAppointment.css</Item>
                     </Array>
                 </Item>
                 <Item Key="JavaScript">

@@ -1,0 +1,77 @@
+/* Bloco de agendamento BWB (folha, Compose, Pending) */
+#AppointmentSchedule.BWBAppointmentBlock,
+.BWBAppointmentBlock#AppointmentSchedule {
+    clear: both;
+    display: none;
+    width: 100%;
+    max-width: 640px;
+    margin: 18px 0 22px;
+    padding: 18px 20px;
+    background: #f5f6f7;
+    border: 1px solid #dfe3ea;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.BWBAppointmentBlock > label,
+.BWBAppointmentBlock .BWBAppointmentLabel {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    color: #111;
+}
+
+.BWBAppointmentBlock .BWBAppointmentBody {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.BWBAppointmentBlock .CallForAction {
+    margin: 0 !important;
+    min-height: 44px;
+    padding: 10px 18px;
+    font-size: 15px;
+}
+
+.BWBAppointmentStatus {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.45;
+    box-sizing: border-box;
+}
+
+.BWBAppointmentOk {
+    background: #e9f8ee;
+    color: #176b36;
+}
+
+.BWBAppointmentMissing {
+    background: #fff1dd;
+    color: #8a4b00;
+}
+
+#BWBNativePendingRow.BWBHiddenPendingRow {
+    display: none !important;
+}
+
+@media (max-width: 700px) {
+    #AppointmentSchedule.BWBAppointmentBlock,
+    .BWBAppointmentBlock#AppointmentSchedule {
+        max-width: none;
+        padding: 16px;
+    }
+
+    .BWBAppointmentBlock .CallForAction {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

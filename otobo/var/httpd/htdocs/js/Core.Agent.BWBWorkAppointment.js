@@ -145,13 +145,25 @@ Core.Agent.BWBWorkAppointment = (function (TargetNS) {
         if (!Block) {
             return;
         }
-        Block.style.display = TargetNS.SelectedRequiresAppointment() ? 'block' : 'none';
-        TargetNS.ToggleNativePendingFields(!TargetNS.SelectedRequiresAppointment());
+        var Show = TargetNS.SelectedRequiresAppointment();
+        Block.style.display = Show ? 'block' : 'none';
+        TargetNS.ToggleNativePendingFields(!Show);
     };
 
     TargetNS.ToggleNativePendingFields = function (Show) {
         if (!TargetNS.IsComposeOrPending()) {
             return;
+        }
+
+        var NativeRow = document.getElementById('BWBNativePendingRow');
+        if (NativeRow) {
+            NativeRow.classList.toggle('BWBHiddenPendingRow', !Show);
+            if (!Show) {
+                NativeRow.style.display = 'none';
+            }
+            else {
+                NativeRow.style.display = '';
+            }
         }
 
         var PendingDate = document.getElementById('Day');
@@ -167,19 +179,29 @@ Core.Agent.BWBWorkAppointment = (function (TargetNS) {
                 return;
             }
             var Row = El.closest ? El.closest('.Row') : null;
-            if (Row) {
+            if (Row && Row.id !== 'BWBNativePendingRow') {
                 Row.style.display = display;
+            }
+            else if (Row && Row.id === 'BWBNativePendingRow') {
+                Row.style.display = Show ? '' : 'none';
+                Row.classList.toggle('BWBHiddenPendingRow', !Show);
             }
             else {
                 El.style.display = display;
             }
         });
 
-        // Label rows that only wrap pending date (OTOBO often uses LabelFor="Year").
         document.querySelectorAll('label[for="Year"], label[for="Day"], label[for="Hour"], label[for="Minute"]').forEach(function (Label) {
             var Row = Label.closest ? Label.closest('.Row') : null;
             if (Row) {
-                Row.style.display = display;
+                if (!Show) {
+                    Row.style.display = 'none';
+                    Row.classList.add('BWBHiddenPendingRow');
+                }
+                else if (Row.id !== 'BWBNativePendingRow') {
+                    Row.style.display = '';
+                    Row.classList.remove('BWBHiddenPendingRow');
+                }
             }
         });
     };

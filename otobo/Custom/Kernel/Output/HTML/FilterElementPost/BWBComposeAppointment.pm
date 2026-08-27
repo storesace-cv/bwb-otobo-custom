@@ -80,20 +80,20 @@ sub Run {
     $StatusText =~ s{>}{&gt;}g;
 
     my $HTML = qq{$Marker
-<style type="text/css">
-.BWBAppointmentStatus{display:inline-block;margin-top:8px;padding:8px 12px;border-radius:8px;font-weight:700}
-.BWBAppointmentOk{background:#e9f8ee;color:#176b36}
-.BWBAppointmentMissing{background:#fff1dd;color:#8a4b00}
-#AppointmentSchedule .CallForAction{margin-top:10px}
-</style>
-<div id="AppointmentSchedule" class="Row" style="display:none">
-<label>Agendamento</label>
-<div>
+<div id="AppointmentSchedule" class="BWBAppointmentBlock" style="display:none">
+<label class="BWBAppointmentLabel">Agendamento</label>
+<div class="BWBAppointmentBody">
 <button type="button" class="CallForAction Primary" id="BWBScheduleAppointment"><span>Agendar no calendário</span></button>
 <div id="BWBAppointmentStatus" class="BWBAppointmentStatus $StatusClass">$StatusText</div>
 </div>
 </div>
 };
+
+    # Marca a linha nativa «Data da pendência» para ocultar quando o agendamento é via calendário.
+    ${ $Param{Data} } =~ s{
+        (<div)\s+class="Row"([^>]*>\s*
+         <label[^>]*>[^<]*(?:pend[êe]ncia|Pending\s+date)[^<]*</label>)
+    }{$1 id="BWBNativePendingRow" class="Row"$2}xsi;
 
     $Layout->AddJSData(
         Key   => 'TicketID',
