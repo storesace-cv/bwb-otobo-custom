@@ -1,6 +1,6 @@
 # Roadmap Helpdesk BWB / ZS Angola
 
-Actualizado em 26 de agosto de 2026. O comportamento já em produção está em [FEATURES.md](FEATURES.md). Este ficheiro distingue **entregue recentemente** de **passos seguintes**.
+Actualizado em 27 de agosto de 2026. O comportamento já em produção está em [FEATURES.md](FEATURES.md). Este ficheiro distingue **entregue recentemente** de **passos seguintes**.
 
 ## Entregue (agosto 2026)
 
@@ -14,9 +14,9 @@ Actualizado em 26 de agosto de 2026. O comportamento já em produção está em 
 - **Modelo de resposta `mod-apple-01`:** cartão Helpdesk; resumo sob a marca; saudação numa linha; tags encoded; largura telemóvel.
 - **Contexto Helpdesk → Claude Mail MCP:** headers `X-BWB-*` nos envios; API `PublicBWBTicketContext`; patches MCP `get_message` + tool `helpdesk_ticket_context` (VPS `mcp-mail.bwb.pt`).
 - **Localização no fecho da folha:** GPS no «Terminar trabalho» com fallback às coordenadas da loja; mapa **Google Maps Embed** no AgentTicketZoom (só helpdesk; chave `BWB::MapsEmbedAPIKey`); lat/lon opcionais em Admin → Lojas.
-- **Agendamentos pendentes:** rótulo «Pendente com Agendamento»; diálogo nativo de marcação na folha; sync calendário→estado + `Pending till`; widget dashboard «Agendamentos pendentes»; guarda contra estado manual sem marcação; cancelamento automático de marcações futuras ao encerrar o ticket.
+- **Agendamentos pendentes:** rótulo «Pendente com Agendamento»; diálogo nativo de marcação na **folha**, no **Responder (Compose)** e no **Pending** do zoom; sync calendário→estado + `Pending till`; widget dashboard «Agendamentos pendentes»; guarda contra estado sem marcação; cancelamento automático de marcações futuras ao encerrar o ticket; JSON partilhado `AgentBWBAppointmentCheck`.
 - **Mapa Google Embed no zoom:** iframe satélite no AgentTicketZoom (chave `BWB::MapsEmbedAPIKey`); Leaflet/OSM removidos.
-- **Lembrete cliente «a aguardar resposta» (2026-08-26):** `Pending till` +3 dias ao entrar no estado; e-mail diário ao cliente (`NotificationPendingReminder`, sem aviso ao agente, sem fecho automático); migração `2026-08-26-customer-waiting-reminder.sql`.
+- **Lembrete cliente «a aguardar resposta» (2026-08-26):** `Pending till` +3 dias ao entrar no estado; e-mail diário ao cliente (`NotificationPendingReminder`, sem aviso ao agente, sem fecho automático); CTA botão `#59B3FF`; migrações `2026-08-26-customer-waiting-reminder*.sql`.
 
 ## Seguinte
 

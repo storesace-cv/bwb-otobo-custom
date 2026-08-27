@@ -188,11 +188,11 @@ ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-26-customer-waiting-rem
 ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
 ```
 
-Estilo do CTA (cor `#59B3FF` + símbolo de ligação; Font Awesome não está nos envelopes de notificação):
+Estilo do CTA (botão centrado `#59B3FF`, texto branco, cantos arredondados + 🔗):
 
 ```sh
-ssh bwb-otobo-prod 'mysqldump otobo notification_event_message > /root/otobo-backups/notification_event_message-before-waiting-cta.sql'
-ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-26-customer-waiting-reminder-cta-style.sql
+ssh bwb-otobo-prod 'mysqldump otobo notification_event_message > /root/otobo-backups/notification_event_message-before-waiting-button.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-26-customer-waiting-reminder-button.sql
 ssh bwb-otobo-prod 'su -c "bin/otobo.Console.pl Maint::Cache::Delete" -s /bin/bash otobo'
 ```
 

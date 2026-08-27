@@ -22,37 +22,6 @@ sub Run {
     return $Layout->ErrorScreen( Message => 'Ticket inválido.' ) if !$TicketID;
     return $Layout->NoPermission( WithHeader => 'yes' ) if !$Ticket->TicketPermission( Type=>'rw', TicketID=>$TicketID, UserID=>$Self->{UserID}, LogNo=>1 );
 
-    if ( ( $Self->{Subaction} || '' ) eq 'CheckAppointment' ) {
-        my $Check = $Kernel::OM->Get('Kernel::System::BWBAppointmentCheck');
-        my $StartUTC = $Check->NextFutureStart( TicketID => $TicketID ) || '';
-        my $StartLabel = '';
-        if ($StartUTC) {
-            my $StartObject = $Kernel::OM->Create(
-                'Kernel::System::DateTime',
-                ObjectParams => { String => $StartUTC, TimeZone => 'UTC' },
-            );
-            if ($StartObject) {
-                my %Viewer = $Kernel::OM->Get('Kernel::System::User')->GetUserData( UserID => $Self->{UserID} );
-                $StartObject->ToTimeZone( TimeZone => $Viewer{UserTimeZone} || 'Europe/Lisbon' );
-                $StartLabel = $StartObject->Format( Format => '%d/%m/%Y %H:%M' );
-            }
-        }
-        my $JSON = $Kernel::OM->Get('Kernel::System::JSON')->Encode(
-            Data => {
-                Success              => 1,
-                HasFutureAppointment => $Check->HasFutureAppointment( TicketID => $TicketID ) ? 1 : 0,
-                StartTime            => $StartUTC,
-                StartTimeLabel       => $StartLabel,
-            },
-        );
-        return $Layout->Attachment(
-            ContentType => 'application/json; charset=UTF-8',
-            Content     => $JSON,
-            Type        => 'inline',
-            NoCache     => 1,
-        );
-    }
-
     my %TicketData = $Ticket->TicketGet( TicketID=>$TicketID, DynamicFields=>0, Silent=>1 );
     my %CustomerUserData;
     if ( $TicketData{CustomerUserID} ) {
