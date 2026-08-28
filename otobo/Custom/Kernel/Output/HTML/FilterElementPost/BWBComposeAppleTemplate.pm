@@ -27,12 +27,12 @@ sub Run {
 
     return 1 if !$Param{Data};
     return 1 if $Self->{Action} && $Self->{Action} ne 'AgentTicketCompose';
-    return 1 if ${ $Param{Data} } !~ /apple-style-body/;
+    return 1 if ${ $Param{Data} } !~ /bwb-answer-card|apple-style-body/;
 
     ${ $Param{Data} } =~ s{
         (<textarea\b[^>]*\bid="RichText"[^>]*>)
         (.*?)
-        ((?:<figure|&lt;figure)[\s\S]{0,500}?apple-style-body)
+        ((?:<table\b|<figure|&lt;figure|<!--\s*bwb-apple-v2)[\s\S]{0,800}?(?:bwb-answer-card|apple-style-body))
     }{$1$3}xsi;
 
     return 1;

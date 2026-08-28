@@ -12,25 +12,50 @@ Core.Agent = Core.Agent || {};
  */
 Core.Agent.BWBComposeApple = (function (TargetNS) {
 
+    function IsAppleCard(Root) {
+        if (!Root) {
+            return false;
+        }
+        if (Root.classList && Root.classList.contains('bwb-answer-card')) {
+            return true;
+        }
+        if (Root.classList && Root.classList.contains('apple-style-body')) {
+            return true;
+        }
+        return Root.querySelector && !!Root.querySelector('table.bwb-answer-card, table.apple-style-body');
+    }
+
+    function FindAppleCardRoot(Wrapper) {
+        var Card = Wrapper.querySelector('table.bwb-answer-card, table.apple-style-body');
+        if (!Card) {
+            return null;
+        }
+
+        var Root = Card;
+        var ParentFigure = Card.closest('figure');
+        if (ParentFigure) {
+            Root = ParentFigure;
+        }
+
+        while (Root && Root.parentNode && Root.parentNode !== Wrapper) {
+            Root = Root.parentNode;
+        }
+        if (!Root || Root.parentNode !== Wrapper) {
+            return null;
+        }
+        return Root;
+    }
+
     function StripLeadingSalutation(HTML) {
-        if (!HTML || HTML.indexOf('apple-style-body') === -1) {
+        if (!HTML || (HTML.indexOf('bwb-answer-card') === -1 && HTML.indexOf('apple-style-body') === -1)) {
             return HTML;
         }
 
         var Wrapper = document.createElement('div');
         Wrapper.innerHTML = HTML;
 
-        var Card = Wrapper.querySelector('table.apple-style-body');
-        if (!Card) {
-            return HTML;
-        }
-
-        var Figure = Card.closest('figure');
-        var Root = Figure || Card;
-        while (Root && Root.parentNode && Root.parentNode !== Wrapper) {
-            Root = Root.parentNode;
-        }
-        if (!Root || Root.parentNode !== Wrapper) {
+        var Root = FindAppleCardRoot(Wrapper);
+        if (!Root || !IsAppleCard(Root)) {
             return HTML;
         }
 

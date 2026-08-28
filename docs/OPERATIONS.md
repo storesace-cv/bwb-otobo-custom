@@ -40,6 +40,30 @@ ssh bwb-otobo-prod 'mysqldump otobo standard_template queue_standard_template > 
 ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-19-mod-apple-01-answer-template.sql
 ```
 
+**Actualização v2 inline (2026-08-28)** — template Compose + simplificação de HTML histórico:
+
+```sh
+# 1) Deploy código (scripts/deploy-production.sh --apply)
+# 2) Template Answer na BD
+ssh bwb-otobo-prod 'mysqldump otobo standard_template queue_standard_template \
+  > /root/otobo-backups/standard_template-before-mod-apple-01-v2.sql'
+ssh bwb-otobo-prod 'mysql otobo' < db/migrations/2026-08-28-mod-apple-01-v2-inline.sql
+
+# 3) Backup anexos HTML antes de migrar artigos históricos
+ssh bwb-otobo-prod 'mysqldump otobo article_data_mime_attachment article_data_mime_att_version \
+  > /root/otobo-backups/article-mime-before-apple-v2-$(date +%Y%m%d%H%M).sql'
+
+# 4) Dry-run (sem corpos; validação textual)
+ssh bwb-otobo-prod 'su -c "/opt/otobo/bin/otobo.Console.pl Maint::BWB::AppleTemplateMigrate --dry-run" -s /bin/bash otobo'
+
+# 5) Executar migração (só após dry-run OK)
+ssh bwb-otobo-prod 'su -c "/opt/otobo/bin/otobo.Console.pl Maint::BWB::AppleTemplateMigrate --execute" -s /bin/bash otobo'
+
+su -c '/opt/otobo/bin/otobo.Console.pl Maint::Cache::Delete' -s /bin/bash otobo
+```
+
+Requisito de integridade: o **texto comunicado** (ipsis verbis) e URLs/anexos preservados; HTML/MIME visual pode ser simplificado. Ver `docs/investigations/mod-apple-01-perf-trace.md`.
+
 ### Contexto ticket para Claude Mail MCP (`PublicBWBTicketContext`)
 
 1. Publicar código (deploy) e Rebuild/cache.

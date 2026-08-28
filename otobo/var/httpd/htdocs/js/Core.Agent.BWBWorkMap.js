@@ -11,10 +11,37 @@ Core.Agent = Core.Agent || {};
  * @exports TargetNS as Core.Agent.BWBWorkMap
  * @description
  *      Google Maps Embed for finished work sheet locations (helpdesk only).
+ *      Só processa iframes com marcador BWB de localização — não penaliza emails normais/Apple.
  */
 Core.Agent.BWBWorkMap = (function (TargetNS) {
 
     TargetNS._LastLocations = [];
+    TargetNS._SessionLoaded = false;
+
+    function IframeDocument(Iframe) {
+        try {
+            return Iframe.contentDocument || (Iframe.contentWindow && Iframe.contentWindow.document);
+        }
+        catch (E) {
+            return null;
+        }
+    }
+
+    function HasWorkLocation(Doc) {
+        if (!Doc || !Doc.querySelector) {
+            return false;
+        }
+        if (Doc.querySelector('.BWBWorkLocation[data-bwb-lat][data-bwb-lon]')) {
+            return true;
+        }
+        if (Doc.querySelector('img[alt="Mapa da localização"]')) {
+            return true;
+        }
+        if (Doc.querySelector('.BWBWorkLocation')) {
+            return true;
+        }
+        return false;
+    }
 
     function HideLegacyMap(Doc) {
         if (!Doc || !Doc.body) {
@@ -58,17 +85,6 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             }
         });
 
-        Doc.querySelectorAll('div').forEach(function (Node) {
-            if (!Node || !Node.parentNode) {
-                return;
-            }
-            var Text = (Node.textContent || '').replace(/\s+/g, ' ').trim();
-            if (Text === 'Localização no fecho' || Text === 'Localização (coordenadas da loja)') {
-                Node.parentNode.removeChild(Node);
-                Changed = true;
-            }
-        });
-
         return Changed;
     }
 
@@ -81,23 +97,6 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         if (Core.Agent && Core.Agent.TicketZoom && typeof Core.Agent.TicketZoom.IframeAutoHeight === 'function') {
             Core.Agent.TicketZoom.IframeAutoHeight($Iframe);
         }
-    }
-
-    function RetouchAllIframes() {
-        $('iframe[id^="Iframe"]').each(function () {
-            var Iframe = this;
-            var Doc;
-            try {
-                Doc = Iframe.contentDocument || (Iframe.contentWindow && Iframe.contentWindow.document);
-            }
-            catch (E) {
-                return;
-            }
-            // Nunca CheckIFrameHeight em loop: IframeAutoHeight faz height+25 e cresce sem fim.
-            if (HideLegacyMap(Doc)) {
-                AdjustIframeHeightOnce(Iframe);
-            }
-        });
     }
 
     function EnsureSheetSection($Iframe) {
@@ -141,21 +140,11 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         if (!Key) {
             return '';
         }
-        // place + q: pin no ponto; maptype=satellite (vista aérea). center com ponto decimal.
         return 'https://www.google.com/maps/embed/v1/place'
             + '?key=' + encodeURIComponent(Key)
             + '&q=' + encodeURIComponent(Number(Lat) + ',' + Number(Lon))
             + '&zoom=17'
             + '&maptype=satellite';
-    }
-
-    function PlaceMap(Iframe, Lat, Lon, Meta) {
-        var $Iframe = $(Iframe);
-        if ($Iframe.data('BWBWorkMapDone') || $Iframe.data('BWBWorkMapPending')) {
-            return;
-        }
-        $Iframe.data('BWBWorkMapPending', 1);
-        PlaceMapEmbed(Iframe, Lat, Lon, Meta);
     }
 
     function PlaceMapEmbed(Iframe, Lat, Lon, Meta) {
@@ -165,13 +154,7 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             return;
         }
 
-        var Doc;
-        try {
-            Doc = Iframe.contentDocument || (Iframe.contentWindow && Iframe.contentWindow.document);
-        }
-        catch (E) {
-            Doc = null;
-        }
+        var Doc = IframeDocument(Iframe);
         HideLegacyMap(Doc);
         AdjustIframeHeightOnce(Iframe);
 
@@ -241,6 +224,15 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         });
     }
 
+    function PlaceMap(Iframe, Lat, Lon, Meta) {
+        var $Iframe = $(Iframe);
+        if ($Iframe.data('BWBWorkMapDone') || $Iframe.data('BWBWorkMapPending')) {
+            return;
+        }
+        $Iframe.data('BWBWorkMapPending', 1);
+        PlaceMapEmbed(Iframe, Lat, Lon, Meta);
+    }
+
     function MetaFromLocation(Loc) {
         return {
             Source: Loc.getAttribute('data-bwb-source') || '',
@@ -251,15 +243,17 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         };
     }
 
-    function ScanIframe(Iframe) {
-        var Doc;
-        try {
-            Doc = Iframe.contentDocument || (Iframe.contentWindow && Iframe.contentWindow.document);
-        }
-        catch (E) {
+    function ProcessIframe(Iframe) {
+        if (!Iframe || !Iframe.id || Iframe.id.indexOf('Iframe') !== 0) {
             return;
         }
-        if (!Doc || !Doc.querySelector) {
+
+        var Doc = IframeDocument(Iframe);
+        if (!Doc) {
+            return;
+        }
+
+        if (!HasWorkLocation(Doc)) {
             return;
         }
 
@@ -277,12 +271,6 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
         }
 
         PlaceMap(Iframe, Lat, Lon, MetaFromLocation(Loc));
-    }
-
-    function ScanAllIframes() {
-        $('iframe[id^="Iframe"]').each(function () {
-            ScanIframe(this);
-        });
     }
 
     function ApplyFromSession(Locations) {
@@ -307,10 +295,14 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
     }
 
     function LoadFromSession() {
+        if (TargetNS._SessionLoaded) {
+            return;
+        }
         var TicketID = Core.Config.Get('TicketID');
         if (!TicketID) {
             return;
         }
+        TargetNS._SessionLoaded = true;
         Core.AJAX.FunctionCall(
             Core.Config.Get('CGIHandle'),
             {
@@ -333,20 +325,15 @@ Core.Agent.BWBWorkMap = (function (TargetNS) {
             return;
         }
 
-        RetouchAllIframes();
-        ScanAllIframes();
         LoadFromSession();
 
-        $(document).on('load', 'iframe[id^="Iframe"]', function () {
-            HideLegacyMap(this.contentDocument);
-            ScanIframe(this);
-            RetouchAllIframes();
+        $('iframe[id^="Iframe"]').each(function () {
+            ProcessIframe(this);
         });
 
-        window.setInterval(function () {
-            ScanAllIframes();
-            ApplyFromSession(TargetNS._LastLocations);
-        }, 2500);
+        $(document).on('load', 'iframe[id^="Iframe"]', function () {
+            ProcessIframe(this);
+        });
     };
 
     Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');

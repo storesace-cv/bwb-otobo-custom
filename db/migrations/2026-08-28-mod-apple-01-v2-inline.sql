@@ -1,5 +1,10 @@
-<!-- bwb-apple-v2 -->
-<table class="bwb-answer-card" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;" role="presentation">
+-- mod-apple-01 v2: HTML inline-only, sem figure/style/!important.
+-- Fonte: otobo/Custom/Kernel/Output/HTML/Templates/Standard/BWBEmail/mod-apple-01.html
+
+UPDATE standard_template
+SET
+  text = '<!-- bwb-apple-v2 -->
+<table class="bwb-answer-card" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background-color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,''Segoe UI'',Roboto,Helvetica,Arial,sans-serif;" role="presentation">
     <tbody>
         <tr>
             <td align="center" style="padding:50px 20px;">
@@ -68,3 +73,7 @@
         </tr>
     </tbody>
 </table>
+',
+  change_time = NOW(),
+  change_by = 1
+WHERE name = 'mod-apple-01';
