@@ -39,6 +39,7 @@ Produção helpdesk: **Euronodes** VPS (`178.159.34.132`, `helpdesk.storesace.cv
 - Sem allowlist de IP (postos em NAT de cliente). Isolamento BWB↔ZS pela empresa do agente (directory) e pela empresa gravada no token (tickets). O cliente **não** escolhe CustomerID no POST do ticket.
 - Password de agente **não** fica no posto. `helpdesk.json` no POS é `0600`. O 3.º campo de `/opt/pos/version` (token PTcert) não é enviado.
 - Ping público só `{ok, service}` — sem dados de clientes.
+- `Contacts` exige Bearer de dispositivo (não revogado). A operação deriva do `customer_id` do token (`ZSA*` → zs). Rate-limit 30/hora. A resposta é só a ficha dessa operação; ficha incompleta → 503 sem placeholders.
 
 ## Alterações de produção
 

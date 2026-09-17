@@ -1,0 +1,65 @@
+<div class="MainBox ARIARoleMain">
+    <h1>Heldesk AOcert</h1>
+    [% IF Data.Message %]<div class="[% IF Data.Message.search('Não') %]ErrorBox[% ELSE %]SuccessBox[% END %]">[% Data.Message | html %]</div>[% END %]
+    <p>Contactos que o POS sincroniza às 18:00. Cada operação tem a sua ficha. Não há valores por defeito: email, portal https e pelo menos um telefone são obrigatórios.</p>
+    [% FOREACH Item IN Data.Items %]
+    <div class="WidgetSimple">
+        <div class="Header"><h2>[% Item.label | html %]</h2></div>
+        <div class="Content">
+            <form method="post" action="[% Env("CGIHandle") %]" class="Validate PreventMultipleSubmits">
+                <input type="hidden" name="Action" value="AdminBWBAocertHelpdesk">
+                <input type="hidden" name="Subaction" value="Save">
+                <input type="hidden" name="Operation" value="[% Item.operation | html %]">
+                <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]">
+                <fieldset class="TableLike">
+                    <label class="Mandatory" for="Email-[% Item.operation | html %]"><span class="Marker">*</span> Email (Hekpdesk-email):</label>
+                    <div class="Field">
+                        <input id="Email-[% Item.operation | html %]" name="Email" class="W50pc Validate_Required" required maxlength="190" value="[% Item.email | html %]">
+                    </div>
+                    <div class="Clear"></div>
+                    <label class="Mandatory" for="Portal-[% Item.operation | html %]"><span class="Marker">*</span> Portal (Helpdesk-portal):</label>
+                    <div class="Field">
+                        <input id="Portal-[% Item.operation | html %]" name="Portal" class="W50pc Validate_Required" required maxlength="240" value="[% Item.portal | html %]" placeholder="https://">
+                    </div>
+                    <div class="Clear"></div>
+                    <label class="Mandatory"><span class="Marker">*</span> Telefones:</label>
+                    <div class="Field" id="bwb-phones-[% Item.operation | html %]">
+                        [% IF Item.phones.size %]
+                            [% FOREACH Phone IN Item.phones %]
+                            <div class="bwb-phone-row" style="margin-bottom:6px">
+                                <input name="Phone" class="W50pc" maxlength="80" value="[% Phone | html %]">
+                                <button type="button" class="CallForAction" onclick="this.parentNode.parentNode.removeChild(this.parentNode)"><span>Remover</span></button>
+                            </div>
+                            [% END %]
+                        [% ELSE %]
+                            <div class="bwb-phone-row" style="margin-bottom:6px">
+                                <input name="Phone" class="W50pc" maxlength="80" value="">
+                            </div>
+                        [% END %]
+                    </div>
+                    <div class="Field">
+                        <button type="button" class="CallForAction" onclick="BWBAocertAddPhone('[% Item.operation | html %]')"><span>Acrescentar telefone</span></button>
+                    </div>
+                    <div class="Clear"></div>
+                    <div class="Field">
+                        <button type="submit" class="CallForAction Primary"><span>Guardar</span></button>
+                    </div>
+                    <div class="Clear"></div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    [% END %]
+</div>
+<script>
+function BWBAocertAddPhone(op) {
+    var wrap = document.getElementById('bwb-phones-' + op);
+    if (!wrap) { return; }
+    var row = document.createElement('div');
+    row.className = 'bwb-phone-row';
+    row.style.marginBottom = '6px';
+    row.innerHTML = '<input name="Phone" class="W50pc" maxlength="80" value=""> '
+        + '<button type="button" class="CallForAction" onclick="this.parentNode.parentNode.removeChild(this.parentNode)"><span>Remover</span></button>';
+    wrap.appendChild(row);
+}
+</script>

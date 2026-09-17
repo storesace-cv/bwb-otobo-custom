@@ -12,6 +12,7 @@ use Digest::SHA qw(sha256_hex);
 our @ObjectDependencies = (
     'Kernel::System::Auth',
     'Kernel::System::BWBAccess',
+    'Kernel::System::BWBAocertHelpdesk',
     'Kernel::System::BWBStore',
     'Kernel::System::BWBTicketStore',
     'Kernel::System::CustomerCompany',
@@ -29,6 +30,8 @@ use constant AUTH_FAIL_WINDOW        => 900;
 use constant AUTH_FAIL_MAX           => 8;
 use constant TICKET_WINDOW_SECONDS   => 3600;
 use constant TICKET_WINDOW_MAX       => 8;
+use constant CONTACTS_WINDOW_SECONDS => 3600;
+use constant CONTACTS_WINDOW_MAX     => 30;
 use constant MAX_TITLE               => 200;
 use constant MAX_BODY                => 20_000;
 use constant MAX_LOGS_BYTES          => 1_572_864;
@@ -394,6 +397,25 @@ sub TicketCreate {
     };
 }
 
+sub Contacts {
+    my ( $Self, %Param ) = @_;
+    my $Device = $Self->DeviceByToken( Token => $Param{DeviceToken} );
+    return { ok => 0, error => 'unauthorized', status => 401 } if !$Device;
+    return { ok => 0, error => 'revoked',      status => 403 } if $Device->{status} eq 'revoked';
+    if ( $Self->_ContactsRateLimited($Device) ) {
+        return { ok => 0, error => 'rate_limited', status => 429 };
+    }
+    my $Ficha = $Kernel::OM->Get('Kernel::System::BWBAocertHelpdesk');
+    my $Op    = $Ficha->OperationFromCustomerID( $Device->{customer_id} );
+    my $Payload = $Ficha->PublicPayload( Operation => $Op );
+    if ( !$Payload ) {
+        return { ok => 0, error => 'not_configured', status => 503 };
+    }
+    $Self->_BumpContactsWindow( $Device->{id} );
+    $Payload->{status} = 200;
+    return $Payload;
+}
+
 sub DeviceByToken {
     my ( $Self, %Param ) = @_;
     my $Token = $Param{Token} || return;
@@ -657,7 +679,8 @@ sub _DeviceByHash {
         SQL => q{
             SELECT id, customer_id, store_id, customer_user, agent_user_id, status,
                    station_number, license, pos_version, pos_release, hostname,
-                   ticket_window_start, ticket_window_count
+                   ticket_window_start, ticket_window_count,
+                   contacts_window_start, contacts_window_count
             FROM bwb_pos_device WHERE token_hash = ?
         },
         Bind  => [ \$Hash ],
@@ -675,7 +698,8 @@ sub _DeviceByID {
         SQL => q{
             SELECT id, customer_id, store_id, customer_user, agent_user_id, status,
                    station_number, license, pos_version, pos_release, hostname,
-                   ticket_window_start, ticket_window_count
+                   ticket_window_start, ticket_window_count,
+                   contacts_window_start, contacts_window_count
             FROM bwb_pos_device WHERE id = ?
         },
         Bind  => [ \$ID ],
@@ -700,8 +724,10 @@ sub _RowToDevice {
         pos_version          => $Row[8],
         pos_release          => $Row[9],
         hostname             => $Row[10],
-        ticket_window_start  => $Row[11],
-        ticket_window_count  => $Row[12],
+        ticket_window_start    => $Row[11],
+        ticket_window_count    => $Row[12],
+        contacts_window_start  => $Row[13],
+        contacts_window_count  => $Row[14],
     };
 }
 
@@ -739,6 +765,46 @@ sub _BumpTicketWindow {
                     UTC_TIMESTAMP(),
                     ticket_window_start
                 )
+            WHERE id = ?
+        },
+        Bind => [ \$Win, \$Win, \$DeviceID ],
+    );
+}
+
+sub _ContactsRateLimited {
+    my ( $Self, $Device ) = @_;
+    my $Start = $Device->{contacts_window_start} || '';
+    my $Count = $Device->{contacts_window_count} || 0;
+    return 0 if !$Start;
+    my $DB = $Kernel::OM->Get('Kernel::System::DB');
+    return 0 if !$DB->Prepare(
+        SQL   => 'SELECT UTC_TIMESTAMP() < DATE_ADD(?, INTERVAL ? SECOND)',
+        Bind  => [ \$Start, \CONTACTS_WINDOW_SECONDS() ],
+        Limit => 1,
+    );
+    my ($InWindow) = $DB->FetchrowArray();
+    return $InWindow && $Count >= CONTACTS_WINDOW_MAX() ? 1 : 0;
+}
+
+sub _BumpContactsWindow {
+    my ( $Self, $DeviceID ) = @_;
+    my $Win = CONTACTS_WINDOW_SECONDS();
+    $Kernel::OM->Get('Kernel::System::DB')->Do(
+        SQL => q{
+            UPDATE bwb_pos_device
+            SET contacts_window_count = IF(
+                    contacts_window_start IS NULL
+                    OR contacts_window_start < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ? SECOND),
+                    1,
+                    contacts_window_count + 1
+                ),
+                contacts_window_start = IF(
+                    contacts_window_start IS NULL
+                    OR contacts_window_start < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ? SECOND),
+                    UTC_TIMESTAMP(),
+                    contacts_window_start
+                ),
+                last_seen = UTC_TIMESTAMP()
             WHERE id = ?
         },
         Bind => [ \$Win, \$Win, \$DeviceID ],

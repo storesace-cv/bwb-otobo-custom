@@ -286,6 +286,21 @@ CREATE TABLE `bwb_work_sheet` (
   KEY `bwb_work_sheet_form_id` (`form_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `bwb_aocert_helpdesk`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bwb_aocert_helpdesk` (
+  `operation` enum('bwb','zs') NOT NULL,
+  `email` varchar(190) NOT NULL,
+  `portal` varchar(240) NOT NULL,
+  `contacts_json` text NOT NULL,
+  `create_time` datetime NOT NULL,
+  `create_by` int(11) NOT NULL,
+  `change_time` datetime NOT NULL,
+  `change_by` int(11) NOT NULL,
+  PRIMARY KEY (`operation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

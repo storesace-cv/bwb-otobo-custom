@@ -180,11 +180,12 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 
 ## POS PTcert / pen técnica (HELPDESK)
 
-- API pública `PublicBWBPos` (`public.pl?Action=PublicBWBPos;Subaction=…`): `Ping` (saúde), `Auth` (agente, sessão 10 min), `Directory` (clientes/lojas/contactos via `BWBAccess`), `Enroll` (token por dispositivo), `Ticket` (Bearer do dispositivo).
+- API pública `PublicBWBPos` (`public.pl?Action=PublicBWBPos;Subaction=…`): `Ping` (saúde), `Auth` (agente, sessão 10 min), `Directory` (clientes/lojas/contactos via `BWBAccess`), `Enroll` (token por dispositivo), `Ticket` (Bearer do dispositivo), `Contacts` (ficha Heldesk AOcert da operação do token; **não** aceita operação no body).
 - Tabela `bwb_pos_device`: estados **active** / **suspended** / **revoked**. Suspenso bloqueia tickets (reversível). Revogado invalida o token; só nova instalação na pen. Cada ticket actualiza posto, licença, versão e release.
+- Ficha Admin → Operação → **Heldesk AOcert** (`AdminBWBAocertHelpdesk`): uma linha por operação (`bwb` / `zs`). Email, portal `https://` e telefones em JSON (adicionar/remover, tecto anti-abuso 30). Sem valores inventados na UI nem na API: ficha incompleta → POS recebe `not_configured`. Semente SQL = `aocert/helpdesk.txt` da pen em 2026-09-17 (`helpdesk@bwb.pt`, `https://helpdesk.bwb.pt/`, `+351 912 420 686`) nas duas operações até cada uma editar a sua.
 - Ficha Admin → Lojas (`AdminBWBStore` Change): widget **Dispositivos POS** com Activar / Suspender / Revogar (`StoreAccessCheck`).
-- Fila `ZSA*` → `zsangola-in`, restantes → `bwb-in`. Ticket em nome do `customer_user` emparelhado, loja do dispositivo. Rate-limit 8 tickets/hora. Anexo ZIP de logs (PK, ≤1,5 MiB).
-- Código: `BWBPosDevice.pm`, `PublicBWBPos.pm`, XML `BWBPos.xml`, migração `db/migrations/2026-09-17-pos-helpdesk-device.sql`. Pen: `Tecnico/HelpDesk`, contactos `aocert/helpdesk.txt`.
+- Fila `ZSA*` → `zsangola-in`, restantes → `bwb-in`. Ticket em nome do `customer_user` emparelhado, loja do dispositivo. Rate-limit 8 tickets/hora; Contacts 30/hora. Anexo ZIP de logs (PK, ≤1,5 MiB).
+- Código: `BWBAocertHelpdesk.pm`, `BWBPosDevice.pm`, `PublicBWBPos.pm`, XML `BWBAocertHelpdesk.xml` / `BWBPos.xml`, migração `db/migrations/2026-09-17-aocert-helpdesk.sql`. Pen: `Tecnico/HelpDesk` (instalação aborta se faltar `helpdesk.txt` ou campos), sync 18:00, catch-up no plugin.
 
 ## Ao desenvolver funcionalidade nova ou alterar existente
 

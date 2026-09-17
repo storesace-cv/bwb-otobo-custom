@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otobo_config version="2.0" init="Application">
     <Setting Name="PublicFrontend::Module###PublicBWBPos" Required="0" Valid="1">
-        <Description Translatable="1">API JSON do POS PTcert (auth de agente, directory, enrol e tickets).</Description>
+        <Description Translatable="1">API JSON do POS PTcert (auth de agente, directory, enrol, tickets e contactos AOcert).</Description>
         <Navigation>Frontend::Public::ModuleRegistration</Navigation>
         <Value>
             <Hash>

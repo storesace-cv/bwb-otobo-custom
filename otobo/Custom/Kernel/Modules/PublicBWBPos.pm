@@ -1,5 +1,5 @@
 # --
-# API pública POS Helpdesk: Ping, Auth, Directory, Enroll, Ticket.
+# API pública POS Helpdesk: Ping, Auth, Directory, Enroll, Ticket, Contacts.
 # --
 package Kernel::Modules::PublicBWBPos;
 
@@ -97,6 +97,12 @@ sub Run {
             Hostname      => $Payload->{Hostname},
             LogsBytes     => $Logs,
         );
+        return $Reply->( $Result->{status} || 400, $Result );
+    }
+
+    if ( $Action eq 'Contacts' ) {
+        my $Bearer = $Self->_Bearer($RequestObject) || $Payload->{DeviceToken} || '';
+        my $Result = $Pos->Contacts( DeviceToken => $Bearer );
         return $Reply->( $Result->{status} || 400, $Result );
     }
 

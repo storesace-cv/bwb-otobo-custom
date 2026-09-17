@@ -20,7 +20,8 @@ Actualizado em 17 de setembro de 2026. O comportamento já em produção está e
 
 ## Entregue (setembro 2026)
 
-- **POS PTcert → Helpdesk:** API `PublicBWBPos` (auth de agente, directory filtrado, enrol, tickets). Dispositivo por loja com estados Activo / Suspenso / Revogado na ficha `AdminBWBStore`. Snapshot PTcert (posto, licença, versão, release) actualizado em cada ticket. Pen técnica `Tecnico/HelpDesk` + `aocert/helpdesk.txt`.
+- **POS PTcert → Helpdesk:** API `PublicBWBPos` (auth de agente, directory filtrado, enrol, tickets, **Contacts**). Dispositivo por loja com estados Activo / Suspenso / Revogado na ficha `AdminBWBStore`. Snapshot PTcert (posto, licença, versão, release) actualizado em cada ticket. Pen técnica `Tecnico/HelpDesk` + `aocert/helpdesk.txt` (obrigatório na instalação; **sem valores por defeito**).
+- **Heldesk AOcert:** menu Operação, ficha por operação (BWB ≠ ZS). Email, portal https e lista ilimitada de telefones (JSON). Semente inicial = conteúdo da pen YUMI em 2026-09-17. POS sincroniza às 18:00 (`Persistent`) e faz catch-up ao abrir o plugin.
 
 ## Seguinte
 
