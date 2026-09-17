@@ -33,6 +33,32 @@ sub Run {
         return $Self->_Edit( Nav => $Nav, %Data );
     }
 
+    if ( $Self->{Subaction} eq 'SetPosDeviceStatus' ) {
+        $LayoutObject->ChallengeTokenCheck();
+        my $StoreID  = $ParamObject->GetParam( Param => 'StoreID' );
+        my $DeviceID = $ParamObject->GetParam( Param => 'DeviceID' );
+        my $Status   = $ParamObject->GetParam( Param => 'Status' );
+        my %Store    = $StoreObject->StoreGet( StoreID => $StoreID );
+        if ( !%Store || !$AccessObject->StoreAccessCheck( UserID => $Self->{UserID}, StoreID => $StoreID ) ) {
+            return $LayoutObject->FatalError( Message => 'Não tem autorização para alterar dispositivos desta loja.' );
+        }
+        my $Pos = $Kernel::OM->Get('Kernel::System::BWBPosDevice');
+        my $Devices = $Pos->ListForStore( StoreID => $StoreID );
+        my $Mine;
+        for my $Row ( @{$Devices} ) {
+            $Mine = $Row if int( $Row->{id} ) == int($DeviceID);
+        }
+        if ( !$Mine ) {
+            return $LayoutObject->FatalError( Message => 'Dispositivo não pertence a esta loja.' );
+        }
+        if ( !$Pos->SetStatus( DeviceID => $DeviceID, Status => $Status, UserID => $Self->{UserID} ) ) {
+            return $LayoutObject->FatalError( Message => 'Não foi possível alterar o estado do dispositivo (já revogado?).' );
+        }
+        return $LayoutObject->Redirect(
+            OP => "Action=$Self->{Action};Subaction=Change;StoreID=$StoreID;Nav=$Nav;Notification=PosDevice",
+        );
+    }
+
     if ( $Self->{Subaction} eq 'AddAction' || $Self->{Subaction} eq 'ChangeAction' ) {
         $LayoutObject->ChallengeTokenCheck();
 
@@ -133,9 +159,43 @@ sub _Edit {
     $Data{Mode} = $Data{StoreID} ? 'Change' : 'Add';
     $Data{View} = 'Edit';
 
+    if ( $Data{StoreID} ) {
+        my $Pos     = $Kernel::OM->Get('Kernel::System::BWBPosDevice');
+        my $Devices = $Pos->ListForStore( StoreID => $Data{StoreID} );
+        if ( @{$Devices} ) {
+            for my $Row ( @{$Devices} ) {
+                $LayoutObject->Block(
+                    Name => 'PosDeviceRow',
+                    Data => {
+                        %Data,
+                        DeviceID       => $Row->{id},
+                        PosStatus      => $Row->{status},
+                        PosStatusLabel => $Pos->StatusLabel( $Row->{status} ),
+                        StationNumber  => $Row->{station_number} || '—',
+                        License        => $Row->{license}        || '—',
+                        PosVersion     => $Row->{pos_version}    || '—',
+                        PosRelease     => $Row->{pos_release}    || '—',
+                        Hostname       => $Row->{hostname}       || '—',
+                        CustomerUser   => $Row->{customer_user}  || '—',
+                        AgentLogin     => $Row->{agent_login}    || '—',
+                        LastSeen       => $Row->{last_seen}      || '—',
+                        CanActivate    => ( $Row->{status} eq 'suspended' ) ? 1 : 0,
+                        CanSuspend     => ( $Row->{status} eq 'active' )    ? 1 : 0,
+                        CanRevoke      => ( $Row->{status} ne 'revoked' )   ? 1 : 0,
+                    },
+                );
+            }
+        }
+        else {
+            $LayoutObject->Block( Name => 'PosDeviceEmpty', Data => \%Data );
+        }
+    }
+
     my $Output = $LayoutObject->Header();
     $Output .= $LayoutObject->NavigationBar( Type => 'Customers' );
     $Output .= $LayoutObject->Notify( Priority => 'Error', Info => 'Não foi possível guardar a loja. Verifique os campos e se o número já existe neste cliente.' ) if $Data{SaveError};
+    my $Notification = $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => 'Notification' ) || '';
+    $Output .= $LayoutObject->Notify( Info => 'Estado do dispositivo POS actualizado.' ) if $Notification eq 'PosDevice';
     $Output .= $LayoutObject->Output( TemplateFile => 'AdminBWBStore', Data => \%Data );
     $Output .= $LayoutObject->Footer();
     return $Output;

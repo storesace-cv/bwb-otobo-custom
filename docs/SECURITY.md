@@ -32,6 +32,14 @@ Produção helpdesk: **Euronodes** VPS (`178.159.34.132`, `helpdesk.storesace.cv
 - **Não** instalar Ollama 7B em `165` com 3,8 GiB RAM (risco OOM no mail-MCP). Activar só após upgrade de memória.
 - Logs do Assist: eventos com IDs/contagens, sem corpos completos por defeito.
 
+## API `PublicBWBPos` (plugin POS / pen técnica)
+
+- Não é um catálogo anónimo: `Directory` e `Enroll` exigem sessão de **agente** (hash SHA-256 em `bwb_pos_session`, TTL 10 min). Falhas de login por IP são limitadas.
+- O POS autentica tickets com **token por dispositivo** (`bwb_pos_device.token_hash`). Estados `suspended` / `revoked` recusam o envio. Revogar é irreversível no mesmo token.
+- Sem allowlist de IP (postos em NAT de cliente). Isolamento BWB↔ZS pela empresa do agente (directory) e pela empresa gravada no token (tickets). O cliente **não** escolhe CustomerID no POST do ticket.
+- Password de agente **não** fica no posto. `helpdesk.json` no POS é `0600`. O 3.º campo de `/opt/pos/version` (token PTcert) não é enviado.
+- Ping público só `{ok, service}` — sem dados de clientes.
+
 ## Alterações de produção
 
 Sempre criar cópia de segurança, validar a alteração e confirmar que:

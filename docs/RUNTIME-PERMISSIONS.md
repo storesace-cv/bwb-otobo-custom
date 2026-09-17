@@ -20,6 +20,8 @@ O JS `Core.Agent.BWBWorkMap.js` e CSS `BWBWorkMap.css` seguem a matriz `htdocs`.
 
 O Assistente de Ajuda (`AgentBWBAssist.pm`, `PublicBWBAssistIndex.pm`, `BWBAssist.pm`, filtro `BWBAssistTicketSuggest.pm`, template `AgentBWBAssist.tt`, JS `Core.Agent.BWBAssist.js`, CSS `BWBAssist.css`, XML `BWBAssist.xml`) segue Modules/Output/System e `htdocs`. Segredos em `/opt/otobo/var/bwb-assist.token`, `bwb-assist.url`, `bwb-assist-index.token`, `bwb-assist-index.allowed-ips` — nunca no Git.
 
+`BWBPosDevice.pm` (POS Helpdesk) segue a matriz System e está na lista de controlo. `PublicBWBPos.pm` segue Modules. `AdminBWBStore.tt` (widget dispositivos) segue Output. XML `BWBPos.xml` segue SysConfig XML. Sessão e tokens de dispositivo só na BD (SHA-256), nunca no Git.
+
 ### Atenção: `Maint::Config::Rebuild`
 
 O rebuild reescreve `ZZZAAuto.pm` tipicamente como `otobo:otobo` `660`. O deploy **tem** de reaplicar `otobo:www-data` `640` **depois** do rebuild. Caso contrário o portal Agent/Cliente deixa de registar módulos (`AgentTicketZoom`, dashboard, etc.).

@@ -1,6 +1,6 @@
 # Roadmap Helpdesk BWB / ZS Angola
 
-Actualizado em 27 de agosto de 2026. O comportamento já em produção está em [FEATURES.md](FEATURES.md). Este ficheiro distingue **entregue recentemente** de **passos seguintes**.
+Actualizado em 17 de setembro de 2026. O comportamento já em produção está em [FEATURES.md](FEATURES.md). Este ficheiro distingue **entregue recentemente** de **passos seguintes**.
 
 ## Entregue (agosto 2026)
 
@@ -17,6 +17,10 @@ Actualizado em 27 de agosto de 2026. O comportamento já em produção está em 
 - **Agendamentos pendentes:** rótulo «Pendente com Agendamento»; diálogo nativo de marcação na **folha**, no **Responder (Compose)** e no **Pending** do zoom; sync calendário→estado + `Pending till`; widget dashboard «Agendamentos pendentes»; guarda contra estado sem marcação; cancelamento automático de marcações futuras ao encerrar o ticket; JSON partilhado `AgentBWBAppointmentCheck`.
 - **Mapa Google Embed no zoom:** iframe satélite no AgentTicketZoom (chave `BWB::MapsEmbedAPIKey`); Leaflet/OSM removidos.
 - **Lembrete cliente «a aguardar resposta» (2026-08-26):** `Pending till` +3 dias ao entrar no estado; e-mail diário ao cliente (`NotificationPendingReminder`, sem aviso ao agente, sem fecho automático); CTA botão `#59B3FF`; migrações `2026-08-26-customer-waiting-reminder*.sql`.
+
+## Entregue (setembro 2026)
+
+- **POS PTcert → Helpdesk:** API `PublicBWBPos` (auth de agente, directory filtrado, enrol, tickets). Dispositivo por loja com estados Activo / Suspenso / Revogado na ficha `AdminBWBStore`. Snapshot PTcert (posto, licença, versão, release) actualizado em cada ticket. Pen técnica `Tecnico/HelpDesk` + `aocert/helpdesk.txt`.
 
 ## Seguinte
 

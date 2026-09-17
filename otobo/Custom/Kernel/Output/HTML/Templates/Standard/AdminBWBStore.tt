@@ -65,6 +65,74 @@
                     </fieldset>
                 </form>
             </div>
+            [% IF Data.Mode == 'Change' %]
+            <div class="Header"><h2>Dispositivos POS (PTcert)</h2></div>
+            <div class="Content">
+                <p class="FieldExplanation">Activo envia tickets. Suspenso bloqueia o envio (reversível). Revogado invalida o token; só uma nova instalação na pen reverte.</p>
+                <table class="DataTable">
+                    <thead><tr>
+                        <th>Estado</th><th>Posto</th><th>Licença</th><th>Versão</th><th>Release</th>
+                        <th>Hostname</th><th>Contacto</th><th>Instalado por</th><th>Último ticket</th><th>Acções</th>
+                    </tr></thead>
+                    <tbody>
+[% RenderBlockStart("PosDeviceRow") %]
+                        <tr[% IF Data.PosStatus == 'revoked' %] class="Invalid"[% END %]>
+                            <td>[% Data.PosStatusLabel | html %]</td>
+                            <td>[% Data.StationNumber | html %]</td>
+                            <td>[% Data.License | html %]</td>
+                            <td>[% Data.PosVersion | html %]</td>
+                            <td>[% Data.PosRelease | html %]</td>
+                            <td>[% Data.Hostname | html %]</td>
+                            <td>[% Data.CustomerUser | html %]</td>
+                            <td>[% Data.AgentLogin | html %]</td>
+                            <td>[% Data.LastSeen | html %]</td>
+                            <td>
+                                [% IF Data.CanActivate %]
+                                <form action="[% Env("CGIHandle") %]" method="post" style="display:inline">
+                                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                    <input type="hidden" name="Subaction" value="SetPosDeviceStatus"/>
+                                    <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]"/>
+                                    <input type="hidden" name="StoreID" value="[% Data.StoreID | html %]"/>
+                                    <input type="hidden" name="DeviceID" value="[% Data.DeviceID | html %]"/>
+                                    <input type="hidden" name="Status" value="active"/>
+                                    <input type="hidden" name="Nav" value="[% Data.Nav | html %]"/>
+                                    <button type="submit" class="CallForAction"><span>Activar</span></button>
+                                </form>
+                                [% END %]
+                                [% IF Data.CanSuspend %]
+                                <form action="[% Env("CGIHandle") %]" method="post" style="display:inline">
+                                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                    <input type="hidden" name="Subaction" value="SetPosDeviceStatus"/>
+                                    <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]"/>
+                                    <input type="hidden" name="StoreID" value="[% Data.StoreID | html %]"/>
+                                    <input type="hidden" name="DeviceID" value="[% Data.DeviceID | html %]"/>
+                                    <input type="hidden" name="Status" value="suspended"/>
+                                    <input type="hidden" name="Nav" value="[% Data.Nav | html %]"/>
+                                    <button type="submit" class="CallForAction"><span>Suspender</span></button>
+                                </form>
+                                [% END %]
+                                [% IF Data.CanRevoke %]
+                                <form action="[% Env("CGIHandle") %]" method="post" style="display:inline" onsubmit="return confirm('Revogar este posto? O token deixa de funcionar. Só uma nova instalação na pen o substitui.');">
+                                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                    <input type="hidden" name="Subaction" value="SetPosDeviceStatus"/>
+                                    <input type="hidden" name="ChallengeToken" value="[% Env("ChallengeToken") | html %]"/>
+                                    <input type="hidden" name="StoreID" value="[% Data.StoreID | html %]"/>
+                                    <input type="hidden" name="DeviceID" value="[% Data.DeviceID | html %]"/>
+                                    <input type="hidden" name="Status" value="revoked"/>
+                                    <input type="hidden" name="Nav" value="[% Data.Nav | html %]"/>
+                                    <button type="submit" class="CallForAction"><span>Revogar</span></button>
+                                </form>
+                                [% END %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("PosDeviceRow") %]
+[% RenderBlockStart("PosDeviceEmpty") %]
+                        <tr><td colspan="10">Ainda não há dispositivos POS nesta loja.</td></tr>
+[% RenderBlockEnd("PosDeviceEmpty") %]
+                    </tbody>
+                </table>
+            </div>
+            [% END %]
         [% END %]
         </div>
     </div>

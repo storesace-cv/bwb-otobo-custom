@@ -17,6 +17,7 @@ Kernel/System/BWBOperationType.pm
 Kernel/System/BWBResultType.pm
 Kernel/System/BWBStore.pm
 Kernel/System/BWBTicketIntake.pm
+Kernel/System/BWBPosDevice.pm
 Kernel/System/BWBTicketStore.pm
 Kernel/System/BWBTimeSpent.pm
 Kernel/System/BWBWorkSession.pm

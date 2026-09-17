@@ -178,6 +178,14 @@ Independentemente da opção BWB, notificações OTOBO podem disparar (ex.: fech
 - Código: `Kernel/System/BWBFieldMode.pm`, `Kernel/Modules/AgentBWBFieldHome.pm`, `Kernel/Modules/BWBAgentSessionGuard.pm`, `Kernel/Modules/BWBFieldWorkGuard.pm`, `AgentBWBFieldHome.tt`, `js/Core.Agent.BWBFieldMode.js`, XML `BWBFieldMode.xml`, `ZZZBWBSession.pm`, `BWBAgentTheme.css`.
 - Fila por defeito na criação rápida: `zsangola-in` se o responsável hierárquico for Amadeu (UserID 4); caso contrário `bwb-in`.
 
+## POS PTcert / pen técnica (HELPDESK)
+
+- API pública `PublicBWBPos` (`public.pl?Action=PublicBWBPos;Subaction=…`): `Ping` (saúde), `Auth` (agente, sessão 10 min), `Directory` (clientes/lojas/contactos via `BWBAccess`), `Enroll` (token por dispositivo), `Ticket` (Bearer do dispositivo).
+- Tabela `bwb_pos_device`: estados **active** / **suspended** / **revoked**. Suspenso bloqueia tickets (reversível). Revogado invalida o token; só nova instalação na pen. Cada ticket actualiza posto, licença, versão e release.
+- Ficha Admin → Lojas (`AdminBWBStore` Change): widget **Dispositivos POS** com Activar / Suspender / Revogar (`StoreAccessCheck`).
+- Fila `ZSA*` → `zsangola-in`, restantes → `bwb-in`. Ticket em nome do `customer_user` emparelhado, loja do dispositivo. Rate-limit 8 tickets/hora. Anexo ZIP de logs (PK, ≤1,5 MiB).
+- Código: `BWBPosDevice.pm`, `PublicBWBPos.pm`, XML `BWBPos.xml`, migração `db/migrations/2026-09-17-pos-helpdesk-device.sql`. Pen: `Tecnico/HelpDesk`, contactos `aocert/helpdesk.txt`.
+
 ## Ao desenvolver funcionalidade nova ou alterar existente
 
 1. Consultar sempre [KNOWLEDGE-BASE.md](KNOWLEDGE-BASE.md) e [REFERENCES.md](REFERENCES.md) antes de implementar (sem pedido explícito).
